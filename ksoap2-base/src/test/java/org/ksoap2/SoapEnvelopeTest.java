@@ -46,8 +46,8 @@ public class SoapEnvelopeTest extends TestCase {
         SoapEnvelope envelope = new SoapEnvelope(SoapEnvelope.VER12);
         assertEquals(SoapEnvelope.XSI, envelope.xsi);
         assertEquals(SoapEnvelope.XSD, envelope.xsd);
-        assertEquals(SoapEnvelope.ENC2001, envelope.enc);
-        assertEquals(SoapEnvelope.ENV2001, envelope.env);
+        assertEquals(SoapEnvelope.ENC2003, envelope.enc);
+        assertEquals(SoapEnvelope.ENV2003, envelope.env);
         assertEquals(SoapEnvelope.VER12, envelope.version);
     }
     

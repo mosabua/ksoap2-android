@@ -39,8 +39,8 @@ public class SoapEnvelope {
     public static final int VER11 = 110;
     /** SOAP Version 1.2 constant */
     public static final int VER12 = 120;
-    public static final String ENV2001 = "http://www.w3.org/2001/12/soap-envelope";
-    public static final String ENC2001 = "http://www.w3.org/2001/12/soap-encoding";
+    public static final String ENV2003 = "http://www.w3.org/2003/05/soap-envelope";
+    public static final String ENC2003 = "http://www.w3.org/2003/05/soap-encoding";
     /** Namespace constant: http://schemas.xmlsoap.org/soap/envelope/ */
     public static final String ENV = "http://schemas.xmlsoap.org/soap/envelope/";
     /** Namespace constant: http://schemas.xmlsoap.org/soap/encoding/ */
@@ -116,8 +116,8 @@ public class SoapEnvelope {
             enc = SoapEnvelope.ENC;
             env = SoapEnvelope.ENV;
         } else {
-            enc = SoapEnvelope.ENC2001;
-            env = SoapEnvelope.ENV2001;
+            enc = SoapEnvelope.ENC2003;
+            env = SoapEnvelope.ENV2003;
         }
     }
 
