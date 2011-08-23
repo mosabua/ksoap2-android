@@ -714,9 +714,14 @@ public class SoapSerializationEnvelope extends SoapEnvelope
 
 		int cnt = vector.size();
 		Object[] arrType = getInfo(elementType.type, null);
-		// I think that this needs an implicitTypes check, but don't have a failure case for that
-		writer.attribute(enc, ARRAY_TYPE_LABEL, writer.getPrefix((String) arrType[0], false) + ":"
-				+ arrType[1] + "[" + cnt + "]");
+		
+		// This removes the arrayType attribute from the xml for arrays(required for most .Net services to work)
+		if(!implicitTypes)
+		{
+    		     writer.attribute(enc, ARRAY_TYPE_LABEL, writer.getPrefix((String) arrType[0], false) + ":"
+    				+ arrType[1] + "[" + cnt + "]");
+		}
+		
 		boolean skipped = false;
 		for (int i = 0; i < cnt; i++)
 		{
@@ -730,7 +735,9 @@ public class SoapSerializationEnvelope extends SoapEnvelope
 					writer.attribute(enc, "position", "[" + i + "]");
 					skipped = false;
 				}
+								
 				writeProperty(writer, vector.elementAt(i), elementType);
+								
 				writer.endTag(itemsNamespace, itemsTagName);
 			}
 		}
