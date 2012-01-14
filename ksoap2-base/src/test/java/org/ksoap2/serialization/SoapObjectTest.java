@@ -59,12 +59,14 @@ public class SoapObjectTest extends TestCase {
 		assertFalse(soapObject.equals(soapObject2));
 		assertFalse(soapObject2.equals(soapObject));
 
-		// fix and check for true
+		// same properties with different order should be false
 		soapObject.addProperty("anotherPropertyFoo", new Integer(12));
 		soapObject2.addProperty("anotherProperty",
 				soapObject.getProperty(A_PROPERTY_NAME));
-		assertTrue(soapObject.equals(soapObject2));
-		assertTrue(soapObject2.equals(soapObject));
+		assertFalse(soapObject.equals(soapObject2));
+		assertFalse(soapObject2.equals(soapObject));
+
+		soapObject2 = soapObject.newInstance();
 
 		SoapObject multipleAddresses = new SoapObject("namespace", "name");
 		multipleAddresses.addProperty("address", "941 Wealthy");

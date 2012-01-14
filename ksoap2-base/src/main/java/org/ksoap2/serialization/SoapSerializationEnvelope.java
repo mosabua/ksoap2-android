@@ -635,13 +635,6 @@ public class SoapSerializationEnvelope extends SoapEnvelope
 			writer.attribute(attributeInfo.getNamespace(), attributeInfo.getName(), attributeInfo.getValue()
 					.toString());
 		}
-		cnt = soapObject.getNestedSoapCount();
-		for(int counter = 0; counter < cnt; counter++){
-				SoapObject nestedSoap = (SoapObject)soapObject.getNestedSoap(counter);
-				writer.startTag(nestedSoap.getNamespace(), nestedSoap.getName());
-				writeObjectBody(writer, nestedSoap);
-				writer.endTag(nestedSoap.getNamespace(), nestedSoap.getName());
-		}
 		writeObjectBody(writer, (KvmSerializable) obj);
 	}
 
@@ -650,16 +643,26 @@ public class SoapSerializationEnvelope extends SoapEnvelope
 	 */
 	public void writeObjectBody(XmlSerializer writer, KvmSerializable obj) throws IOException
 	{
-		PropertyInfo info = new PropertyInfo();
 		int cnt = obj.getPropertyCount();
+		PropertyInfo info = new PropertyInfo();
 		for (int i = 0; i < cnt; i++)
 		{
-			obj.getPropertyInfo(i, properties, info);
-			if ((info.flags & PropertyInfo.TRANSIENT) == 0)
-			{
-				writer.startTag(info.namespace, info.name);
-				writeProperty(writer, obj.getProperty(i), info);
-				writer.endTag(info.namespace, info.name);
+			Object prop = obj.getProperty(i);
+			if(!(prop instanceof SoapObject)) {
+				// prop is a PropertyInfo
+				obj.getPropertyInfo(i, properties, info);
+				if ((info.flags & PropertyInfo.TRANSIENT) == 0)
+				{
+					writer.startTag(info.namespace, info.name);
+					writeProperty(writer, obj.getProperty(i), info);
+					writer.endTag(info.namespace, info.name);
+				}
+			} else {
+				// prop is a SoapObject
+				SoapObject nestedSoap = (SoapObject)prop;
+				writer.startTag(nestedSoap.getNamespace(), nestedSoap.getName());
+				writeObjectBody(writer, nestedSoap);
+				writer.endTag(nestedSoap.getNamespace(), nestedSoap.getName());
 			}
 		}
 	}

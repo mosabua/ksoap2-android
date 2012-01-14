@@ -49,13 +49,9 @@ public class SoapObject extends AttributeContainer implements KvmSerializable {
 	 */
 	protected String name;
 	/**
-	 * The Vector of properties.
+	 * The Vector of properties (can contain PropertyInfo and SoapObject)
 	 */
 	protected Vector properties = new Vector();
-	/**
-	 * The Vector of SoapObjects within this SoapObject
-	 */
-	protected Vector nestedSoapObjects = new Vector();
 
 	// TODO: accessing properties and attributes would work much better if we
 	// kept a list of known properties instead of iterating through the list
@@ -90,46 +86,43 @@ public class SoapObject extends AttributeContainer implements KvmSerializable {
 		int numProperties = properties.size();
 		if (numProperties != otherSoapObject.properties.size()) return false;
 
-		int numNested = nestedSoapObjects.size();
-		if (numNested != otherSoapObject.nestedSoapObjects.size()) return false;
-
-		// TODO: The code below doesn't correctly compare the following <name>
-		// element to itself.
-		// calling otherSoapObject.getProperty(thisProp.getName()) will return
-		// the first child with the given name
-		// Perhaps we need to define two SoapObject to be equal if it has the
-		// same children *in the same order*
-		/*<name>
-		   <address>941 Wealthy</address>
-		   <address>942 Wealthy</address>
-		 </name>
-		*/
-
+		// SoapObjects are only considered the same if properties equals and in the same order
 		for (int propIndex = 0; propIndex < numProperties; propIndex++) {
-			PropertyInfo thisProp = (PropertyInfo) this.properties
-					.elementAt(propIndex);
-			Object thisPropValue = thisProp.getValue();
-			if (!otherSoapObject.hasProperty(thisProp.getName())) {
-				return false;
-			}
-			Object otherPropValue = otherSoapObject.getProperty(thisProp
-					.getName());
-			if (!thisPropValue.equals(otherPropValue)) {
-				return false;
-			}
-		}
-
-		// This will return false if the nestedSoapObjects are not in the same
-		// order
-		for (int nestIndex = 0; nestIndex < numNested; nestIndex++) {
-			if (!getNestedSoap(nestIndex).equals(
-					otherSoapObject.getNestedSoap(nestIndex))) {
+			Object thisProp = this.properties.elementAt(propIndex);
+			if(!otherSoapObject.isPropertyEqual(thisProp, propIndex)) {
 				return false;
 			}
 		}
 
 		return attributesAreEqual(otherSoapObject);
-
+	}
+	
+	/**
+	 * Helper function for SoapObject.equals
+	 * Checks if a given property and index are the same as in this
+	 * 
+	 *  @param otherProp, index
+	 *  @return
+	 */
+	public boolean isPropertyEqual(Object otherProp, int index) {
+		if(index >= getPropertyCount()) {
+			return false;
+		}
+		Object thisProp = this.properties.elementAt(index);
+		if(otherProp instanceof PropertyInfo && 
+				thisProp instanceof PropertyInfo) {
+			// Get both PropertInfos and compare values
+			PropertyInfo otherPropInfo = (PropertyInfo)otherProp;
+			PropertyInfo thisPropInfo = (PropertyInfo)thisProp;
+			return otherPropInfo.getName().equals(thisPropInfo.getName()) &&
+					otherPropInfo.getValue().equals(thisPropInfo.getValue());
+		} else if(otherProp instanceof SoapObject && 
+				thisProp instanceof SoapObject) {
+			SoapObject otherPropSoap = (SoapObject)otherProp;
+			SoapObject thisPropSoap = (SoapObject)thisProp;
+			return otherPropSoap.equals(thisPropSoap);
+		}
+		return false;
 	}
 
 	public String getName() {
@@ -141,17 +134,22 @@ public class SoapObject extends AttributeContainer implements KvmSerializable {
 	}
 
 	/**
-     *
+     * @depreciated use #getProperty
      */
 	public Object getNestedSoap(int index) {
-		return (SoapObject) nestedSoapObjects.elementAt(index);
+		return getProperty(index);
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public Object getProperty(int index) {
-		return ((PropertyInfo) properties.elementAt(index)).getValue();
+		Object prop = properties.elementAt(index);
+		if(prop instanceof PropertyInfo) {
+			return ((PropertyInfo)prop).getValue();
+		} else {
+			return ((SoapObject)prop); 
+		}
 	}
 
 	/**
@@ -311,12 +309,19 @@ public class SoapObject extends AttributeContainer implements KvmSerializable {
 	}
 
 	/**
-	 * Returns the number of nestedSoapObjects
+	 * Returns the number of SoapObjects in properties
 	 * 
 	 * @return the number of nestedSoapObjects
+	 * @depreciated
 	 */
 	public int getNestedSoapCount() {
-		return nestedSoapObjects.size();
+		int count = 0;
+		for(int i = 0; i < properties.size(); i++) {
+			if(properties.elementAt(i) instanceof SoapObject) {
+				count++;
+			}
+		}
+		return count;
 	}
 
 	/**
@@ -364,9 +369,14 @@ public class SoapObject extends AttributeContainer implements KvmSerializable {
 	public SoapObject newInstance() {
 		SoapObject o = new SoapObject(namespace, name);
 		for (int propIndex = 0; propIndex < properties.size(); propIndex++) {
-			PropertyInfo propertyInfo = (PropertyInfo) properties
-					.elementAt(propIndex);
-			o.addProperty(propertyInfo);
+			Object prop = properties.elementAt(propIndex);
+			if(prop instanceof PropertyInfo) {
+				PropertyInfo propertyInfo = (PropertyInfo) properties
+						.elementAt(propIndex);
+				o.addProperty(propertyInfo);
+			} else if(prop instanceof SoapObject) {
+				o.addSoapObject(((SoapObject)prop).newInstance());
+			}
 		}
 		for (int attribIndex = 0; attribIndex < getAttributeCount(); attribIndex++) {
 			AttributeInfo newAI = new AttributeInfo();
@@ -387,7 +397,11 @@ public class SoapObject extends AttributeContainer implements KvmSerializable {
 	 *            the new value of the property
 	 */
 	public void setProperty(int index, Object value) {
-		((PropertyInfo) properties.elementAt(index)).setValue(value);
+		Object prop = properties.elementAt(index);
+		if(prop instanceof PropertyInfo) {
+			((PropertyInfo) prop).setValue(value);			
+		}
+		// TODO: not sure how you want to handle an exception here if the index points to a SoapObject
 	}
 
 	/**
@@ -482,14 +496,14 @@ public class SoapObject extends AttributeContainer implements KvmSerializable {
 	}
 
 	/**
-	 * Adds a SoapObject the nestedSoapObjects array. This is a sub element to
+	 * Adds a SoapObject the properties array. This is a sub element to
 	 * allow nested SoapObjects
 	 * 
 	 * @param soapObject
 	 *            to be added as a property of the current object
 	 */
 	public SoapObject addSoapObject(SoapObject soapObject) {
-		nestedSoapObjects.addElement(soapObject);
+		properties.addElement(soapObject);
 		return this;
 	}
 
@@ -500,13 +514,14 @@ public class SoapObject extends AttributeContainer implements KvmSerializable {
 	 */
 	public String toString() {
 		StringBuffer buf = new StringBuffer("" + name + "{");
-		for (int j = 0; j < getNestedSoapCount(); j++) {
-			buf.append("\n"
-					+ ((SoapObject) nestedSoapObjects.elementAt(j)).toString());
-		}
 		for (int i = 0; i < getPropertyCount(); i++) {
-			buf.append("" + ((PropertyInfo) properties.elementAt(i)).getName()
-					+ "=" + getProperty(i) + "; ");
+			Object prop = properties.elementAt(i);
+			if(prop instanceof PropertyInfo) {
+				buf.append("" + ((PropertyInfo) prop).getName()
+						+ "=" + getProperty(i) + "; ");				
+			} else {
+				buf.append(((SoapObject) prop).toString());
+			}
 		}
 		buf.append("}");
 		return buf.toString();
