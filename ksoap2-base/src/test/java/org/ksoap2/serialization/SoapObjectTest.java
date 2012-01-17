@@ -272,4 +272,99 @@ public class SoapObjectTest extends TestCase {
 		assertEquals(integerValue,
 				soapObject.getAttributeSafelyAsString(anInteger));
 	}
+
+	public void testGetPrimitiveProperty(){
+		PropertyInfo propertyInfo = new PropertyInfo();
+		
+		propertyInfo.name = "ComplexThing";
+		propertyInfo.type = SoapObject.class;
+		propertyInfo.value = soapObject;
+				
+		soapObject.addProperty(propertyInfo);
+		
+		propertyInfo = new PropertyInfo();
+		propertyInfo.name = "PrimitiveThing";
+		propertyInfo.type = String.class;
+		propertyInfo.value = "thing";
+		soapObject.addProperty(propertyInfo);
+		
+		assertSame("",soapObject.getPrimitiveProperty("ComplexThing").toString());
+		assertSame("thing",soapObject.getPrimitiveProperty("PrimitiveThing").toString());
+		try {
+			soapObject.getPrimitiveProperty("blah");
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(RuntimeException.class.getName(), e.getClass()
+					.getName());
+			assertEquals("illegal property: blah", e.getMessage());
+		}
+	}
+	
+	public void testGetPrimitivePropertyAsString(){
+		PropertyInfo propertyInfo = new PropertyInfo();
+		
+		propertyInfo.name = "ComplexThing";
+		propertyInfo.type = SoapObject.class;
+		propertyInfo.value = soapObject;
+				
+		soapObject.addProperty(propertyInfo);
+		
+		propertyInfo = new PropertyInfo();
+		propertyInfo.name = "PrimitiveThing";
+		propertyInfo.type = String.class;
+		propertyInfo.value = "thing";
+		soapObject.addProperty(propertyInfo);
+		
+		assertSame("",soapObject.getPrimitivePropertyAsString("ComplexThing"));
+		assertSame("thing",soapObject.getPrimitivePropertyAsString("PrimitiveThing"));
+		try {
+			soapObject.getPrimitivePropertyAsString("blah");
+			fail();
+		} catch (RuntimeException e) {
+			assertEquals(RuntimeException.class.getName(), e.getClass()
+					.getName());
+			assertEquals("illegal property: blah", e.getMessage());
+		}
+	}
+
+	public void testGetPrimitivePropertySafely(){
+		PropertyInfo propertyInfo = new PropertyInfo();
+		
+		propertyInfo.name = "ComplexThing";
+		propertyInfo.type = SoapObject.class;
+		propertyInfo.value = soapObject;
+				
+		soapObject.addProperty(propertyInfo);
+		
+		propertyInfo = new PropertyInfo();
+		propertyInfo.name = "PrimitiveThing";
+		propertyInfo.type = String.class;
+		propertyInfo.value = "thing";
+		soapObject.addProperty(propertyInfo);
+		
+		assertSame("",soapObject.getPrimitivePropertySafely("ComplexThing").toString());
+		assertSame("thing",soapObject.getPrimitivePropertySafely("PrimitiveThing").toString());
+		assertEquals(null,soapObject.getPropertySafely("jaaa").toString());
+	}
+
+	public void testGetPrimitivePropertySafelyAsString(){
+		PropertyInfo propertyInfo = new PropertyInfo();
+		
+		propertyInfo.name = "ComplexThing";
+		propertyInfo.type = SoapObject.class;
+		propertyInfo.value = soapObject;
+				
+		soapObject.addProperty(propertyInfo);
+		
+		propertyInfo = new PropertyInfo();
+		propertyInfo.name = "PrimitiveThing";
+		propertyInfo.type = String.class;
+		propertyInfo.value = "thing";
+		soapObject.addProperty(propertyInfo);
+		
+		assertSame("",soapObject.getPrimitivePropertySafelyAsString("ComplexThing").toString());
+		assertSame("thing",soapObject.getPrimitivePropertySafelyAsString("PrimitiveThing").toString());
+		assertEquals("",soapObject.getPropertySafelyAsString("jaaa").toString());
+	}
+
 }
