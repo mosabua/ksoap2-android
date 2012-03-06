@@ -72,6 +72,15 @@ public class SoapSerializationEnvelope extends SoapEnvelope
 	public boolean dotNet;
 
 	/**
+	 * Set this variable to true if you prefer to silently skip unknown
+	 * properties.
+	 * <p>
+	 * {@link RuntimeException} will be thrown otherwise.
+	 */
+
+	public boolean avoidExceptionForUnknownProperty;
+
+	/**
 	 * Map from XML qualified names to Java classes
 	 */
 
@@ -172,40 +181,37 @@ public class SoapSerializationEnvelope extends SoapEnvelope
 	protected void readSerializable(XmlPullParser parser, KvmSerializable obj) throws IOException,
 			XmlPullParserException
 	{
-		int testIndex = -1; // inc at beg. of loop for perf. reasons
-		int propertyCount = obj.getPropertyCount();
-		PropertyInfo info = new PropertyInfo();
 		while (parser.nextTag() != XmlPullParser.END_TAG)
 		{
 			String name = parser.getName();
-			int countdown = propertyCount;
-			// I don't really understand what's going on in this "while(true)"
-			// clause. The structure surely is wrong "while(true)" with a break is
-			// pretty much always because the person who wrote it couldn't figure out what
-			// it was really supposed to be doing.
+
 			// So, here's a little CYA since I think the code is only broken for
 			// implicitTypes
 			if (!implicitTypes || !(obj instanceof SoapObject))
 			{
-				while (true)
-				{
-					if (countdown-- == 0)
-					{
-						throw new RuntimeException("Unknown Property: " + name);
-					}
-					if (++testIndex >= propertyCount)
-					{
-						testIndex = 0;
-					}
-					obj.getPropertyInfo(testIndex, properties, info);
-					if (info.namespace == null && name.equals(info.name) || info.name == null
-							&& testIndex == 0 || name.equals(info.name)
-							&& parser.getNamespace().equals(info.namespace))
-					{
-						break;
+				PropertyInfo info = new PropertyInfo();
+				int propertyCount = obj.getPropertyCount();
+				boolean propertyFound = false;
+
+				for (int i = 0; i < propertyCount && !propertyFound; i++) {
+					info.clear();
+					obj.getPropertyInfo(i, properties, info);
+
+					if ((name.equals(info.name) && info.namespace == null) ||
+						(name.equals(info.name) && parser.getNamespace().equals(info.namespace))) {
+						propertyFound = true;
+						obj.setProperty(i, read(parser, obj, i, null, null, info));
 					}
 				}
-				obj.setProperty(testIndex, read(parser, obj, testIndex, null, null, info));
+
+				if (!propertyFound) {
+					if (avoidExceptionForUnknownProperty) {
+						// Dummy loop to read until corresponding END tag
+						while (parser.next() != XmlPullParser.END_TAG || !name.equals(parser.getName())) {};
+					} else {
+						throw new RuntimeException("Unknown Property: " + name);
+					}
+				}
 			}
 			else
 			{
