@@ -659,9 +659,12 @@ public class SoapSerializationEnvelope extends SoapEnvelope
 			} else {
 				// prop is a SoapObject
 				SoapObject nestedSoap = (SoapObject)prop;
-				writer.startTag(nestedSoap.getNamespace(), nestedSoap.getName());
+				Object[] qName = getInfo(null, nestedSoap);
+				writer.startTag((dotNet) ? "" : (String) qName[QNAME_NAMESPACE], (String) qName[QNAME_TYPE]);
+				String prefix = writer.getPrefix((String) qName[QNAME_NAMESPACE], true);
+				writer.attribute(xsi, TYPE_LABEL, prefix + ":" + qName[QNAME_TYPE]);
 				writeObjectBody(writer, nestedSoap);
-				writer.endTag(nestedSoap.getNamespace(), nestedSoap.getName());
+	            writer.endTag((dotNet) ? "" : (String) qName[QNAME_NAMESPACE], (String) qName[QNAME_TYPE]);				
 			}
 		}
 	}

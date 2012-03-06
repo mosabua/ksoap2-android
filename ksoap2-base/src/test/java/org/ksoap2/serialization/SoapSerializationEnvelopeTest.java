@@ -431,7 +431,7 @@ public class SoapSerializationEnvelopeTest extends TestCase {
         byte[] request = null;
         request = myTransport.createRequestData(envelope);
         String xmlString = new String(request);
-        assertGetStatusResponse(xmlString);
+        assertGetStatusResponse(xmlString, true);
     }
 
     /**
@@ -461,7 +461,7 @@ public class SoapSerializationEnvelopeTest extends TestCase {
      * @throws Throwable
      */
     public void testGetStatusResponse() throws Throwable {
-        assertGetStatusResponse(getStatusResponse);
+        assertGetStatusResponse(getStatusResponse, false);
     }
 
     /**
@@ -469,7 +469,7 @@ public class SoapSerializationEnvelopeTest extends TestCase {
      *
      * @throws Throwable
      */
-    public void assertGetStatusResponse(String xmlString) throws Throwable {
+    public void assertGetStatusResponse(String xmlString, boolean nestedSoap) throws Throwable {
         ByteArrayInputStream is = new ByteArrayInputStream(xmlString.toString().getBytes());
         envelope.addMapping("http://opcfoundation.org/webservices/XMLDA/1.0/", "GetStatusResponse",
                 SoapObject.class);
@@ -485,14 +485,20 @@ public class SoapSerializationEnvelopeTest extends TestCase {
         SoapObject getStatusResult = (SoapObject) response.getProperty("GetStatusResult");
         assertNotNull(" GetStatusResult ", getStatusResult);
         assertEquals(" No Parameters (GetStatusResult)", 0, getStatusResult.getPropertyCount());
-        assertEquals(" Four Attributes (GetStatusResult)", 4, getStatusResult.getAttributeCount());
+        if(nestedSoap)
+        	assertEquals(" Five Attributes (GetStatusResult)", 5, getStatusResult.getAttributeCount());
+        else
+        	assertEquals(" Four Attributes (GetStatusResult)", 4, getStatusResult.getAttributeCount());
         assertEquals("2003-05-26T20:17:42.4781250-07:00", getStatusResult.getAttribute("RcvTime"));
         assertEquals("2003-05-26T20:17:42.5781250-07:00", getStatusResult.getAttribute("ReplyTime"));
         assertEquals("running", getStatusResult.getAttribute("ServerState"));
         // first property is "Status"
         SoapObject status = (SoapObject) response.getProperty("Status");
         assertEquals(" Five Parameters (Status)", 5, status.getPropertyCount());
-        assertEquals(" Two Attributes (Status)", 2, status.getAttributeCount());
+        if(nestedSoap)
+        	assertEquals(" Three Attributes (Status)", 3, status.getAttributeCount());
+        else
+        	assertEquals(" Two Attributes (Status)", 2, status.getAttributeCount());
         assertEquals("2003-05-26T20:16:45.0937500-07:00", status.getAttribute("StartTime"));
         assertEquals("1.00.1.00", status.getAttribute("ProductVersion"));
     }
