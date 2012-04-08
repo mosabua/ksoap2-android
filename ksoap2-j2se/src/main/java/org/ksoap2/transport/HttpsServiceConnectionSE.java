@@ -116,4 +116,8 @@ public class HttpsServiceConnectionSE implements ServiceConnection {
     public String getPath() {
         return connection.getURL().getPath();
     }
+
+    public void setSSLSocketFactory(SSLSocketFactory sf) {
+        connection.setSSLSocketFactory(SSLSocketFactory sf);
+    }
 }
