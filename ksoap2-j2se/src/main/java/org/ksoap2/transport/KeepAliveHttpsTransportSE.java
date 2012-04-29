@@ -47,20 +47,9 @@ public class KeepAliveHttpsTransportSE extends HttpsTransportSE
     //@Override
     protected ServiceConnection getServiceConnection() throws IOException
     {
-        conn = new HttpsServiceConnectionSE(host, port, file, timeout)
-        {
-            //@Override
-            public void setRequestProperty(String key, String value) {
-                    // We want to ignore any setting of "Connection: close" because
-                    // it is buggy with Android SSL.
-                    if ("Connection".equalsIgnoreCase(key) && "close".equalsIgnoreCase(value)) {
-                            return;
-                    } else {
-                        super.setRequestProperty(key, value);
-                    }
-            }
-        };
+        conn = new HttpsServiceConnectionSEIgnoringConnectionClose(host, port, file, timeout);
         conn.setRequestProperty("Connection", "keep-alive");
         return conn;
     }
+
 }
