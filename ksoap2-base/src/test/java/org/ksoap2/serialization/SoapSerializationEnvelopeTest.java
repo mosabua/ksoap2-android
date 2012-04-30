@@ -286,6 +286,22 @@ public class SoapSerializationEnvelopeTest extends TestCase {
         assertEquals(BODY_XML_STRING + END_XML_STRING, new String(outputStream.toByteArray()));
     }
 
+    public void testWritingBody_NestedSoapObject() throws Exception {
+        soapObject.addSoapObject(createNestedSoapObject());
+        writeBodyWithSoapObject(soapObject);
+    }
+
+    public void testWritingBody_PropertyOfTypeSoapObject() throws Exception {
+        soapObject.addProperty("objectproperty", createNestedSoapObject());
+        writeBodyWithSoapObject(soapObject);
+    }
+
+    private SoapObject createNestedSoapObject() {
+        SoapObject nested = new SoapObject(null, "nested");
+        nested.addProperty("nestedprop", "nestedpropvalue");
+        return nested;
+    }
+
     private String getParameterBody(String type, Object aValue) {
         return "<" + PARAMETER_NAME + " n3:type=\"n2:" + type + "\" xmlns:n2=\"" + envelope.xsd
                 + "\" xmlns:n3=\"" + envelope.xsi + "\">" + aValue + "</" + PARAMETER_NAME + ">";

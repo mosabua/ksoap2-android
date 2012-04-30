@@ -451,14 +451,26 @@ public class SoapObject extends AttributeContainer implements KvmSerializable {
      *            designated retainer of desired property
      */
     public void getPropertyInfo(int index, PropertyInfo propertyInfo) {
-        PropertyInfo p = (PropertyInfo) properties.elementAt(index);
-        propertyInfo.name = p.name;
-        propertyInfo.namespace = p.namespace;
-        propertyInfo.flags = p.flags;
-        propertyInfo.type = p.type;
-        propertyInfo.elementType = p.elementType;
-        propertyInfo.value = p.value;
-        propertyInfo.multiRef = p.multiRef;
+        Object element = properties.elementAt(index);
+        if (element instanceof PropertyInfo) {
+            PropertyInfo p = (PropertyInfo) element;
+            propertyInfo.name = p.name;
+            propertyInfo.namespace = p.namespace;
+            propertyInfo.flags = p.flags;
+            propertyInfo.type = p.type;
+            propertyInfo.elementType = p.elementType;
+            propertyInfo.value = p.value;
+            propertyInfo.multiRef = p.multiRef;
+        } else {
+            // SoapObject
+            propertyInfo.name = null;
+            propertyInfo.namespace = null;
+            propertyInfo.flags = 0;
+            propertyInfo.type = null;
+            propertyInfo.elementType = null;
+            propertyInfo.value = element;
+            propertyInfo.multiRef = false;
+        }
     }
 
     /**
