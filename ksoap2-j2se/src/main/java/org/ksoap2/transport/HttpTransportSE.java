@@ -25,6 +25,7 @@
 package org.ksoap2.transport;
 
 import java.util.List;
+import java.util.zip.GZIPInputStream;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.Proxy;
@@ -139,6 +140,7 @@ public class HttpTransportSE extends Transport {
         }
 
         connection.setRequestProperty("Connection", "close");
+        connection.setRequestProperty("Accept-Encoding", "gzip");
         connection.setRequestProperty("Content-Length", "" + requestData.length);
             
         // Pass the headers provided by the user along with the call
@@ -164,8 +166,25 @@ public class HttpTransportSE extends Transport {
             
         try {
             connection.connect();
-            is = connection.openInputStream();
             retHeaders = connection.getResponseProperties();
+            boolean gZippedContent = false;
+            for (int i = 0; i < retHeaders.size(); i++) {
+                HeaderProperty hp = (HeaderProperty)retHeaders.get(i);
+                // HTTP response code has null key
+                if (null == hp.getKey()) {
+                    continue;
+                }
+                if (hp.getKey().equals("Content-Encoding")
+                     && hp.getValue().equals("gzip")) {
+                    gZippedContent = true;
+                    break;
+                }
+            }
+            if (gZippedContent) {
+                is = new GZIPInputStream(connection.openInputStream());
+            } else {
+                is = connection.openInputStream();
+            }
         } catch (IOException e) {
             is = connection.getErrorStream();
 
