@@ -671,4 +671,28 @@ public class SoapSerializationEnvelopeTest extends TestCase {
         String request = new String(outputStream.toByteArray());
         assertEquals(expectedResponse, request);
     }
+
+
+    /**
+     * Test created for issue 99 SoapObject newInstance() doesn't work
+     * @throws Exception
+     * @see "http://code.google.com/p/ksoap2-android/issues/detail?id=99"
+     */
+    public void testIssue99() throws Exception {
+        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+        
+        SoapObject requestSoap = new SoapObject("", "getFavouriteFilters");
+        requestSoap.addProperty("token", "123123");
+        
+        envelope.setOutputSoapObject(requestSoap);
+        String originalRequest = envelope.bodyOut.toString();
+        
+        SoapObject reconnect = ((SoapObject) envelope.bodyOut).newInstance();
+        reconnect.setProperty(0, "666");
+        
+        String expectedResponse = envelope.bodyOut.toString();
+                
+        assertTrue("Original "+originalRequest+" != Expected " + expectedResponse, 
+                expectedResponse.equals(originalRequest) );
+    }
 }

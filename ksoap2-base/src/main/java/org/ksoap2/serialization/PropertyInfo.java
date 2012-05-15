@@ -21,11 +21,18 @@
 
 package org.ksoap2.serialization;
 
+import java.io.ByteArrayOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ObjectOutputStream;
+import java.io.ObjectInputStream;
+
+import java.io.IOException;
+import java.io.NotSerializableException;
 /**
  * This class is used to store information about each property an implementation of KvmSerializable exposes.
  */
 
-public class PropertyInfo
+public class PropertyInfo implements java.io.Serializable
 {
     public static final Class OBJECT_CLASS = new Object().getClass();
     public static final Class STRING_CLASS = "".getClass();
@@ -224,4 +231,42 @@ public class PropertyInfo
         }
         return sb.toString();
     }
+
+
+    /**
+     * Make a deep clone of the properties through Object serialization
+     *
+     * @see java.lang.Object#clone()
+     */
+    public Object clone() {
+        Object obj = null;
+        try 
+        {
+            // Write the object out to a byte array
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            ObjectOutputStream out = new ObjectOutputStream(bos);
+            out.writeObject(this);
+            out.flush();
+            out.close();
+
+            // Make an input stream from the byte array and read
+            // a copy of the object back in.
+            ObjectInputStream in = new ObjectInputStream(
+                new ByteArrayInputStream(bos.toByteArray()));
+            obj = in.readObject();
+        }
+        catch(ClassNotFoundException cnfe) 
+        {
+            cnfe.printStackTrace();
+        }
+        catch(NotSerializableException nse) 
+        {
+            nse.printStackTrace();
+        }
+        catch(IOException e) 
+        {
+            e.printStackTrace();
+        }
+        return obj;
+   }
 }

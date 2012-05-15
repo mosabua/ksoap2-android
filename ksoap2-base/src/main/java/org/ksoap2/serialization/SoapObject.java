@@ -498,7 +498,8 @@ public class SoapObject extends AttributeContainer implements KvmSerializable {
             Object prop = properties.elementAt(propIndex);
             if(prop instanceof PropertyInfo) {
                 PropertyInfo propertyInfo = (PropertyInfo) properties.elementAt(propIndex);
-                o.addProperty(propertyInfo);
+                PropertyInfo propertyInfoClonned = (PropertyInfo)propertyInfo.clone();
+                o.addProperty( propertyInfoClonned );
             } else if(prop instanceof SoapObject) {
                 o.addSoapObject(((SoapObject)prop).newInstance());
             }
