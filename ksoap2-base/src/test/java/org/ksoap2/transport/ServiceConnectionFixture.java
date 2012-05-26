@@ -335,6 +335,10 @@ public class ServiceConnectionFixture implements ServiceConnection {
     public ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     public boolean connected;
 
+    public ServiceConnectionFixture() {
+        connected = true;
+    }
+
     public static InputStream hashTableWithDupAsStream() {
         return messsageAsStream(HASH_TABLE_PARAMETERS_DUP);
     }

@@ -152,7 +152,6 @@ public class HttpTransportSE extends Transport {
         }
             
         connection.setRequestMethod("POST");
-        connection.connect();
         
 
         OutputStream os = connection.openOutputStream();
@@ -165,7 +164,6 @@ public class HttpTransportSE extends Transport {
         List retHeaders = null;
             
         try {
-            connection.connect();
             retHeaders = connection.getResponseProperties();
             boolean gZippedContent = false;
             for (int i = 0; i < retHeaders.size(); i++) {
