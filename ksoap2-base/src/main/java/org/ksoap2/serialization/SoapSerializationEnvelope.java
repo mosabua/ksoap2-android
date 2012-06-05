@@ -620,8 +620,10 @@ public class SoapSerializationEnvelope extends SoapEnvelope
                 }
 
                 writer.startTag((dotNet) ? "" : namespace, name);
-                String prefix = writer.getPrefix(namespace, true);
-                writer.attribute(xsi, TYPE_LABEL, prefix + ":" + type);
+                if (!implicitTypes) {
+                    String prefix = writer.getPrefix(namespace, true);
+                    writer.attribute(xsi, TYPE_LABEL, prefix + ":" + type);
+                }
                 writeObjectBody(writer, nestedSoap);
                 writer.endTag((dotNet) ? "" : namespace, name);
             }
