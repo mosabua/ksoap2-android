@@ -14,7 +14,7 @@ public class HttpsTransportSE extends HttpTransportSE{
 
     static final String PROTOCOL = "https";
 
-    private HttpsServiceConnectionSE conn = null;
+    private ServiceConnection serviceConnection = null;
     private final String host;
     private final int port;
     private final String file;
@@ -29,23 +29,16 @@ public class HttpsTransportSE extends HttpTransportSE{
     }
 
     /**
-     * Returns the HttpsServiceConnectionSE that was created in getServiceConnection or null
-     * if getServiceConnection was not called or failed.
-     * @return ServiceConnection
-     */
-    public ServiceConnection getConnection() {
-        return (HttpsServiceConnectionSE) conn;
-    }
-
-    /**
-     * Get a https service connection.
+     * Returns the HttpsServiceConnectionSE and creates it if necessary
      * @see org.ksoap2.transport.HttpsTransportSE#getServiceConnection()
      */
-    //@Override
-    protected ServiceConnection getServiceConnection() throws IOException
+    @Override
+    public ServiceConnection getServiceConnection() throws IOException
     {
-        conn = new HttpsServiceConnectionSE(host, port, file, timeout);
-        return conn;
+        if (serviceConnection == null) {
+            serviceConnection = new HttpsServiceConnectionSE(host, port, file, timeout);
+        }
+        return serviceConnection;
     }
 
     public String getHost() {

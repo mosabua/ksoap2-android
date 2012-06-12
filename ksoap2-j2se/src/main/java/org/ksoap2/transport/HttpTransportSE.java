@@ -40,7 +40,7 @@ import org.xmlpull.v1.*;
  */
 public class HttpTransportSE extends Transport {
 
-    private ServiceConnection connection;
+    private ServiceConnection serviceConnection;
 
     /**
      * Creates instance of HttpTransportSE with set url
@@ -123,7 +123,7 @@ public class HttpTransportSE extends Transport {
         requestDump = debug ? new String(requestData) : null;
         responseDump = null;
             
-        connection = getServiceConnection();
+        ServiceConnection connection = getServiceConnection();
             
         connection.setRequestProperty("User-Agent", USER_AGENT);
         // SOAPAction is not a valid header for VER12 so do not add
@@ -217,12 +217,11 @@ public class HttpTransportSE extends Transport {
         return retHeaders;
     }
 
-    public ServiceConnection getConnection() {
-        return (ServiceConnectionSE) connection;
-    }
-
-    protected ServiceConnection getServiceConnection() throws IOException {
-        return new ServiceConnectionSE(proxy, url, timeout);
+    public ServiceConnection getServiceConnection() throws IOException {
+        if (serviceConnection == null) {
+            serviceConnection = new ServiceConnectionSE(proxy, url, timeout);
+        }
+        return serviceConnection;
     }
 
     public String getHost() {
