@@ -174,8 +174,8 @@ public class HttpTransportSE extends Transport {
                 if (null == hp.getKey()) {
                     continue;
                 }
-                if (hp.getKey().equals("Content-Encoding")
-                     && hp.getValue().equals("gzip")) {
+                if (hp.getKey().equalsIgnoreCase("Content-Encoding")
+                     && hp.getValue().equalsIgnoreCase("gzip")) {
                     gZippedContent = true;
                     break;
                 }
