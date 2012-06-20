@@ -400,6 +400,10 @@ public class ServiceConnectionFixture implements ServiceConnection {
     public void setRequestMethod(String post) throws ProtocolException, IOException {
     }
 
+    public void setFixedLengthStreamingMode(int contentLength) {
+        //  not implemented in test
+    }
+
     public OutputStream openOutputStream() throws IOException {
         return outputStream;
     }

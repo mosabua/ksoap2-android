@@ -66,6 +66,10 @@ public class ServiceConnectionMidp implements ServiceConnection {
         connection.setRequestMethod(post);
     }
 
+    public void setFixedLengthStreamingMode(int contentLength) {
+        //  not implemented in MIDP
+    }
+
     public OutputStream openOutputStream() throws IOException {
         return connection.openOutputStream();
     }

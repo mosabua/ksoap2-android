@@ -82,6 +82,24 @@ public class HttpTransportSE extends Transport {
     }
 
     /**
+     * Creates instance of HttpTransportSE with set url
+     * 
+     * @param url
+     *            the destination to POST SOAP data
+     * @param timeout
+     *   timeout for connection and Read Timeouts (milliseconds)
+     * @param contentLength
+     *   Content Lenght in bytes if known in advance
+     */
+    public HttpTransportSE(String url, int timeout, int contentLength) {
+        super(url, timeout);
+    }
+
+    public HttpTransportSE(Proxy proxy, String url, int timeout, int contentLength) {
+        super(proxy, url, timeout);
+    }
+
+    /**
      * set the desired soapAction header field
      * 
      * @param soapAction
@@ -142,6 +160,9 @@ public class HttpTransportSE extends Transport {
         connection.setRequestProperty("Connection", "close");
         connection.setRequestProperty("Accept-Encoding", "gzip");
         connection.setRequestProperty("Content-Length", "" + requestData.length);
+        // For best performance, call setFixedLengthStreamingMode(int) when the body length is known in advance
+        // @see "http://developer.android.com/reference/java/net/HttpURLConnection.html" Posting Content
+        connection.setFixedLengthStreamingMode(requestData.length);
             
         // Pass the headers provided by the user along with the call
         if (headers != null) {

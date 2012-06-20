@@ -30,6 +30,7 @@ import java.io.*;
 public interface ServiceConnection {
 
     public static final int DEFAULT_TIMEOUT = 20000; // 20 seconds
+    public static final int DEFAULT_BUFFER_SIZE = 256*1024; // 256 Kb
 
     /**
      * Make an outgoing connection.
@@ -77,6 +78,15 @@ public interface ServiceConnection {
      * @exception IOException
      */
     public void setRequestMethod(String requestMethodType) throws IOException;
+
+    /**
+     * If the length of a HTTP request body is known ahead, sets fixed length 
+     * to enable streaming without buffering. Sets after connection will cause an exception.
+     *
+     * @param contentLength the fixed length of the HTTP request body
+     * @see http://developer.android.com/reference/java/net/HttpURLConnection.html
+     **/
+    public void setFixedLengthStreamingMode(int contentLength);
 
     /**
      * Open and return the outputStream to the endpoint.

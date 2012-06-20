@@ -105,6 +105,10 @@ public class ServiceConnectionSE implements ServiceConnection {
         connection.setRequestMethod(requestMethod);
     }
 
+    public void setFixedLengthStreamingMode(int contentLength) {
+        connection.setFixedLengthStreamingMode(contentLength);
+    }
+
     public OutputStream openOutputStream() throws IOException {
         return connection.getOutputStream();
     }
