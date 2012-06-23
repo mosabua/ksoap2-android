@@ -105,6 +105,13 @@ public class ServiceConnectionSE implements ServiceConnection {
         connection.setRequestMethod(requestMethod);
     }
 
+    /**
+     * If the length of a HTTP request body is known ahead, sets fixed length 
+     * to enable streaming without buffering. Sets after connection will cause an exception.
+     *
+     * @param contentLength the fixed length of the HTTP request body
+     * @see http://developer.android.com/reference/java/net/HttpURLConnection.html
+     **/
     public void setFixedLengthStreamingMode(int contentLength) {
         connection.setFixedLengthStreamingMode(contentLength);
     }

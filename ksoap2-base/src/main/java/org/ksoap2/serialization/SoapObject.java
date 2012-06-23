@@ -60,6 +60,13 @@ public class SoapObject extends AttributeContainer implements KvmSerializable {
 
     /**
      * Creates a new <code>SoapObject</code> instance.
+     */
+
+    public SoapObject() {
+        this("","");
+    }
+    /**
+     * Creates a new <code>SoapObject</code> instance.
      *
      * @param namespace
      *            the namespace for the soap object
