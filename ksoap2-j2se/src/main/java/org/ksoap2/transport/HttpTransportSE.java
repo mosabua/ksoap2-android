@@ -200,7 +200,15 @@ public class HttpTransportSE extends Transport {
                 }
             }
             if (gZippedContent) {
-                is = new GZIPInputStream(connection.openInputStream());
+                /* workaround for Android 2.3 
+                   (see http://stackoverflow.com/questions/5131016/)
+                */
+                InputStream origStream = connection.openInputStream();
+                try {
+                    is = (GZIPInputStream) origStream;
+                } catch (ClassCastException e) {
+                    is = new GZIPInputStream(origStream);
+                }
             } else {
                 is = connection.openInputStream();
             }
