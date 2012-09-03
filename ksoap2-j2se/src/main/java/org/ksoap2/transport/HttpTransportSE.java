@@ -136,7 +136,7 @@ public class HttpTransportSE extends Transport {
             soapAction = "\"\"";
         }
 
-        byte[] requestData = createRequestData(envelope);
+        byte[] requestData = createRequestData(envelope, "UTF-8");
             
         requestDump = debug ? new String(requestData) : null;
         responseDump = null;
