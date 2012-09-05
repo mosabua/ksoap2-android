@@ -181,10 +181,10 @@ public class HttpTransportSE extends Transport {
         requestData = null;
         InputStream is;
         List retHeaders = null;
+        boolean gZippedContent = false;
             
         try {
             retHeaders = connection.getResponseProperties();
-            boolean gZippedContent = false;
             for (int i = 0; i < retHeaders.size(); i++) {
                 HeaderProperty hp = (HeaderProperty)retHeaders.get(i);
                 // HTTP response code has null key
@@ -199,21 +199,17 @@ public class HttpTransportSE extends Transport {
                     break;
                 }
             }
-            if (gZippedContent) {
-                /* workaround for Android 2.3 
-                   (see http://stackoverflow.com/questions/5131016/)
-                */
-                InputStream origStream = connection.openInputStream();
-                try {
-                    is = (GZIPInputStream) origStream;
-                } catch (ClassCastException e) {
-                    is = new GZIPInputStream(origStream);
-                }
+            if (gZippedContent) {                
+                is = getUnZippedInputStream(connection.openInputStream());
             } else {
                 is = connection.openInputStream();
             }
         } catch (IOException e) {
-            is = connection.getErrorStream();
+            if(gZippedContent) {
+                is = getUnZippedInputStream(connection.getErrorStream());   
+            } else {
+                is = connection.getErrorStream();
+            }
 
             if (is == null) {
                 connection.disconnect();
@@ -242,6 +238,17 @@ public class HttpTransportSE extends Transport {
       
         parseResponse(envelope, is);
         return retHeaders;
+    }
+
+    private InputStream getUnZippedInputStream(InputStream inputStream) throws IOException {
+        /* workaround for Android 2.3 
+           (see http://stackoverflow.com/questions/5131016/)
+        */
+        try {
+            return (GZIPInputStream) inputStream;
+        } catch (ClassCastException e) {
+            return new GZIPInputStream(inputStream);
+        }
     }
 
     public ServiceConnection getServiceConnection() throws IOException {
