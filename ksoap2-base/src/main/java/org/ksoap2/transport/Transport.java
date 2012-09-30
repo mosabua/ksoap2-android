@@ -114,6 +114,10 @@ abstract public class Transport {
         xp.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, true);
         xp.setInput(is, null);
         envelope.parse(xp);
+        /*
+         * Fix memory leak when running on android in strict mode. Issue 133
+         */
+        is.close();
     }
 
     /**

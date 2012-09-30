@@ -215,8 +215,7 @@ public class HttpTransportSE extends Transport {
                 connection.disconnect();
                 throw (e);
             }
-        }
-        
+        }    
         if (debug) {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             byte[] buf = new byte[256];
