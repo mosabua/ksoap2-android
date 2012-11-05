@@ -181,6 +181,8 @@ public class HttpTransportSE extends Transport {
         requestData = null;
         InputStream is;
         List retHeaders = null;
+        byte[] buf = null; // To allow releasing the reource after used
+        int contentLenght = 0; // To determine the size of the response and adjust buffer size
         boolean gZippedContent = false;
             
         try {
@@ -191,6 +193,17 @@ public class HttpTransportSE extends Transport {
                 if (null == hp.getKey()) {
                     continue;
                 }
+                // If we know the size of the response, we should use the size to initiate vars
+                if (hp.getKey().equalsIgnoreCase("content-length") ) {
+                    if ( hp.getValue() != null ) {
+                        try {
+                            contentLenght = Integer.parseInt( hp.getValue() );
+                        } catch ( NumberFormatException nfe ) {
+                            contentLenght = -1;
+                        }
+                    }
+                }  
+                
                 // ignoring case since users found that all smaller case is used on some server
                 // and even if it is wrong according to spec, we rather have it work..
                 if (hp.getKey().equalsIgnoreCase("Content-Encoding")
@@ -217,8 +230,10 @@ public class HttpTransportSE extends Transport {
             }
         }    
         if (debug) {
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            byte[] buf = new byte[256];
+            // If known use the size if not use default value 
+            ByteArrayOutputStream bos = new ByteArrayOutputStream( (contentLenght > 0 ) 
+                            ? contentLenght : 256*1024);
+            buf = new byte[256];
                     
             while (true) {
                 int rd = is.read(buf, 0, 256);
@@ -230,12 +245,17 @@ public class HttpTransportSE extends Transport {
                     
             bos.flush();
             buf = bos.toByteArray();
+            bos = null;
             responseDump = new String(buf);
             is.close();
             is = new ByteArrayInputStream(buf);
         }
       
         parseResponse(envelope, is);
+        // release all resources 
+        // is will be released inside parseResponse
+        os = null;
+        buf = null;
         return retHeaders;
     }
 
