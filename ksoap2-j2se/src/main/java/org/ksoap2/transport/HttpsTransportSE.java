@@ -17,10 +17,9 @@ public class HttpsTransportSE extends HttpTransportSE{
     private static final String PROTOCOL_FULL = PROTOCOL + "://";
 
     private ServiceConnection serviceConnection = null;
-    private final String host;
-    private final int port;
-    private final String file;
-    private final int timeout;
+    protected final String host;
+    protected final int port;
+    protected final String file;
 
     public HttpsTransportSE (String host, int port, String file, int timeout) {
         super(HttpsTransportSE.PROTOCOL_FULL + host + ":" + port + file);
