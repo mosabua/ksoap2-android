@@ -1,20 +1,15 @@
 package org.ksoap2.transport;
 
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLSocketFactory;
-
 import org.ksoap2.HeaderProperty;
 
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLSocketFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Proxy;
 import java.net.URL;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * HttpsServiceConnectionSE is a service connection that uses a https url connection and requires explicit setting of
@@ -106,6 +101,10 @@ public class HttpsServiceConnectionSE implements ServiceConnection {
         }
 
         return retList;
+    }
+
+    public int getResponseCode() throws IOException {
+        return connection.getResponseCode();
     }
 
     public void setRequestProperty(String key, String value) {

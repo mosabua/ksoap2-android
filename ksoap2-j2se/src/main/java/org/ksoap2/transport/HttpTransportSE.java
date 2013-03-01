@@ -24,16 +24,17 @@
  * */
 package org.ksoap2.transport;
 
-import java.util.List;
-import java.util.zip.GZIPInputStream;
+import org.ksoap2.HeaderProperty;
+import org.ksoap2.SoapEnvelope;
+import org.ksoap2.serialization.SoapSerializationEnvelope;
+import org.xmlpull.v1.XmlPullParserException;
+
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.Proxy;
 import java.net.URL;
-
-import org.ksoap2.*;
-import org.ksoap2.serialization.SoapSerializationEnvelope;
-import org.xmlpull.v1.*;
+import java.util.List;
+import java.util.zip.GZIPInputStream;
 
 /**
  * A J2SE based HttpTransport layer.
@@ -178,9 +179,7 @@ public class HttpTransportSE extends Transport {
             }
         }
             
-        connection.setRequestMethod("POST");
-        
-
+        connection.setRequestMethod("POST");      
         OutputStream os = connection.openOutputStream();
       
         os.write(requestData, 0, requestData.length);
@@ -194,6 +193,12 @@ public class HttpTransportSE extends Transport {
         boolean gZippedContent = false;
             
         try {
+            //first check the response code....
+            int status = connection.getResponseCode();
+            if(status != 200) {
+                throw new IOException("HTTP request failed, HTTP status: " + status);
+            }
+
             retHeaders = connection.getResponseProperties();
             for (int i = 0; i < retHeaders.size(); i++) {
                 HeaderProperty hp = (HeaderProperty)retHeaders.get(i);
@@ -201,6 +206,7 @@ public class HttpTransportSE extends Transport {
                 if (null == hp.getKey()) {
                     continue;
                 }
+
                 // If we know the size of the response, we should use the size to initiate vars
                 if (hp.getKey().equalsIgnoreCase("content-length") ) {
                     if ( hp.getValue() != null ) {
@@ -234,41 +240,18 @@ public class HttpTransportSE extends Transport {
                 is = new BufferedInputStream(connection.getErrorStream(),contentLength);
             }
 
-            if (is == null) {
-                connection.disconnect();
-                throw (e);
-            }
-        }    
-        
-                        
-        
-        if (debug) {
-            OutputStream bos;
-            if (outputFile != null) {
-                bos = new FileOutputStream(outputFile);
-            } else {
-                // If known use the size if not use default value
-                bos = new ByteArrayOutputStream( (contentLength > 0 ) ? contentLength : 256*1024);
+            if (debug && is != null) {
+                //go ahead and read the error stream into the debug buffers/file if needed.
+                readDebug(is, contentLength, outputFile);
             }
 
-            buf = new byte[256];
-                    
-            while (true) {
-                int rd = is.read(buf, 0, 256);
-                if (rd == -1) {
-                    break;
-                }
-                bos.write(buf, 0, rd);
-            }
-                    
-            bos.flush();
-            if (bos instanceof ByteArrayOutputStream) {
-                buf = ((ByteArrayOutputStream) bos).toByteArray();
-            }
-            bos = null;
-            responseDump = new String(buf);
-            is.close();
-            is = new ByteArrayInputStream(buf);
+            //we never want to drop through to attempting to parse the HTTP error stream as a SOAP response.
+            connection.disconnect();
+            throw e;
+        }
+
+        if(debug) {
+            is = readDebug(is, contentLength, outputFile);
         }
 
         parseResponse(envelope, is);
@@ -277,6 +260,35 @@ public class HttpTransportSE extends Transport {
         os = null;
         buf = null;
         return retHeaders;
+    }
+
+    private InputStream readDebug(InputStream is, int contentLength, File outputFile) throws IOException {
+        OutputStream bos;
+        if (outputFile != null) {
+            bos = new FileOutputStream(outputFile);
+        } else {
+            // If known use the size if not use default value
+            bos = new ByteArrayOutputStream( (contentLength > 0 ) ? contentLength : 256*1024);
+        }
+
+        byte[] buf = new byte[256];
+
+        while (true) {
+            int rd = is.read(buf, 0, 256);
+            if (rd == -1) {
+                break;
+            }
+            bos.write(buf, 0, rd);
+        }
+
+        bos.flush();
+        if (bos instanceof ByteArrayOutputStream) {
+            buf = ((ByteArrayOutputStream) bos).toByteArray();
+        }
+        bos = null;
+        responseDump = new String(buf);
+        is.close();
+        return new ByteArrayInputStream(buf);
     }
 
     private InputStream getUnZippedInputStream(InputStream inputStream) throws IOException {

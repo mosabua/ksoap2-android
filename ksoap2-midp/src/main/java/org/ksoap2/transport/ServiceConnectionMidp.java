@@ -21,12 +21,15 @@
 
 package org.ksoap2.transport;
 
-import java.io.*;
+import org.ksoap2.HeaderProperty;
+
+import javax.microedition.io.Connector;
+import javax.microedition.io.HttpConnection;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.LinkedList;
 import java.util.List;
-import javax.microedition.io.*;
-
-import org.ksoap2.HeaderProperty;
 
 public class ServiceConnectionMidp implements ServiceConnection {
     
@@ -56,6 +59,10 @@ public class ServiceConnectionMidp implements ServiceConnection {
         }
             
         return retList;
+    }
+
+    public int getResponseCode() throws IOException {
+        return connection.getResponseCode();
     }
 
     public void setRequestProperty(String string, String soapAction) throws IOException {

@@ -21,8 +21,10 @@
 
 package org.ksoap2.transport;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
-import java.io.*;
 
 /**
  * Interface to allow the abstraction of the raw transport information
@@ -57,6 +59,13 @@ public interface ServiceConnection {
      * @exception IOException
      */
     public List getResponseProperties() throws IOException;
+
+    /**
+     * Returns the numerical HTTP status to the caller
+     * @return an integer status value
+     * @throws IOException
+     */
+    public int getResponseCode() throws IOException;
 
     /**
      * Set properties on the outgoing connection.

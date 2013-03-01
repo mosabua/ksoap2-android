@@ -21,15 +21,15 @@
 
 package org.ksoap2.transport;
 
-import java.io.*;
-import java.net.*;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.ksoap2.HeaderProperty;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.Proxy;
+import java.net.URL;
+import java.util.*;
 
 /**
  * Connection for J2SE environments.
@@ -80,21 +80,27 @@ public class ServiceConnectionSE implements ServiceConnection {
         connection.disconnect();
     }
 
-    public List getResponseProperties() {
-        Map properties = connection.getHeaderFields();
-        Set keys = properties.keySet();
+    public List getResponseProperties() throws IOException {
         List retList = new LinkedList();
 
-        for (Iterator i = keys.iterator(); i.hasNext();) {
-            String key = (String) i.next();
-            List values = (List) properties.get(key);
+        Map properties = connection.getHeaderFields();
+        if(properties != null) {
+            Set keys = properties.keySet();
+            for (Iterator i = keys.iterator(); i.hasNext();) {
+                String key = (String) i.next();
+                List values = (List) properties.get(key);
 
-            for (int j = 0; j < values.size(); j++) {
-                retList.add(new HeaderProperty(key, (String) values.get(j)));
+                for (int j = 0; j < values.size(); j++) {
+                    retList.add(new HeaderProperty(key, (String) values.get(j)));
+                }
             }
         }
 
         return retList;
+    }
+
+    public int getResponseCode() throws IOException {
+        return connection.getResponseCode();
     }
 
     public void setRequestProperty(String string, String soapAction) {

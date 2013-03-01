@@ -20,13 +20,14 @@
 
 package org.ksoap2.transport;
 
+import junit.framework.Assert;
+import org.ksoap2.transport.mock.ComplexResponse;
+
 import java.io.*;
-import java.net.*;
-import java.util.*;
-
-import junit.framework.*;
-
-import org.ksoap2.transport.mock.*;
+import java.net.ProtocolException;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 public class ServiceConnectionFixture implements ServiceConnection {
     public static final String FAULT_MESSAGE_STRING = "The ISBN value contains invalid characters";
@@ -392,7 +393,11 @@ public class ServiceConnectionFixture implements ServiceConnection {
     public List getResponseProperties() {
     return new LinkedList();
     }
-    
+
+    public int getResponseCode() throws IOException {
+        return 200;
+    }
+
     public void setRequestProperty(String propertyName, String value) throws IOException {
         requestPropertyMap.put(propertyName, value);
     }
