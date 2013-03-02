@@ -609,14 +609,21 @@ public class SoapSerializationEnvelope extends SoapEnvelope
                 } else {
                     name = (String) qName[QNAME_TYPE];
                 }
+                
+                // prefer the namespace from the property info
+                if (propertyInfo.namespace != null && propertyInfo.namespace.length() > 0) {
+                    namespace = propertyInfo.namespace;
+                } else {
+                	namespace = (String) qName[QNAME_NAMESPACE];
+                }
 
-                writer.startTag((dotNet) ? "" : namespace, name);
+                writer.startTag(namespace, name);
                 if (!implicitTypes) {
                     String prefix = writer.getPrefix(namespace, true);
                     writer.attribute(xsi, TYPE_LABEL, prefix + ":" + type);
                 }
                 writeObjectBody(writer, nestedSoap);
-                writer.endTag((dotNet) ? "" : namespace, name);
+                writer.endTag(namespace, name);
             }
         }
     }
@@ -679,6 +686,14 @@ public class SoapSerializationEnvelope extends SoapEnvelope
         if(!implicitTypes) {
              writer.attribute(enc, ARRAY_TYPE_LABEL, writer.getPrefix((String) arrType[0], false) + ":"
                     + arrType[1] + "[" + cnt + "]");
+        }
+        else
+        {
+            // Get the namespace from mappings if available when arrayType is removed for .Net
+            if (itemsNamespace == null)
+            {
+                itemsNamespace = (String)arrType[0];
+            }
         }
 
         boolean skipped = false;
