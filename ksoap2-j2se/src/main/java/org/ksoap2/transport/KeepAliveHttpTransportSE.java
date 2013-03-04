@@ -26,14 +26,10 @@ package org.ksoap2.transport;
 
 import java.util.List;
 import java.util.ArrayList;
-import java.util.zip.GZIPInputStream;
 import java.io.*;
-import java.net.MalformedURLException;
 import java.net.Proxy;
-import java.net.URL;
 
 import org.ksoap2.*;
-import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.xmlpull.v1.*;
 
 /**

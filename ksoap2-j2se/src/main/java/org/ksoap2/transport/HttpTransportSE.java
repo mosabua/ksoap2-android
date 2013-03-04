@@ -26,22 +26,18 @@ package org.ksoap2.transport;
 
 import org.ksoap2.HeaderProperty;
 import org.ksoap2.SoapEnvelope;
-import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.*;
-import java.net.MalformedURLException;
 import java.net.Proxy;
-import java.net.URL;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
+import org.ksoap2.serialization.SoapSerializationEnvelope;
 
 /**
  * A J2SE based HttpTransport layer.
  */
 public class HttpTransportSE extends Transport {
-
-    private ServiceConnection serviceConnection;
 
     /**
      * Creates instance of HttpTransportSE with set url
@@ -303,48 +299,6 @@ public class HttpTransportSE extends Transport {
     }
 
     public ServiceConnection getServiceConnection() throws IOException {
-        if (serviceConnection == null) {
-            serviceConnection = new ServiceConnectionSE(proxy, url, timeout);
-        }
-        return serviceConnection;
-    }
-
-    public String getHost() {
-
-        String retVal = null;
-        
-        try {
-            retVal = new URL(url).getHost();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        
-        return retVal;
-    }
-        
-    public int getPort() {
-        
-        int retVal = -1;
-        
-        try {
-            retVal = new URL(url).getPort();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        
-        return retVal;
-    }
-        
-    public String getPath() {
-        
-        String retVal = null;
-        
-        try {
-            retVal = new URL(url).getPath();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        
-        return retVal;
+        return new ServiceConnectionSE(proxy, url, timeout);
     }
 }

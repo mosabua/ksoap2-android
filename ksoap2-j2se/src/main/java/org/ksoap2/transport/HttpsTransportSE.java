@@ -16,17 +16,15 @@ public class HttpsTransportSE extends HttpTransportSE{
     static final String PROTOCOL = "https";
     private static final String PROTOCOL_FULL = PROTOCOL + "://";
 
-    private ServiceConnection serviceConnection = null;
     protected final String host;
     protected final int port;
     protected final String file;
 
     public HttpsTransportSE (String host, int port, String file, int timeout) {
-        super(HttpsTransportSE.PROTOCOL_FULL + host + ":" + port + file);
+        super(HttpsTransportSE.PROTOCOL_FULL + host + ":" + port + file, timeout);
         this.host = host;
         this.port = port;
         this.file = file;
-        this.timeout = timeout;
     }
 
     /**
@@ -50,48 +48,6 @@ public class HttpsTransportSE extends HttpTransportSE{
      */
     public ServiceConnection getServiceConnection() throws IOException
     {
-        if (serviceConnection == null) {
-            serviceConnection = new HttpsServiceConnectionSE(proxy, host, port, file, timeout);
-        }
-        return serviceConnection;
-    }
-
-    public String getHost() {
-
-        String retVal = null;
-
-        try {
-            retVal = new URL(url).getHost();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-
-        return retVal;
-    }
-
-    public int getPort() {
-
-        int retVal = -1;
-
-        try {
-            retVal = new URL(url).getPort();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-
-        return retVal;
-    }
-
-    public String getPath() {
-
-        String retVal = null;
-
-        try {
-            retVal = new URL(url).getPath();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-
-        return retVal;
+        return new HttpsServiceConnectionSE(proxy, host, port, file, timeout);
     }
 }

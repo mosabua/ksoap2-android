@@ -25,7 +25,9 @@ package org.ksoap2.transport;
 
 import java.util.List;
 import java.io.*;
+import java.net.MalformedURLException;
 import java.net.Proxy;
+import java.net.URL;
 
 import org.ksoap2.*;
 import org.kxml2.io.*;
@@ -230,21 +232,30 @@ abstract public class Transport {
      *
      * @return Host name
      */
-    abstract public String getHost();
+    public String getHost()  throws MalformedURLException {
 
+        return new URL(url).getHost();
+    }
+        
     /**
      * Return the port number of the host that is specified as the web service target
      *
      * @return Port number
      */
-    abstract public int getPort();
-
+    public int getPort() throws MalformedURLException {
+        
+        return new URL(url).getPort();
+    }
+        
     /**
      * Return the path to the web service target
      *
      * @return The URL's path
      */
-    abstract public String getPath();
+    public String getPath() throws MalformedURLException {
+
+        return new URL(url).getPath();
+    }
 
     abstract public ServiceConnection getServiceConnection() throws IOException;
 }
