@@ -24,20 +24,23 @@
  * */
 package org.ksoap2.transport;
 
-import org.ksoap2.HeaderProperty;
-import org.ksoap2.SoapEnvelope;
-import org.xmlpull.v1.XmlPullParserException;
-
-import java.io.*;
-import java.net.Proxy;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
+import java.io.*;
+import java.net.MalformedURLException;
+import java.net.Proxy;
+import java.net.URL;
+
+import org.ksoap2.*;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
+import org.xmlpull.v1.*;
 
 /**
  * A J2SE based HttpTransport layer.
  */
 public class HttpTransportSE extends Transport {
+
+    private ServiceConnection serviceConnection;
 
     /**
      * Creates instance of HttpTransportSE with set url
@@ -111,7 +114,8 @@ public class HttpTransportSE extends Transport {
         call(soapAction, envelope, null);
     }
 
-    public List call(String soapAction, SoapEnvelope envelope, List headers)
+    @SuppressWarnings("rawtypes")
+	public List call(String soapAction, SoapEnvelope envelope, List headers)
             throws IOException, XmlPullParserException {
         return call(soapAction, envelope, headers, null);
     }
@@ -134,7 +138,8 @@ public class HttpTransportSE extends Transport {
      * @return Headers returned by the web service as a <code>List</code> of
      * <code>HeaderProperty</code> instances.
      */
-    public List call(String soapAction, SoapEnvelope envelope, List headers, File outputFile)
+    @SuppressWarnings("rawtypes")
+	public List call(String soapAction, SoapEnvelope envelope, List headers, File outputFile)
         throws IOException, XmlPullParserException {
 
         if (soapAction == null) {
@@ -175,7 +180,9 @@ public class HttpTransportSE extends Transport {
             }
         }
             
-        connection.setRequestMethod("POST");      
+        connection.setRequestMethod("POST");
+        
+
         OutputStream os = connection.openOutputStream();
       
         os.write(requestData, 0, requestData.length);
@@ -189,12 +196,6 @@ public class HttpTransportSE extends Transport {
         boolean gZippedContent = false;
             
         try {
-            //first check the response code....
-            int status = connection.getResponseCode();
-            if(status != 200) {
-                throw new IOException("HTTP request failed, HTTP status: " + status);
-            }
-
             retHeaders = connection.getResponseProperties();
             for (int i = 0; i < retHeaders.size(); i++) {
                 HeaderProperty hp = (HeaderProperty)retHeaders.get(i);
@@ -202,7 +203,6 @@ public class HttpTransportSE extends Transport {
                 if (null == hp.getKey()) {
                     continue;
                 }
-
                 // If we know the size of the response, we should use the size to initiate vars
                 if (hp.getKey().equalsIgnoreCase("content-length") ) {
                     if ( hp.getValue() != null ) {
@@ -236,18 +236,41 @@ public class HttpTransportSE extends Transport {
                 is = new BufferedInputStream(connection.getErrorStream(),contentLength);
             }
 
-            if (debug && is != null) {
-                //go ahead and read the error stream into the debug buffers/file if needed.
-                readDebug(is, contentLength, outputFile);
+            if (is == null) {
+                connection.disconnect();
+                throw (e);
+            }
+        }    
+        
+                        
+        
+        if (debug) {
+            OutputStream bos;
+            if (outputFile != null) {
+                bos = new FileOutputStream(outputFile);
+            } else {
+                // If known use the size if not use default value
+                bos = new ByteArrayOutputStream( (contentLength > 0 ) ? contentLength : 256*1024);
             }
 
-            //we never want to drop through to attempting to parse the HTTP error stream as a SOAP response.
-            connection.disconnect();
-            throw e;
-        }
-
-        if(debug) {
-            is = readDebug(is, contentLength, outputFile);
+            buf = new byte[256];
+                    
+            while (true) {
+                int rd = is.read(buf, 0, 256);
+                if (rd == -1) {
+                    break;
+                }
+                bos.write(buf, 0, rd);
+            }
+                    
+            bos.flush();
+            if (bos instanceof ByteArrayOutputStream) {
+                buf = ((ByteArrayOutputStream) bos).toByteArray();
+            }
+            bos = null;
+            responseDump = new String(buf);
+            is.close();
+            is = new ByteArrayInputStream(buf);
         }
 
         parseResponse(envelope, is);
@@ -256,35 +279,6 @@ public class HttpTransportSE extends Transport {
         os = null;
         buf = null;
         return retHeaders;
-    }
-
-    private InputStream readDebug(InputStream is, int contentLength, File outputFile) throws IOException {
-        OutputStream bos;
-        if (outputFile != null) {
-            bos = new FileOutputStream(outputFile);
-        } else {
-            // If known use the size if not use default value
-            bos = new ByteArrayOutputStream( (contentLength > 0 ) ? contentLength : 256*1024);
-        }
-
-        byte[] buf = new byte[256];
-
-        while (true) {
-            int rd = is.read(buf, 0, 256);
-            if (rd == -1) {
-                break;
-            }
-            bos.write(buf, 0, rd);
-        }
-
-        bos.flush();
-        if (bos instanceof ByteArrayOutputStream) {
-            buf = ((ByteArrayOutputStream) bos).toByteArray();
-        }
-        bos = null;
-        responseDump = new String(buf);
-        is.close();
-        return new ByteArrayInputStream(buf);
     }
 
     private InputStream getUnZippedInputStream(InputStream inputStream) throws IOException {
@@ -299,6 +293,48 @@ public class HttpTransportSE extends Transport {
     }
 
     public ServiceConnection getServiceConnection() throws IOException {
-        return new ServiceConnectionSE(proxy, url, timeout);
+        if (serviceConnection == null) {
+            serviceConnection = new ServiceConnectionSE(proxy, url, timeout);
+        }
+        return serviceConnection;
+    }
+
+    public String getHost() {
+
+        String retVal = null;
+        
+        try {
+            retVal = new URL(url).getHost();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        
+        return retVal;
+    }
+        
+    public int getPort() {
+        
+        int retVal = -1;
+        
+        try {
+            retVal = new URL(url).getPort();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        
+        return retVal;
+    }
+        
+    public String getPath() {
+        
+        String retVal = null;
+        
+        try {
+            retVal = new URL(url).getPath();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        
+        return retVal;
     }
 }

@@ -25,9 +25,7 @@ package org.ksoap2.transport;
 
 import java.util.List;
 import java.io.*;
-import java.net.MalformedURLException;
 import java.net.Proxy;
-import java.net.URL;
 
 import org.ksoap2.*;
 import org.kxml2.io.*;
@@ -191,7 +189,8 @@ abstract public class Transport {
      * @return Headers returned by the web service as a <code>List</code> of
      * <code>HeaderProperty</code> instances.
      */
-    abstract public List call(String soapAction, SoapEnvelope envelope, List headers)
+    @SuppressWarnings("rawtypes")
+	abstract public List call(String soapAction, SoapEnvelope envelope, List headers)
             throws IOException, XmlPullParserException;
 
     /**
@@ -212,7 +211,8 @@ abstract public class Transport {
      * @return Headers returned by the web service as a <code>List</code> of
      * <code>HeaderProperty</code> instances.
      */
-    abstract public List call(String soapAction, SoapEnvelope envelope, List headers, File outputFile)
+    @SuppressWarnings("rawtypes")
+	abstract public List call(String soapAction, SoapEnvelope envelope, List headers, File outputFile)
             throws IOException, XmlPullParserException;
 
     /**
@@ -232,30 +232,21 @@ abstract public class Transport {
      *
      * @return Host name
      */
-    public String getHost()  throws MalformedURLException {
+    abstract public String getHost();
 
-        return new URL(url).getHost();
-    }
-        
     /**
      * Return the port number of the host that is specified as the web service target
      *
      * @return Port number
      */
-    public int getPort() throws MalformedURLException {
-        
-        return new URL(url).getPort();
-    }
-        
+    abstract public int getPort();
+
     /**
      * Return the path to the web service target
      *
      * @return The URL's path
      */
-    public String getPath() throws MalformedURLException {
-
-        return new URL(url).getPath();
-    }
+    abstract public String getPath();
 
     abstract public ServiceConnection getServiceConnection() throws IOException;
 }

@@ -20,7 +20,14 @@
 
 package org.ksoap2;
 
+import android.annotation.SuppressLint;
 import java.io.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import org.kxml2.kdom.*;
 import org.xmlpull.v1.*;
 
@@ -31,6 +38,7 @@ import org.xmlpull.v1.*;
  * specification and simple object serialization.
  */
 
+@SuppressLint("DefaultLocale")
 public class SoapEnvelope {
 
     /** SOAP Version 1.0 constant */
@@ -58,12 +66,28 @@ public class SoapEnvelope {
      * Returns true for the string values "1" and "true", ignoring upper/lower
      * case and whitespace, false otherwise.
      */
-    public static boolean stringToBoolean(String booleanAsString) {
+    @SuppressLint("DefaultLocale")   
+	public static boolean stringToBoolean(String booleanAsString) {
         if (booleanAsString == null) {
-            return false;
+            return false; 
         }
         booleanAsString = booleanAsString.trim().toLowerCase();
         return (booleanAsString.equals("1") || booleanAsString.equals("true"));
+    }
+
+    public static Date stringToDateTime(String dateAsString) {
+        if (dateAsString == null) {
+            return new Date();
+        }
+        DateFormat lDateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss", Locale.US);
+        try
+        {
+           return lDateFormatter.parse(dateAsString);
+        }
+        catch (ParseException lEx)
+        {
+          throw new RuntimeException("Can't parse " + dateAsString + " as process date");
+        }
     }
 
     /**

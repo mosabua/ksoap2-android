@@ -21,6 +21,11 @@
 package org.ksoap2.serialization;
 
 import java.io.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import org.xmlpull.v1.*;
 import org.ksoap2.*;
 
@@ -42,6 +47,8 @@ class DM implements Marshal {
             return new Long(Long.parseLong(text));
         case 'b':
             return new Boolean(SoapEnvelope.stringToBoolean(text));
+        case 'd':
+            return SoapEnvelope.stringToDateTime(text);
         default:
             throw new RuntimeException();
         }
@@ -65,7 +72,13 @@ class DM implements Marshal {
                         attributeInfo.getValue().toString());
             }
         }
-        writer.text(instance.toString());
+        if (instance instanceof Date) {
+        	String lFormatTemplate = "yyyy-MM-dd'T'00:00:00";
+        	//String lFormatTemplate = "yyyy-MM-dd'T'hh:mm:ss'Z'";
+			DateFormat lDateFormat = new SimpleDateFormat(lFormatTemplate, Locale.US);
+			writer.text(lDateFormat.format(instance));
+		} else
+        	writer.text(instance.toString());
     }
 
     public void register(SoapSerializationEnvelope cm) {
@@ -73,5 +86,6 @@ class DM implements Marshal {
         cm.addMapping(cm.xsd, "long", PropertyInfo.LONG_CLASS, this);
         cm.addMapping(cm.xsd, "string", PropertyInfo.STRING_CLASS, this);
         cm.addMapping(cm.xsd, "boolean", PropertyInfo.BOOLEAN_CLASS, this);
+        cm.addMapping(cm.xsd, "dateTime", PropertyInfo.DATETIME_CLASS, this);
     }
 }

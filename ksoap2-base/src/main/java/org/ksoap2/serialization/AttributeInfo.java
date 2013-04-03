@@ -24,6 +24,7 @@ package org.ksoap2.serialization;
  * This class is used to store information about each attribute of an implementation of
  * {@link KvmSerializable} exposes.
  */
+@SuppressWarnings("serial")
 public class AttributeInfo extends PropertyInfo
 {
     /**

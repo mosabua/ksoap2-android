@@ -51,10 +51,13 @@ public class SoapSerializationEnvelope extends SoapEnvelope
     private static final String ITEM_LABEL = "item";
     private static final String ARRAY_TYPE_LABEL = "arrayType";
     static final Marshal DEFAULT_MARSHAL = new DM();
-    public Hashtable properties = new Hashtable();
+    @SuppressWarnings("rawtypes")
+	public Hashtable properties = new Hashtable();
 
-    Hashtable idMap = new Hashtable();
-    Vector multiRef; // = new Vector();
+    @SuppressWarnings("rawtypes")
+	Hashtable idMap = new Hashtable();
+    @SuppressWarnings("rawtypes")
+	Vector multiRef; // = new Vector();
 
     /**
      * Set this variable to true if you don't want that type definitions for complex types/objects
@@ -81,13 +84,15 @@ public class SoapSerializationEnvelope extends SoapEnvelope
      * Map from XML qualified names to Java classes
      */
 
-    protected Hashtable qNameToClass = new Hashtable();
+    @SuppressWarnings("rawtypes")
+	protected Hashtable qNameToClass = new Hashtable();
 
     /**
      * Map from Java class names to XML name and namespace pairs
      */
 
-    protected Hashtable classToQName = new Hashtable();
+    @SuppressWarnings("rawtypes")
+	protected Hashtable classToQName = new Hashtable();
 
     /**
      * Set to true to add and ID and ROOT label to the envelope. Change to false for compatibility with WSDL.
@@ -222,7 +227,8 @@ public class SoapSerializationEnvelope extends SoapEnvelope
      * @throws XmlPullParserException
      */
 
-    protected Object readUnknown(XmlPullParser parser, String typeNamespace, String typeName)
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	protected Object readUnknown(XmlPullParser parser, String typeNamespace, String typeName)
             throws IOException, XmlPullParserException {
         String name = parser.getName();
         String namespace = parser.getNamespace();
@@ -288,7 +294,8 @@ public class SoapSerializationEnvelope extends SoapEnvelope
                 value.length() - 1));
     }
 
-    protected void readVector(XmlPullParser parser, Vector v, PropertyInfo elementType) throws IOException,
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	protected void readVector(XmlPullParser parser, Vector v, PropertyInfo elementType) throws IOException,
             XmlPullParserException {
         String namespace = null;
         String name = null;
@@ -332,7 +339,8 @@ public class SoapSerializationEnvelope extends SoapEnvelope
      * subclasses. Precondition: On the start tag of the object or property, so href can be read.
      */
 
-    public Object read(XmlPullParser parser, Object owner, int index, String namespace, String name,
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	public Object read(XmlPullParser parser, Object owner, int index, String namespace, String name,
             PropertyInfo expected) throws IOException, XmlPullParserException {
         String elementName = parser.getName();
         String href = parser.getAttributeValue(null, HREF_LABEL);
@@ -384,6 +392,8 @@ public class SoapSerializationEnvelope extends SoapEnvelope
                 if (type == null) {
                     implicitTypes = true;
                 }
+                if(elementName.equals("DeliveredQuantity"))
+                	toString();
                 obj = readInstance(parser, namespace, name, expected);
                 if (obj == null) {
                     obj = readUnknown(parser, namespace, name);
@@ -410,7 +420,15 @@ public class SoapSerializationEnvelope extends SoapEnvelope
             }
         }
 
-        parser.require(XmlPullParser.END_TAG, null, elementName);
+        try {
+        	//System.out.println("element name " + elementName + " event type " + parser.getEventType());
+            if (parser.getEventType() != XmlPullParser.END_TAG) {
+                parser.nextTag();
+            }
+            parser.require(XmlPullParser.END_TAG, null, elementName);
+        } catch (Exception e) {
+			System.out.println(e.toString());
+		}
         return obj;
     }
 
@@ -418,7 +436,8 @@ public class SoapSerializationEnvelope extends SoapEnvelope
      * Returns a new object read from the given parser. If no mapping is found, null is returned. This method
      * is used by the SoapParser in order to convert the XML code to Java objects.
      */
-    public Object readInstance(XmlPullParser parser, String namespace, String name, PropertyInfo expected)
+    @SuppressWarnings("rawtypes")
+	public Object readInstance(XmlPullParser parser, String namespace, String name, PropertyInfo expected)
             throws IOException, XmlPullParserException {
         Object obj = qNameToClass.get(new SoapPrimitive(namespace, name, null));
         if (obj == null) {
@@ -455,7 +474,8 @@ public class SoapSerializationEnvelope extends SoapEnvelope
      * This method is used by the SoapWriter in order to map Java objects to the corresponding SOAP section
      * five XML code.
      */
-    public Object[] getInfo(Object type, Object instance) {
+    @SuppressWarnings("rawtypes")
+	public Object[] getInfo(Object type, Object instance) {
         if (type == null) {
             if (instance instanceof SoapObject || instance instanceof SoapPrimitive) {
                 type = instance;
@@ -484,7 +504,8 @@ public class SoapSerializationEnvelope extends SoapEnvelope
      * Defines a direct mapping from a namespace and name to a java class (and vice versa), using the given
      * marshal mechanism
      */
-    public void addMapping(String namespace, String name, Class clazz, Marshal marshal) {
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	public void addMapping(String namespace, String name, Class clazz, Marshal marshal) {
         qNameToClass
                 .put(new SoapPrimitive(namespace, name, null), marshal == null ? (Object) clazz : marshal);
         classToQName.put(clazz.getName(), new Object[] { namespace, name, null, marshal });
@@ -493,7 +514,8 @@ public class SoapSerializationEnvelope extends SoapEnvelope
     /**
      * Defines a direct mapping from a namespace and name to a java class (and vice versa)
      */
-    public void addMapping(String namespace, String name, Class clazz) {
+    @SuppressWarnings("rawtypes")
+	public void addMapping(String namespace, String name, Class clazz) {
         addMapping(namespace, name, clazz, null);
     }
 
@@ -501,7 +523,8 @@ public class SoapSerializationEnvelope extends SoapEnvelope
      * Adds a SoapObject to the class map. During parsing, objects of the given type (namespace/name) will be
      * mapped to corresponding copies of the given SoapObject, maintaining the structure of the template.
      */
-    public void addTemplate(SoapObject so) {
+    @SuppressWarnings("unchecked")
+	public void addTemplate(SoapObject so) {
         qNameToClass.put(new SoapPrimitive(so.namespace, so.name, null), so);
     }
 
@@ -512,7 +535,8 @@ public class SoapSerializationEnvelope extends SoapEnvelope
      * @return response from the soap call.
      * @throws SoapFault
      */
-    public Object getResponse() throws SoapFault {
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	public Object getResponse() throws SoapFault {
         if (bodyIn instanceof SoapFault) {
             throw (SoapFault) bodyIn;
         }
@@ -537,7 +561,8 @@ public class SoapSerializationEnvelope extends SoapEnvelope
      * @param writer
      *            XmlSerializer object to write the body into.
      */
-    public void writeBody(XmlSerializer writer) throws IOException {
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	public void writeBody(XmlSerializer writer) throws IOException {
         // allow an empty body without any tags in it
         // see http://code.google.com/p/ksoap2-android/issues/detail?id=77
         if (bodyOut != null) {
@@ -609,26 +634,25 @@ public class SoapSerializationEnvelope extends SoapEnvelope
                 } else {
                     name = (String) qName[QNAME_TYPE];
                 }
-                
-                // prefer the namespace from the property info
-                if (propertyInfo.namespace != null && propertyInfo.namespace.length() > 0) {
-                    namespace = propertyInfo.namespace;
-                } else {
-                    namespace = (String) qName[QNAME_NAMESPACE];
-                }
 
-                writer.startTag(namespace, name);
+                writer.startTag((dotNet) ? "" : namespace, name);
+                try {
                 if (!implicitTypes) {
                     String prefix = writer.getPrefix(namespace, true);
                     writer.attribute(xsi, TYPE_LABEL, prefix + ":" + type);
                 }
+                } catch (Exception e) {
+					System.out.println(e.toString());
+				}
+                
                 writeObjectBody(writer, nestedSoap);
-                writer.endTag(namespace, name);
+                writer.endTag((dotNet) ? "" : namespace, name);
             }
         }
     }
 
-    protected void writeProperty(XmlSerializer writer, Object obj, PropertyInfo type) throws IOException {
+    @SuppressWarnings("unchecked")
+	protected void writeProperty(XmlSerializer writer, Object obj, PropertyInfo type) throws IOException {
         if (obj == null) {
             writer.attribute(xsi, version >= VER12 ? NIL_LABEL : NULL_LABEL, "true");
             return;
@@ -650,8 +674,11 @@ public class SoapSerializationEnvelope extends SoapEnvelope
         }
     }
 
-    private void writeElement(XmlSerializer writer, Object element, PropertyInfo type, Object marshal)
+    @SuppressWarnings("rawtypes")
+	private void writeElement(XmlSerializer writer, Object element, PropertyInfo type, Object marshal)
             throws IOException {
+    	if (element instanceof String)
+    		toString();
         if (marshal != null) {
             ((Marshal) marshal).writeInstance(writer, element);
         } else if (element instanceof SoapObject) {
@@ -665,7 +692,8 @@ public class SoapSerializationEnvelope extends SoapEnvelope
         }
     }
 
-    protected void writeVectorBody(XmlSerializer writer, Vector vector, PropertyInfo elementType)
+    @SuppressWarnings("rawtypes")
+	protected void writeVectorBody(XmlSerializer writer, Vector vector, PropertyInfo elementType)
             throws IOException {
         String itemsTagName = ITEM_LABEL;
         String itemsNamespace = null;
@@ -686,14 +714,6 @@ public class SoapSerializationEnvelope extends SoapEnvelope
         if(!implicitTypes) {
              writer.attribute(enc, ARRAY_TYPE_LABEL, writer.getPrefix((String) arrType[0], false) + ":"
                     + arrType[1] + "[" + cnt + "]");
-        }
-        else
-        {
-            // Get the namespace from mappings if available when arrayType is removed for .Net
-            if (itemsNamespace == null)
-            {
-                itemsNamespace = (String)arrType[0];
-            }
         }
 
         boolean skipped = false;

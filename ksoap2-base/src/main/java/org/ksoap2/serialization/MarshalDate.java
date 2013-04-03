@@ -30,7 +30,8 @@ import org.kobjects.isodate.*;
  * Marshal class for Dates. 
  */
 public class MarshalDate implements Marshal {
-    public static Class DATE_CLASS = new Date().getClass();
+    @SuppressWarnings("rawtypes")
+	public static Class DATE_CLASS = new Date().getClass();
 
     public Object readInstance(XmlPullParser parser, String namespace, String name, PropertyInfo expected)
             throws IOException, XmlPullParserException {

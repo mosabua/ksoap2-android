@@ -25,6 +25,7 @@
 
 package org.ksoap2.serialization;
 
+import android.annotation.SuppressLint;
 import java.util.*;
 
 /**
@@ -38,6 +39,7 @@ import java.util.*;
  * KvmSerializable interface.
  */
 
+@SuppressLint("UseValueOf")
 public class SoapObject extends AttributeContainer implements KvmSerializable {
 
     private static final String EMPTY_STRING = "";
@@ -52,7 +54,8 @@ public class SoapObject extends AttributeContainer implements KvmSerializable {
     /**
      * The Vector of properties (can contain PropertyInfo and SoapObject)
      */
-    protected Vector properties = new Vector();
+    @SuppressWarnings("rawtypes")
+	protected Vector properties = new Vector();
 
     // TODO: accessing properties and attributes would work much better if we
     // kept a list of known properties instead of iterating through the list
@@ -385,11 +388,34 @@ public class SoapObject extends AttributeContainer implements KvmSerializable {
         }
     }
 
+    public int getPropertyIndex(String name) {
+        if (name != null) {
+            for (int i = 0; i < properties.size(); i++) {
+            	Object tmp = properties.elementAt(i);
+                if (tmp instanceof PropertyInfo && name.equals(((PropertyInfo) tmp).getName())) 
+                    return i;            
+                if (tmp instanceof SoapObject && name.equals(((SoapObject) tmp).getName())) 
+                    return i;            
+            }
+        }
+        return -1;
+    }
 
+    public int getPropertyIndex(Object object) {
+        if (name != null) {
+            for (int i = 0; i < properties.size(); i++) {
+                if (object==((PropertyInfo) properties.elementAt(i)).getValue()) {
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
 
     private Integer propertyIndex(String name) {
         if (name != null) {
             for (int i = 0; i < properties.size(); i++) {
+                if(properties.elementAt(i) instanceof PropertyInfo) 
                 if (name.equals(((PropertyInfo) properties.elementAt(i)).getName())) {
                     return new Integer(i);
                 }
@@ -419,7 +445,8 @@ public class SoapObject extends AttributeContainer implements KvmSerializable {
      * @param propertyInfo
      *            designated retainer of desired property
      */
-    public void getPropertyInfo(int index, Hashtable properties, PropertyInfo propertyInfo) {
+    @SuppressWarnings("rawtypes")
+	public void getPropertyInfo(int index, Hashtable properties, PropertyInfo propertyInfo) {
         getPropertyInfo(index, propertyInfo);
     }
 
@@ -496,7 +523,8 @@ public class SoapObject extends AttributeContainer implements KvmSerializable {
         Object prop = properties.elementAt(index);
         if(prop instanceof PropertyInfo) {
             ((PropertyInfo) prop).setValue(value);
-        }
+        } else
+        	System.out.println("setProperty failed");
         // TODO: not sure how you want to handle an exception here if the index points to a SoapObject
     }
 
@@ -556,8 +584,14 @@ public class SoapObject extends AttributeContainer implements KvmSerializable {
      * @param propertyInfo
      *            designated retainer of desired property
      */
-    public SoapObject addProperty(PropertyInfo propertyInfo) {
+    @SuppressWarnings("unchecked")
+	public SoapObject addProperty(PropertyInfo propertyInfo) {
         properties.addElement(propertyInfo);
+        return this;
+    }
+
+    public SoapObject removeProperty(Object propertyInfo) {
+        properties.removeElement(propertyInfo);
         return this;
     }
 
@@ -567,7 +601,8 @@ public class SoapObject extends AttributeContainer implements KvmSerializable {
      * @param propertyInfo
      * @return
      */
-    public SoapObject addPropertyIfValue(PropertyInfo propertyInfo) {
+    @SuppressWarnings("unchecked")
+	public SoapObject addPropertyIfValue(PropertyInfo propertyInfo) {
         if (propertyInfo.value != null) {
             properties.addElement(propertyInfo);
             return this;
@@ -583,7 +618,8 @@ public class SoapObject extends AttributeContainer implements KvmSerializable {
      * @param soapObject
      *            to be added as a property of the current object
      */
-    public SoapObject addSoapObject(SoapObject soapObject) {
+    @SuppressWarnings("unchecked")
+	public SoapObject addSoapObject(SoapObject soapObject) {
         properties.addElement(soapObject);
         return this;
     }
