@@ -21,6 +21,7 @@
 
 package org.ksoap2.serialization;
 
+import android.annotation.SuppressLint;
 import java.io.ByteArrayOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ObjectOutputStream;
@@ -28,18 +29,29 @@ import java.io.ObjectInputStream;
 
 import java.io.IOException;
 import java.io.NotSerializableException;
+import java.util.Date;
 /**
  * This class is used to store information about each property an implementation of KvmSerializable exposes.
  */
 
+@SuppressWarnings("serial")
+@SuppressLint("UseValueOf")
 public class PropertyInfo implements java.io.Serializable
 {
-    public static final Class OBJECT_CLASS = new Object().getClass();
-    public static final Class STRING_CLASS = "".getClass();
-    public static final Class INTEGER_CLASS = new Integer(0).getClass();
-    public static final Class LONG_CLASS = new Long(0).getClass();
-    public static final Class BOOLEAN_CLASS = new Boolean(true).getClass();
-    public static final Class VECTOR_CLASS = new java.util.Vector().getClass();
+    @SuppressWarnings("rawtypes")
+	public static final Class OBJECT_CLASS = new Object().getClass();
+    @SuppressWarnings("rawtypes")
+	public static final Class STRING_CLASS = "".getClass();
+    @SuppressWarnings("rawtypes")
+	public static final Class INTEGER_CLASS = new Integer(0).getClass();
+    @SuppressWarnings("rawtypes")
+	public static final Class LONG_CLASS = new Long(0).getClass();
+    @SuppressWarnings("rawtypes")
+	public static final Class BOOLEAN_CLASS = new Boolean(true).getClass();
+    @SuppressWarnings("rawtypes")
+	public static final Class DATETIME_CLASS = Date.class;
+    @SuppressWarnings("rawtypes")
+	public static final Class VECTOR_CLASS = new java.util.Vector().getClass();
     public static final PropertyInfo OBJECT_TYPE = new PropertyInfo();
     public static final int TRANSIENT = 1;
     public static final int MULTI_REF = 2;

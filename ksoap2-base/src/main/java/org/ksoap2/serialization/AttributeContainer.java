@@ -3,7 +3,8 @@ package org.ksoap2.serialization;
 import java.util.Vector;
 
 public class AttributeContainer {
-    private Vector attributes = new Vector();
+    @SuppressWarnings("rawtypes")
+	private Vector attributes = new Vector();
 
     /**
      * Places AttributeInfo of desired attribute into a designated AttributeInfo object
@@ -184,7 +185,8 @@ public class AttributeContainer {
      * @param attributeInfo the {@code AttributeInfo} object to add.
      * @return {@code this} object.
      */
-    public void addAttribute(AttributeInfo attributeInfo) {
+    @SuppressWarnings("unchecked")
+	public void addAttribute(AttributeInfo attributeInfo) {
         attributes.addElement(attributeInfo);
     }
 
@@ -192,7 +194,8 @@ public class AttributeContainer {
      * Add an attributeInfo if its value is not null.
      * @param attributeInfo
      */
-    public void addAttributeIfValue(AttributeInfo attributeInfo) {
+    @SuppressWarnings("unchecked")
+	public void addAttributeIfValue(AttributeInfo attributeInfo) {
         if (attributeInfo.value != null) {
             attributes.addElement(attributeInfo);
         }

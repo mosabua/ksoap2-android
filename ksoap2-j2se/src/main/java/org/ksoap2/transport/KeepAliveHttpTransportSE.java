@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.ArrayList;
 import java.io.*;
 import java.net.Proxy;
-
 import org.ksoap2.*;
 import org.xmlpull.v1.*;
 
@@ -108,7 +107,8 @@ public class KeepAliveHttpTransportSE extends HttpTransportSE {
      * @throws IOException
      * @throws XmlPullParserException
      */
-    public List call(String soapAction, SoapEnvelope envelope, List headers) 
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	public List call(String soapAction, SoapEnvelope envelope, List headers) 
         throws IOException, XmlPullParserException {
         
         if ( headers == null ) {
@@ -128,7 +128,8 @@ public class KeepAliveHttpTransportSE extends HttpTransportSE {
                 
     }
 
-    protected HeaderProperty getHeader(List lista, String key) {
+    @SuppressWarnings("rawtypes")
+	protected HeaderProperty getHeader(List lista, String key) {
         HeaderProperty res = null;
     
         if ( lista != null ) {

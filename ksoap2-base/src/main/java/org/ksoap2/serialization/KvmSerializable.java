@@ -65,6 +65,7 @@ public interface KvmSerializable {
      *            The return parameter, to be filled with information about the
      *            property with the given index.
      */
-    void getPropertyInfo(int index, Hashtable properties, PropertyInfo info);
+    @SuppressWarnings("rawtypes")
+	void getPropertyInfo(int index, Hashtable properties, PropertyInfo info);
 
 }

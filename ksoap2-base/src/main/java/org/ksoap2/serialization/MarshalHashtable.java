@@ -43,10 +43,12 @@ public class MarshalHashtable implements Marshal {
     /** use then during registration */
     public static final String NAME = "Map";
     /** CLDC does not support .class, so this helper is needed. */
-    public static final Class HASHTABLE_CLASS = new Hashtable().getClass();
+    @SuppressWarnings("rawtypes")
+	public static final Class HASHTABLE_CLASS = new Hashtable().getClass();
     SoapSerializationEnvelope envelope;
 
-    public Object readInstance(XmlPullParser parser, String namespace, String name, PropertyInfo expected)
+    @SuppressWarnings("rawtypes")
+	public Object readInstance(XmlPullParser parser, String namespace, String name, PropertyInfo expected)
             throws IOException, XmlPullParserException {
         Hashtable instance = new Hashtable();
         String elementName = parser.getName();
@@ -70,7 +72,8 @@ public class MarshalHashtable implements Marshal {
         return instance;
     }
 
-    public void writeInstance(XmlSerializer writer, Object instance) throws IOException {
+    @SuppressWarnings("rawtypes")
+	public void writeInstance(XmlSerializer writer, Object instance) throws IOException {
         Hashtable h = (Hashtable) instance;
         SoapObject item = new SoapObject(null, null);
         item.addProperty("key", null);
@@ -86,9 +89,11 @@ public class MarshalHashtable implements Marshal {
     }
 
     class ItemSoapObject extends SoapObject {
-        Hashtable h;
+		@SuppressWarnings("rawtypes")
+		Hashtable h;
         int resolvedIndex = -1;
-        ItemSoapObject(Hashtable h) {
+        @SuppressWarnings("rawtypes")
+		ItemSoapObject(Hashtable h) {
             super(null, null);
             this.h = h;
             addProperty("key", null);
@@ -96,7 +101,8 @@ public class MarshalHashtable implements Marshal {
         }
 
         // 0 & 1 only valid
-        public void setProperty(int index, Object value) {
+        @SuppressWarnings("unchecked")
+		public void setProperty(int index, Object value) {
             if (resolvedIndex == -1) {
                 super.setProperty(index, value);
                 resolvedIndex = index;

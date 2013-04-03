@@ -29,7 +29,8 @@ import org.xmlpull.v1.*;
  * Base64 (de)serializer 
  */
 public class MarshalBase64 implements Marshal {
-    public static Class BYTE_ARRAY_CLASS = new byte[0].getClass();
+    @SuppressWarnings("rawtypes")
+	public static Class BYTE_ARRAY_CLASS = new byte[0].getClass();
 
     public Object readInstance(XmlPullParser parser, String namespace, String name, PropertyInfo expected)
             throws IOException, XmlPullParserException {
