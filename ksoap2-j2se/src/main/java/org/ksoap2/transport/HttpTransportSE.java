@@ -103,16 +103,18 @@ public class HttpTransportSE extends Transport {
      *            the desired soapAction
      * @param envelope
      *            the envelope containing the information for the soap call.
+     * @throws HttpResponseException
      * @throws IOException
      * @throws XmlPullParserException
      */
-    public void call(String soapAction, SoapEnvelope envelope) throws IOException, XmlPullParserException {
+    public void call(String soapAction, SoapEnvelope envelope)
+            throws HttpResponseException, IOException, XmlPullParserException {
             
         call(soapAction, envelope, null);
     }
 
     public List call(String soapAction, SoapEnvelope envelope, List headers)
-            throws IOException, XmlPullParserException {
+            throws HttpResponseException, IOException, XmlPullParserException {
         return call(soapAction, envelope, headers, null);
     }
 
@@ -133,9 +135,12 @@ public class HttpTransportSE extends Transport {
      *
      * @return Headers returned by the web service as a <code>List</code> of
      * <code>HeaderProperty</code> instances.
+     *
+     * @throws HttpResponseException
+     *              an IOException when Http response code is different from 200
      */
     public List call(String soapAction, SoapEnvelope envelope, List headers, File outputFile)
-        throws IOException, XmlPullParserException {
+        throws HttpResponseException, IOException, XmlPullParserException {
 
         if (soapAction == null) {
             soapAction = "\"\"";
@@ -227,7 +232,8 @@ public class HttpTransportSE extends Transport {
 
             //first check the response code....
             if (status != 200) {
-                throw new IOException("HTTP request failed, HTTP status: " + status);
+                //throw new IOException("HTTP request failed, HTTP status: " + status);
+                throw new HttpResponseException("HTTP request failed, HTTP status: " + status, status);
             }
 
             if (gZippedContent) {
@@ -244,15 +250,17 @@ public class HttpTransportSE extends Transport {
                 is = new BufferedInputStream(connection.getErrorStream(),contentLength);
             }
 
-            if (status != 200 && !xmlContent) {
-                if (debug && is != null) {
-                    //go ahead and read the error stream into the debug buffers/file if needed.
-                    readDebug(is, contentLength, outputFile);
-                }
+            if ( e instanceof HttpResponseException) {
+                if (!xmlContent) {
+                    if (debug && is != null) {
+                        //go ahead and read the error stream into the debug buffers/file if needed.
+                        readDebug(is, contentLength, outputFile);
+                    }
 
-                //we never want to drop through to attempting to parse the HTTP error stream as a SOAP response.
-                connection.disconnect();
-                throw e;
+                    //we never want to drop through to attempting to parse the HTTP error stream as a SOAP response.
+                    connection.disconnect();
+                    throw e;
+                }
             }
         }
 
