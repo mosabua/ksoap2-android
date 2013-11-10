@@ -403,9 +403,10 @@ public class SoapSerializationEnvelope extends SoapEnvelope
                         f = f.next;
                     }
                     while (f != null);
-                } else if (hlp != null) {
-                    throw new RuntimeException("double ID");
-                }
+                } 
+             //   else if (hlp != null) {
+               //     throw new RuntimeException("double ID");
+             //   }
                 idMap.put(id, obj);
             }
         }
