@@ -274,6 +274,9 @@ public class HttpTransportSE extends Transport {
         // input stream is will be released inside parseResponse
         os = null;
         buf = null;
+        //Disconnecting the connection is required and listed in the android documentation at 
+            //developer.android.com/reference/java/net/HttpURLConnection.html
+        connection.disconnect();
         return retHeaders;
     }
 
