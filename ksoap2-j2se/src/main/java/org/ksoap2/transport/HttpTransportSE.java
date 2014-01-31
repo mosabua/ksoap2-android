@@ -275,8 +275,12 @@ public class HttpTransportSE extends Transport {
         parseResponse(envelope, is);
         // release all resources 
         // input stream is will be released inside parseResponse
+        is = null;
         os = null;
         buf = null;
+        //This fixes Issue 173 read my explanation here: https://code.google.com/p/ksoap2-android/issues/detail?id=173
+        connection.disconnect();
+        connection = null;
         return retHeaders;
     }
 
