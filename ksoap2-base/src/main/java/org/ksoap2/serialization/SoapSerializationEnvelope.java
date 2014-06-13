@@ -341,6 +341,10 @@ public class SoapSerializationEnvelope extends SoapEnvelope
         parser.require(XmlPullParser.END_TAG, null, null);
     }
 
+    /**
+    * This method returns id from the href attribute value. By default we assume that href value looks like this: #id so we basically have to remove the first character.
+    * But in theory there could be a different value format, like cid:value, etc...
+    */
     protected String getIdFromHref(String hrefValue)
     {
         return hrefValue.substring(1);

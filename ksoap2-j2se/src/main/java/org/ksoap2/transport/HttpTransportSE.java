@@ -24,16 +24,11 @@
  * */
 package org.ksoap2.transport;
 
-import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
-import com.sun.xml.internal.messaging.saaj.packaging.mime.MultipartDataSource;
-import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.MimeMultipart;
-import com.sun.xml.internal.ws.util.ByteArrayDataSource;
 import org.ksoap2.HeaderProperty;
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.*;
 import org.xmlpull.v1.XmlPullParserException;
 
-import javax.activation.DataSource;
 import java.io.*;
 import java.net.Proxy;
 import java.util.*;
@@ -307,8 +302,6 @@ public class HttpTransportSE extends Transport {
     {
         return requestData;
     }
-
-
 
     private InputStream readDebug(InputStream is, int contentLength, File outputFile) throws IOException {
         OutputStream bos;
