@@ -63,6 +63,7 @@ public class SoapSerializationEnvelope extends SoapEnvelope
      */
     public boolean implicitTypes;
 
+
     /**
      * If set to true then all properties with null value will be skipped from the soap message.
      * If false then null properties will be sent as <element nil="true" />
@@ -340,6 +341,10 @@ public class SoapSerializationEnvelope extends SoapEnvelope
         parser.require(XmlPullParser.END_TAG, null, null);
     }
 
+    protected String getIdFromHref(String hrefValue)
+    {
+        return hrefValue.substring(1);
+    }
     /**
      * Builds an object from the XML stream. This method is public for usage in conjuction with Marshal
      * subclasses. Precondition: On the start tag of the object or property, so href can be read.
@@ -348,13 +353,14 @@ public class SoapSerializationEnvelope extends SoapEnvelope
     public Object read(XmlPullParser parser, Object owner, int index, String namespace, String name,
             PropertyInfo expected) throws IOException, XmlPullParserException {
         String elementName = parser.getName();
+        String elementNS= parser.getNamespace();
         String href = parser.getAttributeValue(null, HREF_LABEL);
         Object obj;
         if (href != null) {
             if (owner == null) {
                 throw new RuntimeException("href at root level?!?");
             }
-            href = href.substring(1);
+            href = getIdFromHref(href);
             obj = idMap.get(href);
             if (obj == null || obj instanceof FwdRef) {
                 FwdRef f = new FwdRef();
@@ -404,27 +410,32 @@ public class SoapSerializationEnvelope extends SoapEnvelope
             }
             // finally, care about the id....
             if (id != null) {
-                Object hlp = idMap.get(id);
-                if (hlp instanceof FwdRef) {
-                    FwdRef f = (FwdRef) hlp;
-                    do {
-                        if (f.obj instanceof KvmSerializable) {
-                            ((KvmSerializable) f.obj).setProperty(f.index, obj);
-                        } else {
-                            ((Vector) f.obj).setElementAt(obj, f.index);
-                        }
-                        f = f.next;
-                    }
-                    while (f != null);
-                } else if (hlp != null) {
-                    throw new RuntimeException("double ID");
-                }
-                idMap.put(id, obj);
+                resolveReference(id,obj);
             }
         }
 
         parser.require(XmlPullParser.END_TAG, null, elementName);
         return obj;
+    }
+
+    protected void resolveReference(String id,Object obj)
+    {
+        Object hlp = idMap.get(id);
+        if (hlp instanceof FwdRef) {
+            FwdRef f = (FwdRef) hlp;
+            do {
+                if (f.obj instanceof KvmSerializable) {
+                    ((KvmSerializable) f.obj).setProperty(f.index, obj);
+                } else {
+                    ((Vector) f.obj).setElementAt(obj, f.index);
+                }
+                f = f.next;
+            }
+            while (f != null);
+        } else if (hlp != null) {
+            throw new RuntimeException("double ID");
+        }
+        idMap.put(id, obj);
     }
 
     /**
@@ -681,8 +692,12 @@ public class SoapSerializationEnvelope extends SoapEnvelope
         } else if (element instanceof Vector) {
             writeVectorBody(writer, (Vector) element, type.elementType);
         } else {
-            throw new RuntimeException("Cannot serialize: " + element);
+            writeUnknown(writer, element);
         }
+    }
+
+    protected void writeUnknown(XmlSerializer writer, Object element) throws IOException {
+        throw new RuntimeException("Cannot serialize: " + element);
     }
 
     protected void writeVectorBody(XmlSerializer writer, Vector vector, PropertyInfo elementType)
