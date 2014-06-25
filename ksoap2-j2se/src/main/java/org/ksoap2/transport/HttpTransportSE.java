@@ -26,12 +26,12 @@ package org.ksoap2.transport;
 
 import org.ksoap2.HeaderProperty;
 import org.ksoap2.SoapEnvelope;
-import org.ksoap2.serialization.SoapSerializationEnvelope;
+import org.ksoap2.serialization.*;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.*;
 import java.net.Proxy;
-import java.util.List;
+import java.util.*;
 import java.util.zip.GZIPInputStream;
 
 /**
@@ -170,8 +170,7 @@ public class HttpTransportSE extends Transport {
         // this seems to cause issues so we are removing it
         //connection.setRequestProperty("Connection", "close");
         connection.setRequestProperty("Accept-Encoding", "gzip");
-        connection.setRequestProperty("Content-Length", "" + requestData.length);
-        connection.setFixedLengthStreamingMode(requestData.length);
+
 
         // Pass the headers provided by the user along with the call
         if (headers != null) {
@@ -182,6 +181,11 @@ public class HttpTransportSE extends Transport {
         }
 
         connection.setRequestMethod("POST");
+        requestData=beforeSendRequest(connection,requestData,envelope);
+
+        connection.setRequestProperty("Content-Length", "" + requestData.length);
+        connection.setFixedLengthStreamingMode(requestData.length);
+
         OutputStream os = connection.openOutputStream();
 
         os.write(requestData, 0, requestData.length);
@@ -198,6 +202,7 @@ public class HttpTransportSE extends Transport {
 
         try {
             retHeaders = connection.getResponseProperties();
+
             for (int i = 0; i < retHeaders.size(); i++) {
                 HeaderProperty hp = (HeaderProperty)retHeaders.get(i);
                 // HTTP response code has null key
@@ -216,12 +221,14 @@ public class HttpTransportSE extends Transport {
                     }
                 }
 
+
                 // Check the content-type header to see if we're getting back XML, in case of a
                 // SOAP fault on 500 codes
                 if (hp.getKey().equalsIgnoreCase("Content-Type")
                         && hp.getValue().contains("xml")) {
                     xmlContent = true;
                 }
+
 
                 // ignoring case since users found that all smaller case is used on some server
                 // and even if it is wrong according to spec, we rather have it work..
@@ -236,6 +243,7 @@ public class HttpTransportSE extends Transport {
                 //throw new IOException("HTTP request failed, HTTP status: " + status);
                 throw new HttpResponseException("HTTP request failed, HTTP status: " + status, status);
             }
+
             if (contentLength > 0) {
                 if (gZippedContent) {
                     is = getUnZippedInputStream(
@@ -272,7 +280,8 @@ public class HttpTransportSE extends Transport {
             is = readDebug(is, contentLength, outputFile);
         }
 
-        parseResponse(envelope, is);
+        parseResponse(envelope, is,retHeaders);
+
         // release all resources 
         // input stream is will be released inside parseResponse
         is = null;
@@ -282,6 +291,16 @@ public class HttpTransportSE extends Transport {
         connection.disconnect();
         connection = null;
         return retHeaders;
+    }
+
+    protected void parseResponse(SoapEnvelope envelope, InputStream is,List returnedHeaders) throws XmlPullParserException, IOException
+    {
+        parseResponse(envelope, is);
+    }
+
+    protected byte[] beforeSendRequest(ServiceConnection connection,byte[] requestData, SoapEnvelope envelope) throws HttpResponseException, IOException, XmlPullParserException
+    {
+        return requestData;
     }
 
     private InputStream readDebug(InputStream is, int contentLength, File outputFile) throws IOException {
