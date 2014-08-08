@@ -32,36 +32,36 @@ import java.util.List;
 public interface ServiceConnection {
 
     public static final int DEFAULT_TIMEOUT = 20000; // 20 seconds
-    public static final int DEFAULT_BUFFER_SIZE = 256*1024; // 256 Kb
+    public static final int DEFAULT_BUFFER_SIZE = 256 * 1024; // 256 Kb
 
     /**
      * Make an outgoing connection.
-     * 
-     * @exception IOException
+     *
+     * @throws IOException
      */
     public void connect() throws IOException;
 
     /**
      * Disconnect from the outgoing connection
-     * 
-     * @exception IOException
+     *
+     * @throws IOException
      */
     public void disconnect() throws IOException;
 
     /**
      * Returns to the caller all of the headers that were returned with the
-     * response to the SOAP request. Primarily this gives the caller an 
+     * response to the SOAP request. Primarily this gives the caller an
      * opportunity to save the cookies for later use.
-     * 
+     *
      * @return List of HeaderProperty instances that were returned as part of the http response as http header
      * properties
-     * 
-     * @exception IOException
+     * @throws IOException
      */
     public List getResponseProperties() throws IOException;
 
     /**
      * Returns the numerical HTTP status to the caller
+     *
      * @return an integer status value
      * @throws IOException
      */
@@ -69,51 +69,48 @@ public interface ServiceConnection {
 
     /**
      * Set properties on the outgoing connection.
-     * 
-     * @param propertyName
-     *            the name of the property to set. For HTTP connections these
-     *            are the request properties in the HTTP Header.
-     * @param value
-     *            the string to set the property header to.
-     * @exception IOException
+     *
+     * @param propertyName the name of the property to set. For HTTP connections these
+     *                     are the request properties in the HTTP Header.
+     * @param value        the string to set the property header to.
+     * @throws IOException
      */
     public void setRequestProperty(String propertyName, String value) throws IOException;
 
     /**
      * Sets how to make the requests. For HTTP this is typically POST or GET.
-     * 
-     * @param requestMethodType
-     *            the type of request method to make the soap call with.
-     * @exception IOException
+     *
+     * @param requestMethodType the type of request method to make the soap call with.
+     * @throws IOException
      */
     public void setRequestMethod(String requestMethodType) throws IOException;
 
     /**
-     * If the length of a HTTP request body is known ahead, sets fixed length 
+     * If the length of a HTTP request body is known ahead, sets fixed length
      * to enable streaming without buffering. Sets after connection will cause an exception.
      *
      * @param contentLength the fixed length of the HTTP request body
      * @see http://developer.android.com/reference/java/net/HttpURLConnection.html
-     **/
+     */
     public void setFixedLengthStreamingMode(int contentLength);
 
     public void setChunkedStreamingMode();
 
     /**
      * Open and return the outputStream to the endpoint.
-     * 
-     * @exception IOException
+     *
      * @return the output stream to write the soap message to.
+     * @throws IOException
      */
     public OutputStream openOutputStream() throws IOException;
 
     /**
      * Opens and returns the inputstream from which to parse the result of the
      * soap call.
-     * 
-     * @exception IOException
+     *
      * @return the inputstream containing the xml to parse the result from the
-     *         call from.
+     * call from.
+     * @throws IOException
      */
     public InputStream openInputStream() throws IOException;
 

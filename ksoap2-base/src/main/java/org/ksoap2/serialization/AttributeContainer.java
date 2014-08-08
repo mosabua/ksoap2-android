@@ -2,7 +2,7 @@ package org.ksoap2.serialization;
 
 import java.util.Vector;
 
-public class AttributeContainer implements HasAttributes{
+public class AttributeContainer implements HasAttributes {
     protected Vector attributes = new Vector();
 
     /**
@@ -28,7 +28,7 @@ public class AttributeContainer implements HasAttributes{
         return ((AttributeInfo) attributes.elementAt(index)).getValue();
     }
 
-     /**
+    /**
      * Get the attribute's toString value.
      */
     public String getAttributeAsString(int index) {
@@ -93,7 +93,7 @@ public class AttributeContainer implements HasAttributes{
     /**
      * Get an attributes' toString value without chance of throwing an
      * exception.
-
+     *
      * @param name
      * @return the value of the attribute,s toString method if it exists; ""
      * if it does not exist
@@ -168,6 +168,7 @@ public class AttributeContainer implements HasAttributes{
 
     /**
      * Add an attribute if the value is not null.
+     *
      * @param name
      * @param value
      */
@@ -190,11 +191,24 @@ public class AttributeContainer implements HasAttributes{
 
     /**
      * Add an attributeInfo if its value is not null.
+     *
      * @param attributeInfo
      */
     public void addAttributeIfValue(AttributeInfo attributeInfo) {
         if (attributeInfo.value != null) {
             attributes.addElement(attributeInfo);
         }
+    }
+
+    @Override
+    public void setAttribute(AttributeInfo info) {
+
+
+    }
+
+    @Override
+    public void getAttribute(int index, AttributeInfo info) {
+
+
     }
 }

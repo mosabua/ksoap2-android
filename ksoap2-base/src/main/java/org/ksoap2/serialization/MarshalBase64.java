@@ -20,13 +20,16 @@
 
 package org.ksoap2.serialization;
 
-import java.io.*;
-import org.ksoap2.*;
 import org.kobjects.base64.*;
-import org.xmlpull.v1.*;
+import org.ksoap2.SoapEnvelope;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlSerializer;
 
-/** 
- * Base64 (de)serializer 
+import java.io.IOException;
+
+/**
+ * Base64 (de)serializer
  */
 public class MarshalBase64 implements Marshal {
     public static Class BYTE_ARRAY_CLASS = new byte[0].getClass();
@@ -36,7 +39,7 @@ public class MarshalBase64 implements Marshal {
         return Base64.decode(parser.nextText());
     }
 
-    public void writeInstance(XmlSerializer writer, Object obj) throws IOException {
+    public void writeInstance(XmlSerializer writer, Object obj, PropertyInfo expected) throws IOException {
         writer.text(Base64.encode((byte[]) obj));
     }
 

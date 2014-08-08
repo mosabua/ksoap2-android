@@ -20,9 +20,12 @@
 
 package org.ksoap2;
 
-import java.io.*;
 import org.kxml2.kdom.*;
-import org.xmlpull.v1.*;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlSerializer;
+
+import java.io.IOException;
 
 /**
  * A SOAP envelope, holding head and body objects. While this basic envelope
@@ -33,39 +36,44 @@ import org.xmlpull.v1.*;
 
 public class SoapEnvelope {
 
-    /** SOAP Version 1.0 constant */
+    /**
+     * SOAP Version 1.0 constant
+     */
     public static final int VER10 = 100;
-    /** SOAP Version 1.1 constant */
+    /**
+     * SOAP Version 1.1 constant
+     */
     public static final int VER11 = 110;
-    /** SOAP Version 1.2 constant */
+    /**
+     * SOAP Version 1.2 constant
+     */
     public static final int VER12 = 120;
     public static final String ENV2003 = "http://www.w3.org/2003/05/soap-envelope";
     public static final String ENC2003 = "http://www.w3.org/2003/05/soap-encoding";
-    /** Namespace constant: http://schemas.xmlsoap.org/soap/envelope/ */
-    public static final String ENV = "http://schemas.xmlsoap.org/soap/envelope/";
-    /** Namespace constant: http://schemas.xmlsoap.org/soap/encoding/ */
-    public static final String ENC = "http://schemas.xmlsoap.org/soap/encoding/";
-    /** Namespace constant: http://www.w3.org/2001/XMLSchema */
-    public static final String XSD = "http://www.w3.org/2001/XMLSchema";
-    /** Namespace constant: http://www.w3.org/2001/XMLSchema */
-    public static final String XSI = "http://www.w3.org/2001/XMLSchema-instance";
-    /** Namespace constant: http://www.w3.org/1999/XMLSchema */
-    public static final String XSD1999 = "http://www.w3.org/1999/XMLSchema";
-    /** Namespace constant: http://www.w3.org/1999/XMLSchema */
-    public static final String XSI1999 = "http://www.w3.org/1999/XMLSchema-instance";
-
     /**
-     * Returns true for the string values "1" and "true", ignoring upper/lower
-     * case and whitespace, false otherwise.
+     * Namespace constant: http://schemas.xmlsoap.org/soap/envelope/
      */
-    public static boolean stringToBoolean(String booleanAsString) {
-        if (booleanAsString == null) {
-            return false;
-        }
-        booleanAsString = booleanAsString.trim().toLowerCase();
-        return (booleanAsString.equals("1") || booleanAsString.equals("true"));
-    }
-
+    public static final String ENV = "http://schemas.xmlsoap.org/soap/envelope/";
+    /**
+     * Namespace constant: http://schemas.xmlsoap.org/soap/encoding/
+     */
+    public static final String ENC = "http://schemas.xmlsoap.org/soap/encoding/";
+    /**
+     * Namespace constant: http://www.w3.org/2001/XMLSchema
+     */
+    public static final String XSD = "http://www.w3.org/2001/XMLSchema";
+    /**
+     * Namespace constant: http://www.w3.org/2001/XMLSchema
+     */
+    public static final String XSI = "http://www.w3.org/2001/XMLSchema-instance";
+    /**
+     * Namespace constant: http://www.w3.org/1999/XMLSchema
+     */
+    public static final String XSD1999 = "http://www.w3.org/1999/XMLSchema";
+    /**
+     * Namespace constant: http://www.w3.org/1999/XMLSchema
+     */
+    public static final String XSI1999 = "http://www.w3.org/1999/XMLSchema-instance";
     /**
      * The body object received with this envelope. Will be an KDom Node for
      * literal encoding. For SOAP Serialization, please refer to
@@ -91,15 +99,22 @@ public class SoapEnvelope {
      * The SOAP version, set by the constructor
      */
     public int version;
-    /** Envelope namespace, set by the constructor */
+    /**
+     * Envelope namespace, set by the constructor
+     */
     public String env;
-    /** Encoding namespace, set by the constructor */
+    /**
+     * Encoding namespace, set by the constructor
+     */
     public String enc;
-    /** Xml Schema instance namespace, set by the constructor */
+    /**
+     * Xml Schema instance namespace, set by the constructor
+     */
     public String xsi;
-    /** Xml Schema data namespace, set by the constructor */
+    /**
+     * Xml Schema data namespace, set by the constructor
+     */
     public String xsd;
-
     /**
      * Initializes a SOAP Envelope. The version parameter must be set to one of
      * VER10, VER11 or VER12
@@ -122,7 +137,21 @@ public class SoapEnvelope {
         }
     }
 
-    /** Parses the SOAP envelope from the given parser */
+    /**
+     * Returns true for the string values "1" and "true", ignoring upper/lower
+     * case and whitespace, false otherwise.
+     */
+    public static boolean stringToBoolean(String booleanAsString) {
+        if (booleanAsString == null) {
+            return false;
+        }
+        booleanAsString = booleanAsString.trim().toLowerCase();
+        return (booleanAsString.equals("1") || booleanAsString.equals("true"));
+    }
+
+    /**
+     * Parses the SOAP envelope from the given parser
+     */
     public void parse(XmlPullParser parser) throws IOException, XmlPullParserException {
         parser.nextTag();
         parser.require(XmlPullParser.START_TAG, env, "Envelope");
@@ -231,6 +260,7 @@ public class SoapEnvelope {
 
     /**
      * Assigns the object to the envelope as the outbound message for the soap call.
+     *
      * @param soapObject the object to send in the soap call.
      */
     public void setOutputSoapObject(Object soapObject) {
