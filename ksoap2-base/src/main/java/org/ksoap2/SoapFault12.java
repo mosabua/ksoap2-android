@@ -71,30 +71,31 @@ public class SoapFault12 extends SoapFault {
                     
     private void parseSelf(XmlPullParser parser) throws IOException, XmlPullParserException {
         parser.require(XmlPullParser.START_TAG, SoapEnvelope.ENV2003, "Fault");
-                                        
+
         while (parser.nextTag() == XmlPullParser.START_TAG) {
             String name = parser.getName();
+            String namespace = parser.getNamespace();
             parser.nextTag();
-            if (name.equals("Code")) {
+            if (name.toLowerCase().equals("Code".toLowerCase())) {
                 this.Code = new Node();
                 this.Code.parse(parser);
-            } else if (name.equals("Reason")) {
+            } else if (name.toLowerCase().equals("Reason".toLowerCase())) {
                 this.Reason = new Node();
                 this.Reason.parse(parser);
-            } else if (name.equals("Node")) {
+            } else if (name.toLowerCase().equals("Node".toLowerCase())) {
                 this.Node = new Node();
                 this.Node.parse(parser);
-            } else if (name.equals("Role")) {
+            } else if (name.toLowerCase().equals("Role".toLowerCase())) {
                 this.Role = new Node();
                 this.Role.parse(parser);
-            } else if (name.equals("Detail")) {
+            } else if (name.toLowerCase().equals("Detail".toLowerCase())) {
                 this.Detail = new Node();
                 this.Detail.parse(parser);
             } else {
                 throw new RuntimeException("unexpected tag:" + name);
             }
 
-            parser.require(XmlPullParser.END_TAG, SoapEnvelope.ENV2003, name);
+            parser.require(XmlPullParser.END_TAG, namespace, name);
         }
         parser.require(XmlPullParser.END_TAG, SoapEnvelope.ENV2003, "Fault");
         parser.nextTag();
