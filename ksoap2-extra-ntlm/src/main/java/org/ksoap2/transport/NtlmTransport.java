@@ -21,6 +21,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.NTCredentials;
+import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ByteArrayEntity;
@@ -76,15 +77,14 @@ public class NtlmTransport extends Transport {
         HttpResponse resp = null;
         
         try {
-        	
+
             HttpPost httppost = new HttpPost(urlString);
             httppost.getParams().setBooleanParameter(CoreProtocolPNames.USE_EXPECT_CONTINUE, false);
-			NTCredentials ntc1 = new NTCredentials(user,password,null,"");
-			
-			client.getCredentialsProvider().setCredentials(
-					AuthScope.ANY,
-					ntc1);
-			client.getAuthSchemes().register("ntlm", new NTLMSchemeFactory());
+            NTCredentials ntc1 = new NTCredentials(user,password,null,"");
+
+            client.getCredentialsProvider().setCredentials(AuthScope.ANY,ntc1);
+            
+            client.getAuthSchemes().register("ntlm", new NTLMSchemeFactory());
             setHeaders(soapAction, envelope, httppost, headers);
             
             resp = client.execute(httppost, localContext);
@@ -135,7 +135,7 @@ public class NtlmTransport extends Transport {
                 //first check the response code....
                 if (status != 200) {
                     //throw new IOException("HTTP request failed, HTTP status: " + status);
-                    throw new HttpResponseException("HTTP request failed, HTTP status: " + status, status);
+                    throw new HttpResponseException(status, "HTTP request failed, HTTP status: " + status);
                 }
                 if (contentLength > 0) {
                     if (gZippedContent) {
@@ -259,24 +259,22 @@ public class NtlmTransport extends Transport {
            
             
             DefaultHttpClient httpclient = new DefaultHttpClient();
-    		
-			HttpGet httpGet = new HttpGet(dummyUrl);
-			httpGet.getParams().setBooleanParameter(CoreProtocolPNames.USE_EXPECT_CONTINUE, false);
-			NTCredentials ntc1 = new NTCredentials(userId,password,null,"");
-			
-			(httpclient).getCredentialsProvider().setCredentials(
-					AuthScope.ANY,
-					ntc1);
-			httpclient.getAuthSchemes().register("ntlm", new NTLMSchemeFactory());
-			HttpResponse response;
-			
-				response = httpclient.execute(httpGet);
-				Header[] headers = response.getAllHeaders();
-				StatusLine statusLine = response.getStatusLine();
-			response.getEntity().consumeContent();
+      
+            HttpGet httpGet = new HttpGet(dummyUrl);
+            httpGet.getParams().setBooleanParameter(CoreProtocolPNames.USE_EXPECT_CONTINUE, false);
+            NTCredentials ntc1 = new NTCredentials(userId,password,null,"");
+   
+            (httpclient).getCredentialsProvider().setCredentials(AuthScope.ANY,ntc1);
+            httpclient.getAuthSchemes().register("ntlm", new NTLMSchemeFactory());
+            HttpResponse response;
+   
+            response = httpclient.execute(httpGet);
+            Header[] headers = response.getAllHeaders();
+            StatusLine statusLine = response.getStatusLine();
+            response.getEntity().consumeContent();
         } catch (Exception ex) {
             // swallow
-        	ex.printStackTrace();
+         ex.printStackTrace();
         }
     }
 
