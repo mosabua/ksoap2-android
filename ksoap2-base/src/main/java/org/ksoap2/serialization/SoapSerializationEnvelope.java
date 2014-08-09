@@ -614,20 +614,13 @@ public class SoapSerializationEnvelope extends SoapEnvelope {
             multiRef = new Vector();
             multiRef.addElement(bodyOut);
             Object[] qName = getInfo(null, bodyOut);
-            Field f = null;
-            try {
-                f = bodyOut.getClass().getField("xmlns");
-            } catch (NoSuchFieldException e) {
-
-                e.printStackTrace();
-            }
+            
             writer.startTag((dotNet) ? "" : (String) qName[QNAME_NAMESPACE], (String) qName[QNAME_TYPE]);
-            if (f == null) {
-
+            
                 if (dotNet) {
                     writer.attribute(null, "xmlns", (String) qName[QNAME_NAMESPACE]);
                 }
-            }
+
             if (addAdornments) {
                 writer.attribute(null, ID_LABEL, qName[2] == null ? ("o" + 0) : (String) qName[2]);
                 writer.attribute(enc, ROOT_LABEL, "1");

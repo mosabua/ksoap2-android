@@ -596,13 +596,13 @@ public class SoapObject extends AttributeContainer implements KvmSerializable {
         return buf.toString();
     }
 
-    @Override
+
     public String getInnerText() {
 
         return null;
     }
 
-    @Override
+
     public void setInnerText(String s) {
 
 

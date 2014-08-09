@@ -61,4 +61,11 @@ public class Book extends BaseObject {
         return buffer.toString();
     }
 
+    public String getInnerText() {
+        return null;
+    }
+
+    public void setInnerText(String s) {
+    }
+
 }

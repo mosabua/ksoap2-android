@@ -51,7 +51,8 @@ class DM implements Marshal {
     }
 
     /**
-     * Write the instance out. In case it is an AttributeContainer write those our first though. If it HasAttributes then write the attributes and values.
+     * Write the instance out. In case it is an AttributeContainer write those our first though. 
+     * If it HasAttributes then write the attributes and values.
      *
      * @param writer   the xml serializer.
      * @param instance

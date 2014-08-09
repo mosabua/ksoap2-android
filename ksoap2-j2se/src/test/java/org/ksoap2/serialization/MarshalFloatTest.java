@@ -46,19 +46,19 @@ public class MarshalFloatTest extends TestCase {
 
     public void testMarshalDateOutbound_Float() throws IOException {
         MockXmlSerializer writer = new MockXmlSerializer();
-        marshalFloat.writeInstance(writer, new Float(12.0));
+        marshalFloat.writeInstance(writer, new Float(12.0), null);
         assertEquals(FLOATING_POINT_VALUE, writer.getOutputText());
     }
     
     public void testmarshalDateOutbound_Double() throws IOException {
         MockXmlSerializer writer = new MockXmlSerializer();
-        marshalFloat.writeInstance(writer, new Double(12.0));
+        marshalFloat.writeInstance(writer, new Double(12.0), null);
         assertEquals(FLOATING_POINT_VALUE, writer.getOutputText());
     }
 
     public void testmarshalDateOutbound_Decimal() throws IOException {
         MockXmlSerializer writer = new MockXmlSerializer();
-        marshalFloat.writeInstance(writer, new BigDecimal(12.0));
+        marshalFloat.writeInstance(writer, new BigDecimal(12.0), null);
         assertEquals("12", writer.getOutputText());
     }
     

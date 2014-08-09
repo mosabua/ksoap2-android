@@ -48,5 +48,10 @@ public class ItemSearchResponse extends BaseObject {
         new BookItems().register(envelope);
         new BookAttributes().register(envelope);
     }
+    public String getInnerText() {
+        return null;
+    }
 
+    public void setInnerText(String s) {
+    }
 }

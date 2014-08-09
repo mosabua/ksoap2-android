@@ -21,7 +21,7 @@ public class MarshalHashtableTest extends TestCase {
         marshalHashtable.register(serializationEnvelope);
         MockXmlSerializer writer = new MockXmlSerializer();
         Hashtable hashTable = prefilledHashTable();
-        marshalHashtable.writeInstance(writer, hashTable);
+        marshalHashtable.writeInstance(writer, hashTable, null);
 
         // the mock just appends the bits together
         assertEquals(KEY1_NAME + ";" + VALUE1, writer.getOutputText());
@@ -33,7 +33,7 @@ public class MarshalHashtableTest extends TestCase {
         writer = new MockXmlSerializer();
         hashTable = prefilledHashTable();
         hashTable.put("key2", new Integer(12));
-        marshalHashtable.writeInstance(writer, hashTable);
+        marshalHashtable.writeInstance(writer, hashTable, null);
 
         assertEquals("key2;12;"+KEY1_NAME + ";" + VALUE1, writer.getOutputText());
         assertEquals(MockXmlSerializer.PREFIX + ":string;" + MockXmlSerializer.PREFIX + ":int;" +

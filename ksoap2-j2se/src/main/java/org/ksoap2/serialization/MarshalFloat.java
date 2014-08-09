@@ -43,13 +43,15 @@ public class MarshalFloat implements Marshal {
         return result;
     }
 
-    public void writeInstance(XmlSerializer writer, Object instance) throws IOException {
+    public void writeInstance(XmlSerializer writer, Object instance, PropertyInfo expected) throws IOException {
         writer.text(instance.toString());
-    }
-
+   }
+    
     public void register(SoapSerializationEnvelope cm) {
         cm.addMapping(cm.xsd, "float", Float.class, this);
         cm.addMapping(cm.xsd, "double", Double.class, this);
         cm.addMapping(cm.xsd, "decimal", java.math.BigDecimal.class, this);
     }
+
+
 }
