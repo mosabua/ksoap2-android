@@ -69,5 +69,10 @@ public class BookItems extends LiteralArrayVector {
         }
         return buffer.toString();
     }
+    public String getInnerText() {
+        return null;
+    }
 
+    public void setInnerText(String s) {
+    }
 }

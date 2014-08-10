@@ -39,32 +39,37 @@ public interface KvmSerializable {
      */
     Object getProperty(int index);
 
-    /** 
-     * @return the number of serializable properties 
+    /**
+     * @return the number of serializable properties
      */
     int getPropertyCount();
 
     /**
      * Sets the property with the given index to the given value.
-     * 
-     * @param index
-     *            the index to be set
-     * @param value
-     *            the value of the property
+     *
+     * @param index the index to be set
+     * @param value the value of the property
      */
     void setProperty(int index, Object value);
 
     /**
      * Fills the given property info record.
-     * 
-     * @param index
-     *            the index to be queried
-     * @param properties
-     *            information about the (de)serializer.  Not frequently used.
-     * @param info
-     *            The return parameter, to be filled with information about the
-     *            property with the given index.
+     *
+     * @param index      the index to be queried
+     * @param properties information about the (de)serializer.  Not frequently used.
+     * @param info       The return parameter, to be filled with information about the
+     *                   property with the given index.
      */
     void getPropertyInfo(int index, Hashtable properties, PropertyInfo info);
+
+    /**
+     * Gets the inner text of xml tags
+     */
+    String getInnerText();
+
+    /**
+     * @param s String to be set as inner text for an outgoing soap object
+     */
+    void setInnerText(String s);
 
 }

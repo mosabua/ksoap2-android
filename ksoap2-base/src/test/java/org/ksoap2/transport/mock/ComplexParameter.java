@@ -28,7 +28,8 @@ public class ComplexParameter implements KvmSerializable {
 
     public String name;
     public int count;
-
+    public String innerText; 
+    
     public Object getProperty(int index) {
         if (index == 0) {
             return name;
@@ -66,5 +67,12 @@ public class ComplexParameter implements KvmSerializable {
             throw new RuntimeException("invalid parameter");
         }
     }
+    public String getInnerText() {
+       return innerText;
+    }
 
+    public void setInnerText(String s) {
+       innerText = s;
+    }
+    
 }

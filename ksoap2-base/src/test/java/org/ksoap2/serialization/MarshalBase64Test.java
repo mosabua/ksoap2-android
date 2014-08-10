@@ -29,7 +29,7 @@ public class MarshalBase64Test extends TestCase {
 
     public void testConvertToBase64() throws IOException {
         MockXmlSerializer writer = new MockXmlSerializer();
-        marshalBase64.writeInstance(writer , TEST_STRING.getBytes());
+        marshalBase64.writeInstance(writer , TEST_STRING.getBytes(), null);
         assertEquals(ENCODED_TEST_STRING, writer.getOutputText());
     }
     

@@ -16,5 +16,10 @@ public class StadiumNamesResult extends LiteralArrayVector {
     protected Class getElementClass() {
         return PropertyInfo.STRING_CLASS;
     }
+    public String getInnerText() {
+        return null;
+    }
 
+    public void setInnerText(String s) {
+    }
 }

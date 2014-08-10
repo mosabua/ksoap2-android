@@ -89,5 +89,10 @@ public class BookAttributes extends BaseObject {
         }
         return buffer.toString();
     }
+    public String getInnerText() {
+        return null;
+    }
 
+    public void setInnerText(String s) {
+    }
 }

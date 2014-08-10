@@ -20,8 +20,11 @@
 
 package org.ksoap2.serialization;
 
-import java.io.*;
-import org.xmlpull.v1.*;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlSerializer;
+
+import java.io.IOException;
 
 /**
  * Interface for custom (de)serialization.
@@ -34,11 +37,10 @@ public interface Marshal {
      * please note that the start and and tag must be consumed. This is not
      * symmetric to writeInstance, but otherwise it would not be possible to
      * access the attributes of the start tag here.
-     * 
-     * @param parser
-     *            the xml parser
-     * @param namespace
-     *            the namespace.
+     *
+     * @param parser    the xml parser
+     * @param namespace the namespace.
+     * @param expected  expected type of instance being written
      * @return the object read from the xml stream.
      */
     public Object readInstance(XmlPullParser parser, String namespace, String name, PropertyInfo expected)
@@ -49,19 +51,17 @@ public interface Marshal {
      * readInstance, it is not neccessary to care about the surrounding start
      * and end tags. Additional attributes must be writen before anything else
      * is written.
-     * 
-     * @param writer
-     *            the xml serializer.
-     * @param instance
-     *            the instance to write to the writer.
+     *
+     * @param writer   the xml serializer.
+     * @param instance the instance to write to the writer.
+     * @param expected expected type of instance being written
      */
-    public void writeInstance(XmlSerializer writer, Object instance) throws IOException;
+    public void writeInstance(XmlSerializer writer, Object instance, PropertyInfo expected) throws IOException;
 
     /**
      * Register this Marshal with Envelope
-     * 
-     * @param envelope
-     *            the soap serialization envelope.
+     *
+     * @param envelope the soap serialization envelope.
      */
     public void register(SoapSerializationEnvelope envelope);
 }

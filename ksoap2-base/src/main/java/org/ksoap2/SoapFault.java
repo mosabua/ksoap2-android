@@ -19,12 +19,12 @@
 
 package org.ksoap2;
 
-import java.io.IOException;
-
 import org.kxml2.kdom.Node;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlSerializer;
+
+import java.io.IOException;
 
 /**
  * Exception class encapsulating SOAP Faults
@@ -33,15 +33,25 @@ import org.xmlpull.v1.XmlSerializer;
 public class SoapFault extends IOException {
 
     private static final long serialVersionUID = 1011001L;
-    /** The SOAP fault code */
+    /**
+     * The SOAP fault code
+     */
     public String faultcode;
-    /** The SOAP fault code */
+    /**
+     * The SOAP fault code
+     */
     public String faultstring;
-    /** The SOAP fault code */
+    /**
+     * The SOAP fault code
+     */
     public String faultactor;
-    /** A KDom Node holding the details of the fault */
+    /**
+     * A KDom Node holding the details of the fault
+     */
     public Node detail;
-    /** an integer that holds current soap version */
+    /**
+     * an integer that holds current soap version
+     */
     public int version;
 
     public SoapFault() {
@@ -54,7 +64,9 @@ public class SoapFault extends IOException {
         this.version = version;
     }
 
-    /** Fills the fault details from the given XML stream */
+    /**
+     * Fills the fault details from the given XML stream
+     */
     public void parse(XmlPullParser parser) throws IOException, XmlPullParserException {
         parser.require(XmlPullParser.START_TAG, SoapEnvelope.ENV, "Fault");
         while (parser.nextTag() == XmlPullParser.START_TAG) {
@@ -63,7 +75,7 @@ public class SoapFault extends IOException {
                 detail = new Node();
                 detail.parse(parser);
                 // Handle case '...<detail/></soap:Fault>'
-                if ( parser.getNamespace().equals( SoapEnvelope.ENV ) && parser.getName().equals( "Fault" ) ) {
+                if (parser.getNamespace().equals(SoapEnvelope.ENV) && parser.getName().equals("Fault")) {
                     break;
                 }
                 continue;
@@ -82,7 +94,9 @@ public class SoapFault extends IOException {
         parser.nextTag();
     }
 
-    /** Writes the fault to the given XML stream */
+    /**
+     * Writes the fault to the given XML stream
+     */
     public void write(XmlSerializer xw) throws IOException {
         xw.startTag(SoapEnvelope.ENV, "Fault");
         xw.startTag(null, "faultcode");
@@ -106,10 +120,12 @@ public class SoapFault extends IOException {
         return faultstring;
     }
 
-    /** Returns a simple string representation of the fault */
+    /**
+     * Returns a simple string representation of the fault
+     */
     public String toString() {
         return "SoapFault - faultcode: '" + faultcode + "' faultstring: '"
-            + faultstring + "' faultactor: '" + faultactor + "' detail: " +
-            detail;
+                + faultstring + "' faultactor: '" + faultactor + "' detail: " +
+                detail;
     }
 }

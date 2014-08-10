@@ -1,4 +1,4 @@
-/* Copyright (c) 2003,2004, Stefan Haustein, Oberhausen, Rhld., Germany
+/* Copyright (c) 2014, Omar Hussain., Pakistan
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -18,34 +18,23 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE. */
 
-package org.ksoap2.serialization;
+package org.ksoap2.helper.annotations;
 
-import org.kobjects.isodate.*;
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-import org.xmlpull.v1.XmlSerializer;
-
-import java.io.IOException;
-import java.util.Date;
-
-
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 /**
- * Marshal class for Dates.
+ * 
+ * @author omarhussain
+ * Helps in easily annotating object fields behavior in parsing SOAP request/response objects
  */
-public class MarshalDate implements Marshal {
-    public static Class DATE_CLASS = new Date().getClass();
-
-    public Object readInstance(XmlPullParser parser, String namespace, String name, PropertyInfo expected)
-            throws IOException, XmlPullParserException {
-        return IsoDate.stringToDate(parser.nextText(), IsoDate.DATE_TIME);
-    }
-
-    public void writeInstance(XmlSerializer writer, Object obj, PropertyInfo expected) throws IOException {
-        writer.text(IsoDate.dateToString((Date) obj, IsoDate.DATE_TIME));
-    }
-
-    public void register(SoapSerializationEnvelope cm) {
-        cm.addMapping(cm.xsd, "dateTime", MarshalDate.DATE_CLASS, this);
-    }
-
+@Target(value = ElementType.FIELD)
+@Retention(value = RetentionPolicy.RUNTIME)
+public @interface SoapAnnotation {
+    public boolean IsAttribute() default false;
+    public boolean IsCDATA () default false;
+    public boolean HasRoot () default false;
+    public boolean SkipTag() default false;
+    public String Name() default "";
 }

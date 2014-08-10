@@ -34,6 +34,7 @@ public class ComplexResponse implements KvmSerializable {
     public String namespace = "";
     public String responseOne_Name = "longResponse";
     public int parameterCount = 4;
+    public String innerText;
 
     public Object getProperty(int index) {
         if (index == 0) {
@@ -86,5 +87,13 @@ public class ComplexResponse implements KvmSerializable {
         }
         info.namespace = namespace;
     }
+    
+    public String getInnerText() {
+        return innerText;
+     }
 
+     public void setInnerText(String s) {
+        innerText = s;
+     }
+     
 }

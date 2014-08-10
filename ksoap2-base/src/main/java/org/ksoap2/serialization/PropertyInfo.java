@@ -21,20 +21,23 @@
 
 package org.ksoap2.serialization;
 
-import java.io.ByteArrayOutputStream;
 import java.io.ByteArrayInputStream;
-import java.io.ObjectOutputStream;
-import java.io.ObjectInputStream;
-
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.NotSerializableException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 /**
  * This class is used to store information about each property an implementation of KvmSerializable exposes.
  */
 
-public class PropertyInfo implements java.io.Serializable
-{
+public class PropertyInfo implements java.io.Serializable {
     public static final Class OBJECT_CLASS = new Object().getClass();
+    /**
+     * Type of the property/elements. Should usually be an instance of Class.
+     */
+    public Object type = OBJECT_CLASS;
     public static final Class STRING_CLASS = "".getClass();
     public static final Class INTEGER_CLASS = new Integer(0).getClass();
     public static final Class LONG_CLASS = new Long(0).getClass();
@@ -44,48 +47,35 @@ public class PropertyInfo implements java.io.Serializable
     public static final int TRANSIENT = 1;
     public static final int MULTI_REF = 2;
     public static final int REF_ONLY = 4;
-
     /**
      * Name of the property
      */
     public String name;
-
     /**
      * Namespace of this property
      */
     public String namespace;
-
     /**
      * Type of property, Transient, multi_ref, Ref_only *JHS* Note, not really used that effectively
      */
     public int flags;
-
+    /**
+     * if a property is multi-referenced, set this flag to true.
+     */
+    public boolean multiRef;
+    /**
+     * Element type for array properties, null if not array prop.
+     */
+    public PropertyInfo elementType;
     /**
      * The current value of this property.
      */
     protected Object value;
 
-    /**
-     * Type of the property/elements. Should usually be an instance of Class.
-     */
-    public Object type = OBJECT_CLASS;
-
-    /**
-     * if a property is multi-referenced, set this flag to true.
-     */
-    public boolean multiRef;
-
-    /**
-     * Element type for array properties, null if not array prop.
-     */
-    public PropertyInfo elementType;
-
-    public PropertyInfo()
-    {
+    public PropertyInfo() {
     }
 
-    public void clear()
-    {
+    public void clear() {
         type = OBJECT_CLASS;
         flags = 0;
         name = null;
@@ -95,119 +85,98 @@ public class PropertyInfo implements java.io.Serializable
     /**
      * @return Returns the elementType.
      */
-    public PropertyInfo getElementType()
-    {
+    public PropertyInfo getElementType() {
         return elementType;
     }
 
     /**
-     * @param elementType
-     *            The elementType to set.
+     * @param elementType The elementType to set.
      */
-    public void setElementType(PropertyInfo elementType)
-    {
+    public void setElementType(PropertyInfo elementType) {
         this.elementType = elementType;
     }
 
     /**
      * @return Returns the flags.
      */
-    public int getFlags()
-    {
+    public int getFlags() {
         return flags;
     }
 
     /**
-     * @param flags
-     *            The flags to set.
+     * @param flags The flags to set.
      */
-    public void setFlags(int flags)
-    {
+    public void setFlags(int flags) {
         this.flags = flags;
     }
 
     /**
      * @return Returns the multiRef.
      */
-    public boolean isMultiRef()
-    {
+    public boolean isMultiRef() {
         return multiRef;
     }
 
     /**
-     * @param multiRef
-     *            The multiRef to set.
+     * @param multiRef The multiRef to set.
      */
-    public void setMultiRef(boolean multiRef)
-    {
+    public void setMultiRef(boolean multiRef) {
         this.multiRef = multiRef;
     }
 
     /**
      * @return Returns the name.
      */
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
     /**
-     * @param name
-     *            The name to set.
+     * @param name The name to set.
      */
-    public void setName(String name)
-    {
+    public void setName(String name) {
         this.name = name;
     }
 
     /**
      * @return Returns the namespace.
      */
-    public String getNamespace()
-    {
+    public String getNamespace() {
         return namespace;
     }
 
     /**
-     * @param namespace
-     *            The namespace to set.
+     * @param namespace The namespace to set.
      */
-    public void setNamespace(String namespace)
-    {
+    public void setNamespace(String namespace) {
         this.namespace = namespace;
     }
 
     /**
      * @return Returns the type.
      */
-    public Object getType()
-    {
+    public Object getType() {
         return type;
     }
 
     /**
-     * @param type
-     *            The type to set.
+     * @param type The type to set.
      */
-    public void setType(Object type)
-    {
+    public void setType(Object type) {
         this.type = type;
     }
 
     /**
      * @return Returns the value.
      */
-    public Object getValue()
-    {
+    public Object getValue() {
         return value;
     }
 
     /**
-     * @param value
-     *            The value to set.
+     * @param value The value to set.
      */
-    public void setValue(Object value)
-    {
+    public void setValue(Object value) {
         this.value = value;
     }
 
@@ -216,17 +185,13 @@ public class PropertyInfo implements java.io.Serializable
      *
      * @see java.lang.Object#toString()
      */
-    public String toString()
-    {
+    public String toString() {
         StringBuffer sb = new StringBuffer();
         sb.append(name);
         sb.append(" : ");
-        if (value != null)
-        {
+        if (value != null) {
             sb.append(value);
-        }
-        else
-        {
+        } else {
             sb.append("(not set)");
         }
         return sb.toString();
@@ -240,8 +205,7 @@ public class PropertyInfo implements java.io.Serializable
      */
     public Object clone() {
         Object obj = null;
-        try 
-        {
+        try {
             // Write the object out to a byte array
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             ObjectOutputStream out = new ObjectOutputStream(bos);
@@ -252,21 +216,15 @@ public class PropertyInfo implements java.io.Serializable
             // Make an input stream from the byte array and read
             // a copy of the object back in.
             ObjectInputStream in = new ObjectInputStream(
-                new ByteArrayInputStream(bos.toByteArray()));
+                    new ByteArrayInputStream(bos.toByteArray()));
             obj = in.readObject();
-        }
-        catch(ClassNotFoundException cnfe) 
-        {
+        } catch (ClassNotFoundException cnfe) {
             cnfe.printStackTrace();
-        }
-        catch(NotSerializableException nse) 
-        {
+        } catch (NotSerializableException nse) {
             nse.printStackTrace();
-        }
-        catch(IOException e) 
-        {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return obj;
-   }
+    }
 }

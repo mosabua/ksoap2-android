@@ -1,0 +1,70 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.google.code.ksoap2-android</groupId>
+        <artifactId>ksoap2-parent</artifactId>
+        <version>3.3.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>ksoap2-android-helper</artifactId>
+    <name>ksoap2-android-helper</name>
+    <packaging>jar</packaging>
+    <description><![CDATA[
+        A set of helper classes for the ksoap2 library.
+        ]]>
+    </description>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.google.android</groupId>
+            <artifactId>android</artifactId>
+            <version>2.1.2</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.ksoap2-android</groupId>
+            <artifactId>ksoap2-base</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.ksoap2-android</groupId>
+            <artifactId>ksoap2-base</artifactId>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.ksoap2-android</groupId>
+            <artifactId>ksoap2-extra-ntlm</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.ksoap2-android</groupId>
+            <artifactId>ksoap2-j2se</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

@@ -24,10 +24,13 @@
 
 package org.ksoap2.serialization;
 
-import java.io.*;
-import java.util.*;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlSerializer;
 
-import org.xmlpull.v1.*;
+import java.io.IOException;
+import java.util.Enumeration;
+import java.util.Hashtable;
 
 /**
  * Serializes instances of hashtable to and from xml. This implementation is
@@ -38,11 +41,17 @@ import org.xmlpull.v1.*;
  */
 public class MarshalHashtable implements Marshal {
 
-    /** use then during registration */
+    /**
+     * use then during registration
+     */
     public static final String NAMESPACE = "http://xml.apache.org/xml-soap";
-    /** use then during registration */
+    /**
+     * use then during registration
+     */
     public static final String NAME = "Map";
-    /** CLDC does not support .class, so this helper is needed. */
+    /**
+     * CLDC does not support .class, so this helper is needed.
+     */
     public static final Class HASHTABLE_CLASS = new Hashtable().getClass();
     SoapSerializationEnvelope envelope;
 
@@ -70,12 +79,12 @@ public class MarshalHashtable implements Marshal {
         return instance;
     }
 
-    public void writeInstance(XmlSerializer writer, Object instance) throws IOException {
+    public void writeInstance(XmlSerializer writer, Object instance, PropertyInfo expected) throws IOException {
         Hashtable h = (Hashtable) instance;
         SoapObject item = new SoapObject(null, null);
         item.addProperty("key", null);
         item.addProperty("value", null);
-        for (Enumeration keys = h.keys(); keys.hasMoreElements();) {
+        for (Enumeration keys = h.keys(); keys.hasMoreElements(); ) {
             writer.startTag("", "item");
             Object key = keys.nextElement();
             item.setProperty(0, key);
@@ -85,9 +94,15 @@ public class MarshalHashtable implements Marshal {
         }
     }
 
+    public void register(SoapSerializationEnvelope cm) {
+        envelope = cm;
+        cm.addMapping(MarshalHashtable.NAMESPACE, MarshalHashtable.NAME, HASHTABLE_CLASS, this);
+    }
+
     class ItemSoapObject extends SoapObject {
         Hashtable h;
         int resolvedIndex = -1;
+
         ItemSoapObject(Hashtable h) {
             super(null, null);
             this.h = h;
@@ -105,15 +120,10 @@ public class MarshalHashtable implements Marshal {
                 Object resolved = resolvedIndex == 0 ? getProperty(0) : getProperty(1);
                 if (index == 0) {
                     h.put(value, resolved);
-                } else  {
+                } else {
                     h.put(resolved, value);
                 }
             }
         }
-    }
-
-    public void register(SoapSerializationEnvelope cm) {
-        envelope = cm;
-        cm.addMapping(MarshalHashtable.NAMESPACE, MarshalHashtable.NAME, HASHTABLE_CLASS, this);
     }
 }

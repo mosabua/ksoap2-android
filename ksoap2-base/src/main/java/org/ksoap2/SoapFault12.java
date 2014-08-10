@@ -21,16 +21,16 @@
 
 package org.ksoap2;
 
-import java.io.IOException;
-
 import org.kxml2.kdom.Node;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlSerializer;
 
+import java.io.IOException;
+
 /**
  * Exception class encapsulating SOAP 1.2 Faults
- * 
+ * <p/>
  * see http://www.w3.org/TR/soap12-part1/#soapfault for explanation of fields
  *
  * @author Petter Uvesten
@@ -38,28 +38,31 @@ import org.xmlpull.v1.XmlSerializer;
 
 public class SoapFault12 extends SoapFault {
     private static final long serialVersionUID = 1012001L;
-                    
-    /** Top-level nodes */
+
+    /**
+     * Top-level nodes
+     */
     public Node Code;
     public Node Reason;
     public Node Node;
     public Node Role;
     public Node Detail;
-                    
+
     public SoapFault12() {
         super();
         this.version = SoapEnvelope.VER12;
     }
-                    
+
     public SoapFault12(int version) {
         super();
         this.version = version;
     }
-                    
 
-    /** Fills the fault details from the given XML stream */
-    public void parse(XmlPullParser parser) throws IOException, XmlPullParserException
-    {
+
+    /**
+     * Fills the fault details from the given XML stream
+     */
+    public void parse(XmlPullParser parser) throws IOException, XmlPullParserException {
         parseSelf(parser);
         // done parsing, populate some of the legacy public members
         this.faultcode = Code.getElement(SoapEnvelope.ENV2003, "Value").getText(0);
@@ -67,43 +70,45 @@ public class SoapFault12 extends SoapFault {
         this.detail = this.Detail;
         this.faultactor = null;
     }
-                    
-                    
+
+
     private void parseSelf(XmlPullParser parser) throws IOException, XmlPullParserException {
         parser.require(XmlPullParser.START_TAG, SoapEnvelope.ENV2003, "Fault");
-                                        
+
         while (parser.nextTag() == XmlPullParser.START_TAG) {
             String name = parser.getName();
+            String namespace = parser.getNamespace();
             parser.nextTag();
-            if (name.equals("Code")) {
+            if (name.toLowerCase().equals("Code".toLowerCase())) {
                 this.Code = new Node();
                 this.Code.parse(parser);
-            } else if (name.equals("Reason")) {
+            } else if (name.toLowerCase().equals("Reason".toLowerCase())) {
                 this.Reason = new Node();
                 this.Reason.parse(parser);
-            } else if (name.equals("Node")) {
+            } else if (name.toLowerCase().equals("Node".toLowerCase())) {
                 this.Node = new Node();
                 this.Node.parse(parser);
-            } else if (name.equals("Role")) {
+            } else if (name.toLowerCase().equals("Role".toLowerCase())) {
                 this.Role = new Node();
                 this.Role.parse(parser);
-            } else if (name.equals("Detail")) {
+            } else if (name.toLowerCase().equals("Detail".toLowerCase())) {
                 this.Detail = new Node();
                 this.Detail.parse(parser);
             } else {
                 throw new RuntimeException("unexpected tag:" + name);
             }
 
-            parser.require(XmlPullParser.END_TAG, SoapEnvelope.ENV2003, name);
+            parser.require(XmlPullParser.END_TAG, namespace, name);
         }
         parser.require(XmlPullParser.END_TAG, SoapEnvelope.ENV2003, "Fault");
         parser.nextTag();
 
     }
-                    
-    /** Writes the fault to the given XML stream */
-    public void write(XmlSerializer xw) throws IOException
-    {
+
+    /**
+     * Writes the fault to the given XML stream
+     */
+    public void write(XmlSerializer xw) throws IOException {
         xw.startTag(SoapEnvelope.ENV2003, "Fault");
         //this.Code.write(xw);
 
@@ -113,7 +118,7 @@ public class SoapFault12 extends SoapFault {
         xw.startTag(SoapEnvelope.ENV2003, "Reason");
         this.Reason.write(xw);
         xw.endTag(SoapEnvelope.ENV2003, "Reason");
-                                        
+
         if (this.Node != null) {
             xw.startTag(SoapEnvelope.ENV2003, "Node");
             this.Node.write(xw);
@@ -124,7 +129,7 @@ public class SoapFault12 extends SoapFault {
             this.Role.write(xw);
             xw.endTag(SoapEnvelope.ENV2003, "Role");
         }
-                                        
+
         if (this.Detail != null) {
             xw.startTag(SoapEnvelope.ENV2003, "Detail");
             this.Detail.write(xw);
@@ -140,7 +145,9 @@ public class SoapFault12 extends SoapFault {
         return Reason.getElement(SoapEnvelope.ENV2003, "Text").getText(0);
     }
 
-    /** Returns a string representation of the fault */
+    /**
+     * Returns a string representation of the fault
+     */
     public String toString() {
         String reason = Reason.getElement(SoapEnvelope.ENV2003, "Text").getText(0);
         String code = Code.getElement(SoapEnvelope.ENV2003, "Value").getText(0);

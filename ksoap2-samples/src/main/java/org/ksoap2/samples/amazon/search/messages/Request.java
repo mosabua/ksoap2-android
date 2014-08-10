@@ -37,5 +37,10 @@ public class Request extends BaseObject {
     public void register(SoapSerializationEnvelope envelope) {
         envelope.addMapping(NAMESPACE, "ItemSearchRequest", this.getClass());
     }
+    public String getInnerText() {
+        return null;
+    }
 
+    public void setInnerText(String s) {
+    }
 }
