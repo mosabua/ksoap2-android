@@ -179,6 +179,12 @@ abstract public class Transport {
         this.url = url;
     }
 
+    public String getUrl()
+    {
+        return url;
+    }
+
+
     /**
      * Sets the version tag for the outgoing soap call. Example <?xml
      * version=\"1.0\" encoding=\"UTF-8\"?>

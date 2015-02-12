@@ -298,8 +298,8 @@ public class SoapSerializationEnvelope extends SoapEnvelope {
             }
 
             while (parser.getEventType() != XmlPullParser.END_TAG) {
-                so.addProperty(parser.getName(), read(parser, so, so.getPropertyCount(), null, null,
-                        PropertyInfo.OBJECT_TYPE));
+                so.addProperty(parser.getNamespace(),parser.getName(), read(parser, so, so.getPropertyCount(),
+                        null, null, PropertyInfo.OBJECT_TYPE));
                 parser.nextTag();
             }
             result = so;
