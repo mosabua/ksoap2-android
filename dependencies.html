@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="Date-Revision-yyyymmdd" content="20150805" />
     <meta http-equiv="Content-Language" content="en" />
-    <title>ksoap2-android-assembly - Project Dependencies</title>
+    <title>ksoap2-midp - Project Dependencies</title>
     <link rel="stylesheet" href="./css/apache-maven-fluido-1.3.1.min.css" />
     <link rel="stylesheet" href="./css/site.css" />
     <link rel="stylesheet" href="./css/print.css" media="print" />
@@ -136,10 +136,16 @@
 <th>License</th></tr>
 <tr class="b">
 <td>com.google.code.ksoap2-android</td>
-<td><a class="externalLink" href="http://code.google.com/p/ksoap2-android/ksoap2-android/">ksoap2-android</a></td>
+<td><a class="externalLink" href="http://code.google.com/p/ksoap2-android/ksoap2-base/">ksoap2-base</a></td>
 <td>3.5.0-SNAPSHOT</td>
 <td>jar</td>
-<td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></td></tr></table></div></div><a name="Project_Transitive_Dependencies"></a>
+<td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></td></tr>
+<tr class="a">
+<td>net.sourceforge.me4se</td>
+<td>me4se</td>
+<td>2.1.4-SNAPSHOT-20040926</td>
+<td>jar</td>
+<td>-</td></tr></table></div></div><a name="Project_Transitive_Dependencies"></a>
 <div class="section">
 <h2>Project Transitive Dependencies<a name="Project_Transitive_Dependencies"></a></h2>
 <p>The following is a list of transitive dependencies for this project. Transitive dependencies are the dependencies of the project dependencies.</p><a name="Project_Transitive_Dependencies_compile"></a>
@@ -153,18 +159,6 @@
 <th>Version</th>
 <th>Type</th>
 <th>License</th></tr>
-<tr class="b">
-<td>com.google.code.ksoap2-android</td>
-<td><a class="externalLink" href="http://code.google.com/p/ksoap2-android/ksoap2-base/">ksoap2-base</a></td>
-<td>3.5.0-SNAPSHOT</td>
-<td>jar</td>
-<td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></td></tr>
-<tr class="a">
-<td>com.google.code.ksoap2-android</td>
-<td><a class="externalLink" href="http://code.google.com/p/ksoap2-android/ksoap2-j2se/">ksoap2-j2se</a></td>
-<td>3.5.0-SNAPSHOT</td>
-<td>jar</td>
-<td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></td></tr>
 <tr class="b">
 <td>net.sourceforge.kobjects</td>
 <td><a class="externalLink" href="http://kobjects.sourceforge.net/kobjects-j2me/">kobjects-j2me</a></td>
@@ -205,36 +199,16 @@
 <div class="section">
 <h3>Dependency Tree<a name="Dependency_Tree"></a></h3>
 <ul>
-<li>com.google.code.ksoap2-android:ksoap2-android-assembly:jar:3.5.0-SNAPSHOT <img id="_img1" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_dep0', '_img1' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_dep0" style="display:none">
+<li>com.google.code.ksoap2-android:ksoap2-midp:jar:3.5.0-SNAPSHOT <img id="_img1" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_dep0', '_img1' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_dep0" style="display:none">
 <table border="0" class="table table-striped">
 <tr class="a">
-<th>ksoap2-android-assembly</th></tr>
+<th>ksoap2-midp</th></tr>
 <tr class="b">
 <td>
 <p><b>Description: </b>There is currently no description associated with this project.</p>
 <p><b>Project License: </b>No license is defined for this project.</p></td></tr></table></div>
 <ul>
-<li>com.google.code.ksoap2-android:ksoap2-android:jar:3.5.0-SNAPSHOT (compile) <img id="_img3" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_dep2', '_img3' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_dep2" style="display:none">
-<table border="0" class="table table-striped">
-<tr class="a">
-<th>ksoap2-android</th></tr>
-<tr class="b">
-<td>
-<p><b>Description: </b>Addons to the ksoap2 library for the Android platform.</p>
-<p><b>URL: </b><a class="externalLink" href="http://code.google.com/p/ksoap2-android/ksoap2-android/">http://code.google.com/p/ksoap2-android/ksoap2-android/</a></p>
-<p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p></td></tr></table></div>
-<ul>
-<li>com.google.code.ksoap2-android:ksoap2-j2se:jar:3.5.0-SNAPSHOT (compile) <img id="_img5" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_dep4', '_img5' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_dep4" style="display:none">
-<table border="0" class="table table-striped">
-<tr class="a">
-<th>ksoap2-j2se</th></tr>
-<tr class="b">
-<td>
-<p><b>Description: </b>Addons to the ksoap2 library for the J2SE platform.</p>
-<p><b>URL: </b><a class="externalLink" href="http://code.google.com/p/ksoap2-android/ksoap2-j2se/">http://code.google.com/p/ksoap2-android/ksoap2-j2se/</a></p>
-<p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p></td></tr></table></div>
-<ul>
-<li>com.google.code.ksoap2-android:ksoap2-base:jar:3.5.0-SNAPSHOT (compile) <img id="_img7" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_dep6', '_img7' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_dep6" style="display:none">
+<li>com.google.code.ksoap2-android:ksoap2-base:jar:3.5.0-SNAPSHOT (compile) <img id="_img3" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_dep2', '_img3' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_dep2" style="display:none">
 <table border="0" class="table table-striped">
 <tr class="a">
 <th>ksoap2-base</th></tr>
@@ -244,7 +218,7 @@
 <p><b>URL: </b><a class="externalLink" href="http://code.google.com/p/ksoap2-android/ksoap2-base/">http://code.google.com/p/ksoap2-android/ksoap2-base/</a></p>
 <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p></td></tr></table></div>
 <ul>
-<li>net.sourceforge.kxml:kxml:jar:2.2.4 (compile) <img id="_img9" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_dep8', '_img9' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_dep8" style="display:none">
+<li>net.sourceforge.kxml:kxml:jar:2.2.4 (compile) <img id="_img5" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_dep4', '_img5' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_dep4" style="display:none">
 <table border="0" class="table table-striped">
 <tr class="a">
 <th>kxml</th></tr>
@@ -255,7 +229,7 @@
 <p><b>URL: </b><a class="externalLink" href="http://kxml.sourceforge.net/kxml/">http://kxml.sourceforge.net/kxml/</a></p>
 <p><b>Project License: </b>No license is defined for this project.</p></td></tr></table></div>
 <ul>
-<li>org.xmlpull:xmlpull:jar:1.1.3.3 (compile) <img id="_img11" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_dep10', '_img11' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_dep10" style="display:none">
+<li>org.xmlpull:xmlpull:jar:1.1.3.3 (compile) <img id="_img7" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_dep6', '_img7' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_dep6" style="display:none">
 <table border="0" class="table table-striped">
 <tr class="a">
 <th>xmlpull</th></tr>
@@ -264,7 +238,7 @@
 <p><b>Description: </b>A Java XML pull-parsing API and implementation test suite.</p>
 <p><b>URL: </b><a class="externalLink" href="http://xmlpull.org/xmlpull">http://xmlpull.org/xmlpull</a></p>
 <p><b>Project License: </b>No license is defined for this project.</p></td></tr></table></div></li></ul></li>
-<li>net.sourceforge.kobjects:kobjects-j2me:jar:0.0-SNAPSHOT-20040926-2 (compile) <img id="_img13" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_dep12', '_img13' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_dep12" style="display:none">
+<li>net.sourceforge.kobjects:kobjects-j2me:jar:0.0-SNAPSHOT-20040926-2 (compile) <img id="_img9" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_dep8', '_img9' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_dep8" style="display:none">
 <table border="0" class="table table-striped">
 <tr class="a">
 <th>kobjects-j2me</th></tr>
@@ -273,11 +247,19 @@
 <p><b>Description: </b>kObjects is a collection of small (&quot;kilobyte&quot;) projects. Most of the projects are suitable or designed 
 		for the Java 2 Micro Edition (J2ME/MIDP).</p>
 <p><b>URL: </b><a class="externalLink" href="http://kobjects.sourceforge.net/kobjects-j2me/">http://kobjects.sourceforge.net/kobjects-j2me/</a></p>
-<p><b>Project License: </b>No license is defined for this project.</p></td></tr></table></div></li></ul></li></ul></li></ul></li></ul></li></ul></div></div><a name="Licenses"></a>
+<p><b>Project License: </b>No license is defined for this project.</p></td></tr></table></div></li></ul></li>
+<li>net.sourceforge.me4se:me4se:jar:2.1.4-SNAPSHOT-20040926 (compile) <img id="_img11" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_dep10', '_img11' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_dep10" style="display:none">
+<table border="0" class="table table-striped">
+<tr class="a">
+<th>me4se</th></tr>
+<tr class="b">
+<td>
+<p><b>Description: </b>The me4se library is a J2ME compatibility layer for J2SE (or something like that).</p>
+<p><b>Project License: </b>No license is defined for this project.</p></td></tr></table></div></li></ul></li></ul></div></div><a name="Licenses"></a>
 <div class="section">
 <h2>Licenses<a name="Licenses"></a></h2>
-<p><b>Unknown: </b>kobjects-j2me, ksoap2-android-assembly, kxml, xmlpull</p>
-<p><b>The Apache Software License, Version 2.0: </b>ksoap2-android, ksoap2-base, ksoap2-j2se</p></div><a name="Dependency_File_Details"></a>
+<p><b>Unknown: </b>kobjects-j2me, ksoap2-midp, kxml, me4se, xmlpull</p>
+<p><b>The Apache Software License, Version 2.0: </b>ksoap2-base</p></div><a name="Dependency_File_Details"></a>
 <div class="section">
 <h2>Dependency File Details<a name="Dependency_File_Details"></a></h2>
 <table border="0" class="table table-striped">
@@ -290,27 +272,11 @@
 <th>Java Version</th>
 <th title="Indicates whether these dependencies have been compiled with debug information.">Debug Information</th></tr>
 <tr class="b">
-<td>ksoap2-android-3.5.0-SNAPSHOT.jar</td>
-<td>1.90 kB</td>
-<td>7</td>
-<td>0</td>
-<td>0</td>
-<td>-</td>
-<td>No</td></tr>
-<tr class="a">
 <td>ksoap2-base-3.5.0-SNAPSHOT.jar</td>
 <td>41.16 kB</td>
 <td>34</td>
 <td>23</td>
 <td>3</td>
-<td>1.5</td>
-<td>Yes</td></tr>
-<tr class="b">
-<td>ksoap2-j2se-3.5.0-SNAPSHOT.jar</td>
-<td>15.56 kB</td>
-<td>20</td>
-<td>9</td>
-<td>2</td>
 <td>1.5</td>
 <td>Yes</td></tr>
 <tr class="a">
@@ -330,6 +296,14 @@
 <td>1.6</td>
 <td>Yes</td></tr>
 <tr class="a">
+<td>me4se-2.1.4-SNAPSHOT-20040926.jar</td>
+<td>166.75 kB</td>
+<td>179</td>
+<td>152</td>
+<td>16</td>
+<td>1.1</td>
+<td>Yes</td></tr>
+<tr class="b">
 <td>xmlpull-1.1.3.3.jar</td>
 <td>8.46 kB</td>
 <td>14</td>
@@ -337,7 +311,7 @@
 <td>1</td>
 <td>1.6</td>
 <td>Yes</td></tr>
-<tr class="b">
+<tr class="a">
 <th>Total</th>
 <th>Size</th>
 <th>Entries</th>
@@ -345,20 +319,20 @@
 <th>Packages</th>
 <th>Java Version</th>
 <th>Debug Information</th></tr>
-<tr class="a">
-<td>6</td>
-<td>164.37 kB</td>
-<td>142</td>
-<td>67</td>
-<td>22</td>
+<tr class="b">
+<td>5</td>
+<td>313.67 kB</td>
+<td>294</td>
+<td>210</td>
+<td>36</td>
 <td>1.6</td>
 <td>5</td></tr>
-<tr class="b">
-<td>compile: 6</td>
-<td>compile: 164.37 kB</td>
-<td>compile: 142</td>
-<td>compile: 67</td>
-<td>compile: 22</td>
+<tr class="a">
+<td>compile: 5</td>
+<td>compile: 313.67 kB</td>
+<td>compile: 294</td>
+<td>compile: 210</td>
+<td>compile: 36</td>
 <td>-</td>
 <td>compile: 5</td></tr></table></div><a name="Dependency_Repository_Locations"></a>
 <div class="section">
@@ -380,13 +354,7 @@
 <th>Artifact</th>
 <th>nexus</th></tr>
 <tr class="b">
-<td>com.google.code.ksoap2-android:ksoap2-android:jar:3.5.0-SNAPSHOT</td>
-<td>-</td></tr>
-<tr class="a">
 <td>com.google.code.ksoap2-android:ksoap2-base:jar:3.5.0-SNAPSHOT</td>
-<td>-</td></tr>
-<tr class="b">
-<td>com.google.code.ksoap2-android:ksoap2-j2se:jar:3.5.0-SNAPSHOT</td>
 <td>-</td></tr>
 <tr class="a">
 <td>net.sourceforge.kobjects:kobjects-j2me:jar:0.0-SNAPSHOT-20040926-2</td>
@@ -395,14 +363,17 @@
 <td>net.sourceforge.kxml:kxml:jar:2.2.4</td>
 <td><a class="externalLink" href="http://localhost:8081/nexus/content/groups/public/net/sourceforge/kxml/kxml/2.2.4/kxml-2.2.4.jar"><img alt="Found at http://localhost:8081/nexus/content/groups/public" src="images/icon_success_sml.gif" /></a></td></tr>
 <tr class="a">
+<td>net.sourceforge.me4se:me4se:jar:2.1.4-SNAPSHOT-20040926</td>
+<td><a class="externalLink" href="http://localhost:8081/nexus/content/groups/public/net/sourceforge/me4se/me4se/2.1.4-SNAPSHOT-20040926/me4se-2.1.4-SNAPSHOT-20040926.jar"><img alt="Found at http://localhost:8081/nexus/content/groups/public" src="images/icon_success_sml.gif" /></a></td></tr>
+<tr class="b">
 <td>org.xmlpull:xmlpull:jar:1.1.3.3</td>
 <td><a class="externalLink" href="http://localhost:8081/nexus/content/groups/public/org/xmlpull/xmlpull/1.1.3.3/xmlpull-1.1.3.3.jar"><img alt="Found at http://localhost:8081/nexus/content/groups/public" src="images/icon_success_sml.gif" /></a></td></tr>
-<tr class="b">
+<tr class="a">
 <th>Total</th>
 <th>nexus</th></tr>
-<tr class="a">
-<td>6 (compile: 6)</td>
-<td>3</td></tr></table></div>
+<tr class="b">
+<td>5 (compile: 5)</td>
+<td>4</td></tr></table></div>
                   </div>
             </div>
           </div>
