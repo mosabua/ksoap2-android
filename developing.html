@@ -368,83 +368,66 @@ Developing</title>
 
 
 
-<h1>Developing</h1>
 
 
 
+<div class="section" id="_developing">
+<h2 id="_developing">Developing</h2>
 
 
 
-<p>If you want to help on the actual codebase of the Android Maven Plugin, here is what you need</p>
-
-
+<p>If you want to help on the actual codebase, here is what you need</p>
 
 
 
 <div class="section" id="_pre_requisites">
-<h2 id="_pre_requisites">Pre-requisites</h2>
-
+<h3 id="_pre_requisites">Pre-requisites</h3>
 
 
 <ul>
 
 <li>
 
-<p>Android SDK installed</p>
+<p>Apache Maven installed - (3.1.1 or higher as enforced during the build)</p>
 </li>
 
 <li>
 
-<p>Apache Maven installed - (3.2+1 or higher as enforced during the build)</p>
+<p>Alternatively use the mvnw wrapper scripts</p>
 </li>
 
 <li>
 
-<p>Optionally for better testing and debugging support Eclipse with M2e and Maven Development Tools</p>
+<p>Optionally for better testing and debugging support any Java IDE</p>
 </li>
 
 <li>
 
 <p>Optionally git or svn to get the code from github, unless you download the source as zip</p>
 </li>
-
-<li>
-
-<p>An Android device or emulator connected via ADB for full build</p>
-</li>
-
-<li>
-
-<p>You must have run the <a class="externalLink" href="https://github.com/simpligility/maven-android-sdk-deployer">Maven Android SDK Deployer</a> or have the dependencies from it in your local repository
-or repository manager for all the IT tests to run</p>
-</li>
 </ul>
-
 
 
 
 </div>
 <div class="section" id="_getting_the_code">
-<h2 id="_getting_the_code">Getting the code</h2>
+<h3 id="_getting_the_code">Getting the code</h3>
 
 
-
-<p>You can just get the code from github as usual from the site <a class="bare" href="https://github.com/simpligility/android-maven-plugin/">https://github.com/simpligility/android-maven-plugin/</a></p>
+<p>You can just get the code from github as usual from the site <a class="bare" href="https://github.com/simpligility/ksoap2-android/">https://github.com/simpligility/ksoap2-android/</a></p>
 
 
 
 
 <div>
-<pre>git clone git@github.com:simpligility/android-maven-plugin.git</pre></div>
-
+<pre>git clone git@github.com:simpligility/ksoap2-android.git</pre></div>
 
 
 
 
 </div>
 <div class="section" id="_building">
-<h2 id="_building">Building</h2>
-
+<h3 id="_building">Building</h3>
 
 
 <p>The usual Maven invocations apply. A full build is done with</p>
@@ -458,13 +441,13 @@ or repository manager for all the IT tests to run</p>
 
 
 
-<p>To truly verify everything you also need to connect a device via ADB and run the integration tests:</p>
+<p>or using the Maven wrapper</p>
 
 
 
 
 <div>
-<pre>mvn clean install -P it</pre></div>
+<pre>mvnw clean install</pre></div>
 
 
 
@@ -475,7 +458,7 @@ or repository manager for all the IT tests to run</p>
 
 
 <div>
-<pre>mvn clean site</pre></div>
+<pre>mvn clean site -N</pre></div>
 
 
 
@@ -485,35 +468,13 @@ or repository manager for all the IT tests to run</p>
 
 
 
-</div>
-<div class="section" id="_using">
-<h2 id="_using">Using</h2>
 
 
 
-<p>Once you have built the plugin, you can use the respective version (x.y.z-SNASPHOT) in your own projects by updating the
-version in the pom files there.</p>
+Last updated 2015-08-06 23:52:07 PDT
 
 
-
-<p>If you invoke the plugin outside a Maven project specify the version like so e.g.</p>
-
-
-
-
-<div>
-<pre>mvn com.simpligility.maven.plugins:android-maven-plugin:4.0.0-SNAPSHOT:undeploy -Dparameter=value</pre></div>
-
-
-
-
-
-
-
-Last updated 2015-08-06 23:22:33 PDT
-
-
-</div>
+</div></div>
 
                   </div>
             </div>
