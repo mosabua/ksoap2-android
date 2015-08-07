@@ -376,67 +376,33 @@ Releasing</title>
 
 
 
-<p>This should be of no interest to developers of Android applications. This is for
-those developers of the Android Maven Plugin who perform releases of the plugin.</p>
+<p>This should be of no interest to developers using ksoap2-android for Android
+applications. This is for those developers of ksoap2-android who perform releases.</p>
 
 
 
-<div class="section" id="_introduction_for_users">
-<h3 id="_introduction_for_users">Introduction for Users</h3>
-
-
-<p>Releases are available through the Central Repository as built into Maven and as such no further configuration
-is required to use the plugin.</p>
-
-
-
-<p>Development versions are occasionally deployed to the OSSRH snapshot repository. To use them you can proxy the
-snapshot repository in  your repository manager (good) or add it in your settings.xml (ok) or pom.xml
-(not so good but also possible).</p>
-
-
-
-
-<div>
-<pre>&lt;repositories&gt;
-  &lt;repository&gt;
-    &lt;id&gt;ossrh&lt;/id&gt;
-    &lt;url&gt;https://oss.sonatype.org/content/repositories/snapshots&lt;/url&gt;
-    &lt;snapshots&gt;
-      &lt;enabled&gt;true&lt;/enabled&gt;
-      &lt;updatePolicy&gt;always&lt;/updatePolicy&gt;
-    &lt;/snapshots&gt;
-  &lt;/repository&gt;
-&lt;/repositories&gt;</pre></div>
-
-
-
-
-</div>
 <div class="section" id="_general_for_contributors">
 <h3 id="_general_for_contributors">General for Contributors</h3>
 
 
-<p>You have to be able to do full build of the plugin including site creation and integration tests:</p>
+<p>You have to be able to do full build as well as be able to build the site:</p>
 
 
 
 
 <div>
-<pre>mvn install -P it
-mvn site</pre></div>
+<pre>mvn clean install
+mvn site -N</pre></div>
 
 
 
 
-<p>Beyond that you need all the setup to deploy to the Central Repository. Follow the
-<a class="externalLink" href="http://central.sonatype.org">setup instructions</a>. In addition you need to have permissions to deploy to the
-groupId. Contact the project owners, if required.</p>
+<p>Beyond that you need all the setup to deploy to the OSSRH. Follow the
+<a class="externalLink" href="http://central.sonatype.org">setup instructions</a>. In addition you need to have permissions to deploy to the repository. Contact the project owners, if required.</p>
 
 
 
-<p>For site deployment you need to add your github credentials into settings.xml for the site deployment
-to github pages as part of the release build to work:</p>
+<p>For site deployment you need to add your github credentials into settings.xml for the site deployment to github pages to work:</p>
 
 
 
@@ -636,7 +602,7 @@ open the announcement post and click the little chain/link icon to the right.</p
 
 
 
-Last updated 2015-08-07 00:00:11 PDT
+Last updated 2015-08-07 10:56:54 PDT
 
 
 </div></div>
