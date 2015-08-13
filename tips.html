@@ -14,7 +14,7 @@
 
 
 
-Untitled</title>
+Tips and Tricks</title>
     <link rel="stylesheet" href="./css/apache-maven-fluido-1.3.1.min.css" />
     <link rel="stylesheet" href="./css/site.css" />
     <link rel="stylesheet" href="./css/print.css" media="print" />
@@ -391,12 +391,571 @@ Untitled</title>
 
 
 
+<div class="section" id="_tips_and_tricks">
+<h2 id="_tips_and_tricks">Tips and Tricks</h2>
 
 
-Last updated 2015-08-12 22:55:08 PDT
+
+<div class="section" id="_sending_receiving_array_of_complex_types_or_primitives">
+<h3 id="_sending_receiving_array_of_complex_types_or_primitives">Sending/receiving array of complex types or primitives</h3>
+
+
+<p>You have to extend Vector an implement KvmSerializable.
+see also <a class="bare" href="http://www.blackberry-forum.de/cgi-bin/YaBB.pl?num=1260616413">http://www.blackberry-forum.de/cgi-bin/YaBB.pl?num=1260616413</a></p>
 
 
 
+<p>We want to generate this XML in the Request</p>
+
+
+
+
+<div>
+<pre>&lt;documentIds&gt;
+  &lt;string&gt;string&lt;/string&gt;
+  &lt;string&gt;string&lt;/string&gt;
+&lt;/documentIds&gt;
+&lt;pluginType&gt;string&lt;/pluginType&gt;
+&lt;xmlConfiguration&gt;string&lt;/xmlConfiguration&gt;</pre></div>
+
+
+
+
+<p>As you see, we want to generate an array with the Propertyname &quot;documentIds&quot;
+which contains strings with the propertyname &quot;string&quot;, and to other simple
+string properties called &quot;pluginType&quot; and &quot;xmlConfiguration&quot;.</p>
+
+
+
+<p>For this you have to generate a class like this:</p>
+
+
+
+
+<div>
+<pre>import java.util.Hashtable;
+import java.util.Vector;
+import org.ksoap2.serialization.KvmSerializable;
+import org.ksoap2.serialization.PropertyInfo;
+
+public class DocumentIDs extends Vector&lt;String&gt; implements KvmSerializable {
+
+  private static final long serialVersionUID = -1166006770093411055L;
+
+  @Override
+  public Object getProperty(int arg0) {
+    return this.get(arg0);
+  }
+
+  @Override
+  public int getPropertyCount() {
+    return 1;
+  }
+
+  @Override
+  public void getPropertyInfo(int arg0, Hashtable arg1, PropertyInfo arg2) {
+    arg2.name = &quot;string&quot;;
+    arg2.type = PropertyInfo.STRING_CLASS;
+  }
+
+  @Override
+  public void setProperty(int arg0, Object arg1) {
+    this.add(arg1.toString());
+  }
+
+}</pre></div>
+
+
+
+
+<p>To build the request you have to do this:</p>
+
+
+
+<p>Make a new Vector-Object from this class:</p>
+
+
+
+
+<div>
+<pre>DocumentIDs documentIdVector = new DocumentIDs();</pre></div>
+
+
+
+
+<p>then you can add elements:</p>
+
+
+
+
+<div>
+<pre>documentIdVector.add(&quot;any String&quot;);</pre></div>
+
+
+
+
+<p>then you create a PropertyInfo with it:</p>
+
+
+
+
+<div>
+<pre>documentIdsPropertyInfo = new PropertyInfo();
+documentIdsPropertyInfo.setName(&quot;documentIds&quot;);
+documentIdsPropertyInfo.setValue(documentIdVector);
+documentIdsPropertyInfo.setType(documentIdVector.getClass());</pre></div>
+
+
+
+
+<p>then you add all the properties to the request:</p>
+
+
+
+
+<div>
+<pre>Request = new SoapObject(NAMESPACE, METHOD_NAME);
+Request.addProperty(documentIdsPropertyInfo);
+Request.addProperty(&quot;pluginType&quot;, &quot;another string&quot;);
+Request.addProperty(&quot;xmlConfiguration&quot;, &quot;next string&quot;);
+
+soapEnvelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+soapEnvelope.setOutputSoapObject(Request);
+soapEnvelope.addMapping(NAMESPACE, &quot;documentIds&quot;, new DocumentIDs().getClass());</pre></div>
+
+
+
+
+<p>When receiving a Response you simply cast the soapEnvelope.bodyIn to the class
+the response contains. and then access the Vector entries with an index and the
+values of a complex-type entry with getter-methods.</p>
+
+
+
+<p>in the above case this whould be</p>
+
+
+
+
+<div>
+<pre>DocumentIDs documentIdResultVector = (DocumentIDs)soapEnvelope.bodyIn;
+String resultString = documentIdResultVector.get(0);</pre></div>
+
+
+
+
+</div>
+<div class="section" id="_how_to_see_raw_xml_request_and_response_e_g_for_debugging">
+<h3 id="_how_to_see_raw_xml_request_and_response_e_g_for_debugging">How to see raw xml request and response e.g. for debugging?</h3>
+
+
+<p>Turn debugging on for your httpTransport like so</p>
+
+
+
+
+<div>
+<pre>httpTransport.debug = true;</pre></div>
+
+
+
+
+<p>and then set a breakpoint at</p>
+
+
+
+
+<div>
+<pre>httpTransport.call(soapaction, envelope);</pre></div>
+
+
+
+
+<p>inspect the values of</p>
+
+
+
+
+<div>
+<pre>httpTransport.requestDump
+httpTransport.responseDump</pre></div>
+
+
+
+
+</div>
+<div class="section" id="_is_there_code_generation_off_the_wsdl_somehow">
+<h3 id="_is_there_code_generation_off_the_wsdl_somehow">Is there code generation off the WSDL somehow?</h3>
+
+
+<p>The leading WSDL client code generator EasyWsdl[<a class="bare" href="https://www.easywsdl.com/">https://www.easywsdl.com/</a>]
+produces code that facilitates ksoap2-android.</p>
+
+
+
+<p>There is the also a less mature project [<a class="bare" href="http://code.google.com/p/wsdl2ksoap/">http://code.google.com/p/wsdl2ksoap/</a>]
+that uses KSoap2-Android as well as a patch that enables something along these
+lines in upstream KSoap2 (details on <a class="bare" href="http://code.google.com/p/ksoap2-android/issues/detail?id=34">http://code.google.com/p/ksoap2-android/issues/detail?id=34</a>
+ however that is all I know about it..</p>
+
+
+
+</div>
+<div class="section" id="_marshalling_arrays">
+<h3 id="_marshalling_arrays">Marshalling Arrays</h3>
+
+
+<p>Writing a three dimensional array (as an example) can be done with a Marshaller
+implemented e.g. like that, reading still needs to be done</p>
+
+
+
+
+<div>
+<pre>import org.ksoap2.serialization.Marshal;
+import org.ksoap2.serialization.PropertyInfo;
+import org.ksoap2.serialization.SoapSerializationEnvelope;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlSerializer;
+
+import java.io.IOException;
+
+public class MarshallArray implements Marshal {
+    //this method doesn't work yet
+    public Object readInstance(XmlPullParser parser, String namespace, String name, PropertyInfo expected)
+            throws IOException, XmlPullParserException {
+        return parser.nextText();
+    }
+
+    public void register(SoapSerializationEnvelope cm) {
+        cm.addMapping(cm.xsd, &quot;String[][][]&quot;, String[][][].class, this);
+    }
+
+    public void writeInstance(XmlSerializer writer, Object obj) throws IOException {
+        String[][][] myArray = (String[][][]) obj;
+        for (int i = 0; i &lt; myArray.length; i++) {
+            writer.startTag(&quot;&quot;, &quot;ArrayOfArrayOfString&quot;);
+            for (int j = 0; j &lt; myArray[i].length; j++) {
+                writer.startTag(&quot;&quot;, &quot;ArrayOfString&quot;);
+                for (int k = 0; k &lt; myArray[i][j].length; k++) {
+                    writer.startTag(&quot;&quot;, &quot;string&quot;);
+                    writer.text(myArray[i][j][k]);
+                    writer.endTag(&quot;&quot;, &quot;string&quot;);
+                }
+                writer.endTag(&quot;&quot;, &quot;ArrayOfString&quot;);
+            }
+            writer.endTag(&quot;&quot;, &quot;ArrayOfArrayOfString&quot;);
+        }
+    }
+}</pre></div>
+
+
+
+
+</div>
+<div class="section" id="_manual_parsing_of_an_array_of_soapobjects_into_an_pojo_array">
+<h3 id="_manual_parsing_of_an_array_of_soapobjects_into_an_pojo_array">Manual Parsing of an Array of SoapObjects into an POJO array</h3>
+
+
+<p>You can create an array of pojos by just parsing through a SoapObjects
+properties, which are each SoapObjects themselves.  Your response returned from
+the webservice will be a SoapObject (unless it is very simple - SoapPrimitive
+then, or it failed.. SoapException then) and you can parse it manually with the
+various methods like getProperty, getAttribute and so on. See the javadoc for
+SoapObject for more.</p>
+
+
+
+
+<div>
+<pre>ArrayList&lt;Pojo&gt; pojos = null;
+int totalCount = soapobject.getPropertyCount();
+if (detailsTotal &gt; 0 ) {
+    pojos = new ArrayList&lt;Pojo&gt;();
+    for (int detailCount = 0; detailCount &lt; totalCount; detailCount++) {
+        SoapObject pojoSoap = (SoapObject) soapobject.getProperty(detailCount);
+        Pojo Pojo = new Pojo();
+        Pojo.idNumber = pojoSoap.getProperty(&quot;idNumber&quot;).toString();
+        Pojo.quantity =  pojoSoap.getProperty(&quot;quantity&quot;).toString();
+
+        pojos.add(Pojo);
+    }
+}</pre></div>
+
+
+
+
+</div>
+<div class="section" id="_how_to_build_up_a_element_array_e_g_for_the_security_header_of_the_request">
+<h3 id="_how_to_build_up_a_element_array_e_g_for_the_security_header_of_the_request">How to build up a Element array e.g. for the security header of the request</h3>
+
+
+<p>See [<a class="bare" href="http://stackoverflow.com/questions/4194920/blackberry-ksoap2-soap-header">http://stackoverflow.com/questions/4194920/blackberry-ksoap2-soap-header</a>]</p>
+
+
+
+</div>
+<div class="section" id="_adding_an_array_of_complex_objects_to_the_request">
+<h3 id="_adding_an_array_of_complex_objects_to_the_request">Adding an array of complex objects to the request</h3>
+
+
+<p>To get this xml:</p>
+
+
+
+
+<div>
+<pre>&lt;users&gt;
+  &lt;user&gt;
+     &lt;name&gt;Jonh&lt;/name&gt;
+     &lt;age&gt;12&lt;/age&gt;
+  &lt;/user&gt;
+  &lt;user&gt;
+     &lt;name&gt;Marie&lt;/name&gt;
+     &lt;age&gt;27&lt;/age&gt;
+  &lt;/user&gt;
+&lt;/users&gt;</pre></div>
+
+
+
+
+<p>You would do this:</p>
+
+
+
+
+<div>
+<pre>SoapObject users = new SoapObject(NAMESPACE, &quot;users&quot;);
+SoapObject john = new SoapObject(NAMESPACE, &quot;user&quot;);
+john.addProperty(&quot;name&quot;, &quot;john&quot;);
+john.addProperty(&quot;age&quot;, 12);
+SoapObject marie = new SoapObject(NAMESPACE, &quot;user&quot;);
+john.addProperty(&quot;name&quot;, &quot;marie&quot;);
+john.addProperty(&quot;age&quot;, 27);
+users.addSoapObject(john);
+users.addSoapObject(marie);</pre></div>
+
+
+
+
+<p>In a similar manner if you have an array of objects or primitives you can build
+a loop iterating through and adding as above. The approach above works as of
+2.5.5. Prior you have to create a SoapObject and add it as a property.</p>
+
+
+
+<p>Or look above to &quot;sending/receiving array of complex types or primitives&quot;</p>
+
+
+
+<p>You can also add any required attributes to each SoapObject as necessary.</p>
+
+
+
+</div>
+<div class="section" id="_how_to_set_the_sslsocketfactory_on_a_https_connection_in_order_to_allow_self_signed_certificates_read_from_a_keystore">
+<h3 id="_how_to_set_the_sslsocketfactory_on_a_https_connection_in_order_to_allow_self_signed_certificates_read_from_a_keystore">How to set the SSLSocketFactory on a https connection  in order to allow self-signed certificates read from a KeyStore</h3>
+
+
+
+<div>
+<pre>public class ConnectionWithSelfSignedCertificate {
+
+  private KeyStore keyStore;
+
+  public ConnectionWithSelfSignedCertificate(KeyStore keyStore) {
+    this.keyStore = keyStore;
+  }
+
+  public void dummy(String host, int port, String file, int timeout) throws Exception {
+    SoapObject client = new SoapObject(&quot;&quot;, &quot;dummy&quot;);
+    SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+    envelope.bodyOut = client;
+    HttpsTransportSE transport = new HttpsTransportSE(host, port, file, timeout);
+    ((HttpsServiceConnectionSE) transport.getConnection()).setSSLSocketFactory(getSSLSocketFactory());
+    transport.call(&quot;&quot;, envelope);
+  }
+
+  private SSLSocketFactory getSSLSocketFactory() throws KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
+    TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+    tmf.init(keyStore);
+    SSLContext context = SSLContext.getInstance(&quot;SSL&quot;);
+    context.init(null, tmf.getTrustManagers(), null);
+    return context.getSocketFactory();
+  }
+}</pre></div>
+
+
+
+
+</div>
+<div class="section" id="_sending_a_byte_array">
+<h3 id="_sending_a_byte_array">Sending a byte array</h3>
+
+
+<p>To send a byte array (e.g an image) you need to enable MarshalBase64 by adding
+it as a mapping to the envelope and then add the byte array as a base64 encoded
+array.</p>
+
+
+
+
+<div>
+<pre>String path = Environment.getExternalStorageDirectory().getAbsolutePath();
+                     String FILE = &quot;/PdfCheck1.pdf&quot;;
+                     String pathCompleto = path+FILE;
+                     Log.i(&quot;&quot;,&quot;Path completo : &quot;+ pathCompleto);
+                     byte[] filefirma = convertDocToByteArray(pathCompleto);
+                     Intervento.addProperty(&quot;FileFirma&quot;,filefirma);
+
+SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+
+new MarshalDouble().register(envelope);
+new MarshalBase64().register(envelope);   //serialization
+envelope.encodingStyle = SoapEnvelope.ENC;
+
+envelope.bodyOut = request;
+envelope.dotNet = true;
+envelope.setOutputSoapObject(request);
+envelope.setAddAdornments(false);
+envelope.implicitTypes= true;
+//                 Log.i(&quot;Envelope&quot;,&quot;settata&quot;);
+
+HttpTransportSE androidHttpTransport = new HttpTransportSE(URL);
+androidHttpTransport.debug = true;
+Log.i(&quot;&quot;,&quot;Prima di androidHttpTransport.call &quot;);
+androidHttpTransport.call(SOAP_ACTION, envelope);
+Log.i(&quot;&quot;,&quot;&quot; + androidHttpTransport.requestDump);
+Log.i(&quot;&quot;,&quot;&quot; + androidHttpTransport.responseDump);
+Log.i(&quot;call&quot;,&quot;call&quot;);
+
+SoapPrimitive resultsRequestSOAP = (SoapPrimitive) envelope.getResponse();
+Log.i(&quot;SoapPrimitive&quot;,&quot;Result&quot; + resultsRequestSOAP);
+Log.i(&quot;GetAttribute&quot;,&quot;Count&quot; + resultsRequestSOAP.getAttributeCount());
+
+b = Boolean.parseBoolean(resultsRequestSOAP.toString());
+Log.i(&quot;&quot;,&quot;risultato boolean Straordinario &quot;+b);
+
+public static byte[] convertDocToByteArray(String sourcePath) throws IOException {
+      File f = new File(sourcePath);
+        long l = f.length();
+        byte [] buf = new byte[(int) l];
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+              try {
+                    InputStream fis = new FileInputStream(sourcePath);
+
+                    for (int readNum; (readNum = fis.read(buf)) != -1;) {
+                        bos.write(buf, 0, readNum);
+                        Log.i(&quot;&quot;,&quot;read num bytes: &quot;+readNum);
+                    }
+             } catch (IOException e) {
+                  System.out.println(&quot;IO Ex&quot;+e);
+              }
+              byte[] bytes = bos.toByteArray();
+
+//              for(int i = 0;i&lt;bytes.length;i++)
+//              {
+//                Log.i(&quot;&quot;,&quot;bytes : &quot;+bytes[i]);
+//              }
+}</pre></div>
+
+
+
+
+</div>
+<div class="section" id="_using_basic_authentication">
+<h3 id="_using_basic_authentication">Using Basic Authentication</h3>
+
+
+<p>use the class HttpTransportBasicAuth from the extras package</p>
+
+
+
+</div>
+<div class="section" id="_using_ntlm_authentication">
+<h3 id="_using_ntlm_authentication">Using NTLM Authentication</h3>
+
+
+<p>use the jar from the ksoap2-extras-ntlm module with the NtlmTransport</p>
+
+
+
+</div>
+<div class="section" id="_testing_and_debugging_in_general_and_specifically_for_wcf_webservices">
+<h3 id="_testing_and_debugging_in_general_and_specifically_for_wcf_webservices">Testing and Debugging in general and specifically for WCF webservices</h3>
+
+
+<p>Check out the Android application WCF Tester mentioned on the
+links:howto.html[How To] page as well as client tools like SoapUI.</p>
+
+
+
+</div>
+<div class="section" id="_use_an_array_of_parameters_to_create_a_request">
+<h3 id="_use_an_array_of_parameters_to_create_a_request">Use an array of parameters to create a request</h3>
+
+
+<p>If you need to use an arrays of parameters, you can use HashMap and just
+register MarshalHashTable object. MarshalHashTable is needed to use HashTable o
+bject as container of parameters:</p>
+
+
+
+
+<div>
+<pre>Hashtable hashtable = new Hashtable();
+hashtable.put(&quot;is_report&quot;, false);
+hashtable.put(&quot;r_how&quot;, 1);
+_client.addProperty(&quot;params&quot;,hashtable);
+SoapSerializationEnvelope _envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+ _envelope.bodyOut = _client;
+HttpTransportSE _ht = new HttpTransportSE(&quot;http://www.drebedengi.ru/soap/&quot;);
+_ht.debug = true;
+(new MarshalHashtable()).register(_envelope);</pre></div>
+
+
+
+
+<p>also see the discussion on the mailing list
+<a class="bare" href="https://groups.google.com/forum/?fromgroups=#!topic/ksoap2-android/OeP-jWVLZMw">https://groups.google.com/forum/?fromgroups=#!topic/ksoap2-android/OeP-jWVLZMw</a></p>
+
+
+
+</div>
+<div class="section" id="_using_cookies">
+<h3 id="_using_cookies">Using Cookies</h3>
+
+
+<p>Many web services use cookies to maintain state between different calls to the
+web service. ksoap2-android exposes enough of the underlying HTTP headers to
+enable the developer to receive, save and return those cookies as needed.</p>
+
+
+
+<p>Cookies as simply received from the web service and sent to the web service as
+headers in the HTTP preamble. In order to use cookies with the ksoap2-android,
+one needs to save any returned cookies and return them with subsequent calls to
+the web service.</p>
+
+
+
+<p>The HttpTransportSE class exposes the method call that, beyond the required
+SOAP parameters, also accepts a <i>List</i> of <i>HeaderProperty</i> instances. It also
+returns a like <i>List</i>. This provides the ability to append additional headers to
+the request and review the returned headers. Since a cookie is just one of those
+header, one can use this facility to send and receive cookies.</p>
+
+
+
+
+
+
+
+Last updated 2015-08-12 23:45:01 PDT
+
+
+</div></div>
 
                   </div>
             </div>
