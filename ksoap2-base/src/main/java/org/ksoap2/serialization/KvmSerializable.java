@@ -62,14 +62,6 @@ public interface KvmSerializable {
      */
     void getPropertyInfo(int index, Hashtable properties, PropertyInfo info);
 
-    /**
-     * Gets the inner text of xml tags
-     */
-    String getInnerText();
-
-    /**
-     * @param s String to be set as inner text for an outgoing soap object
-     */
-    void setInnerText(String s);
+   
 
 }

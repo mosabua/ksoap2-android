@@ -38,7 +38,7 @@ import java.util.*;
  * KvmSerializable interface.
  */
 
-public class SoapObject extends AttributeContainer implements KvmSerializable {
+public class SoapObject extends AttributeContainer implements KvmSerializable, HasInnerText {
 
     private static final String EMPTY_STRING = "";
     /**

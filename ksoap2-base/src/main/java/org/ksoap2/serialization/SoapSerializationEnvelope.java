@@ -176,7 +176,9 @@ public class SoapSerializationEnvelope extends SoapEnvelope {
         try {
             tag = parser.nextTag();
         } catch (XmlPullParserException e) {
-            obj.setInnerText((parser.getText() != null) ? parser.getText() : "");
+            if(obj instanceof HasInnerText){
+                 ((HasInnerText)obj).setInnerText((parser.getText() != null) ? parser.getText() : "");
+            }
             tag = parser.nextTag();
         }
         while (tag != XmlPullParser.END_TAG) {
@@ -230,7 +232,9 @@ public class SoapSerializationEnvelope extends SoapEnvelope {
             try {
                 tag = parser.nextTag();
             } catch (XmlPullParserException e) {
-                obj.setInnerText((parser.getText() != null) ? parser.getText() : "");
+                if(obj instanceof HasInnerText){
+                    ((HasInnerText)obj).setInnerText((parser.getText() != null) ? parser.getText() : "");
+                }
                 tag = parser.nextTag();
             }
 
@@ -506,7 +510,9 @@ public class SoapSerializationEnvelope extends SoapEnvelope {
 
         } else if (obj instanceof KvmSerializable) {
 
-            ((KvmSerializable) obj).setInnerText((parser.getText() != null) ? parser.getText() : "");
+            if(obj instanceof HasInnerText){
+                ((HasInnerText)obj).setInnerText((parser.getText() != null) ? parser.getText() : "");
+            }
             readSerializable(parser, (KvmSerializable) obj);
 
         } else if (obj instanceof Vector) {
@@ -716,8 +722,11 @@ public class SoapSerializationEnvelope extends SoapEnvelope {
                 writer.endTag(namespace, name);
             }
         }
-        if (obj.getInnerText() != null) {
-            writer.cdsect(obj.getInnerText());
+        if(obj instanceof HasInnerText){
+            
+        if (((HasInnerText)obj).getInnerText() != null) {
+            writer.cdsect(((HasInnerText)obj).getInnerText());
+        }
         }
 
     }
@@ -820,9 +829,11 @@ public class SoapSerializationEnvelope extends SoapEnvelope {
                 writer.endTag(namespace, name);
             }
         }
-        if (obj.getInnerText() != null) {
-            writer.cdsect(obj.getInnerText());
+        if(obj instanceof HasInnerText){
+        if (((HasInnerText)obj).getInnerText() != null) {
+            writer.cdsect(((HasInnerText)obj).getInnerText());
 
+        }
         }
 
     }
