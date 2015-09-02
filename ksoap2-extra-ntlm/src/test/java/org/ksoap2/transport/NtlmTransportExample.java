@@ -49,8 +49,8 @@ public class NtlmTransportExample {
 
         envelope.setOutputSoapObject(request);
 
-        NtlmTransport httpTransport = new NtlmTransport();
-        httpTransport.setCredentials(SOAP_ADDRESS, "test6", "12345678", "ntDomain", "ws");
+        NtlmTransport httpTransport = new NtlmTransport(SOAP_ADDRESS);
+        httpTransport.setCredentials("test6", "12345678", "ntDomain", "ws");
 
         try    {
 
