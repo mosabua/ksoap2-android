@@ -1,0 +1,74 @@
+== Getting Started
+
+The first step for using the libraries provided from ksoap2-android is
+to add the desired JAR libraries to the classpath.
+
+All files are provided in Maven repositories hosted by Sonatype:
+
+Releases:: https://oss.sonatype.org/content/repositories/ksoap2-android-releases/[https://oss.sonatype.org/content/repositories/ksoap2-android-releases/]
+Snapshots (Development Versions):: https://oss.sonatype.org/content/repositories/ksoap2-android-snapshots/[https://oss.sonatype.org/content/repositories/ksoap2-android-snapshots/]
+
+=== Apache Maven 
+
+To make use of this library in a Maven project, add the following to your project's POM:
+
+----
+<project>
+  ...
+  <dependencies>
+    <dependency>
+      <groupId>com.google.code.ksoap2-android</groupId>
+      <artifactId>ksoap2-android</artifactId>
+      <version>3.4.0</version>
+    </dependency>
+  </dependencies>
+  ...
+</project>
+----
+
+and configure a proxy repository in your repository manager using the URL of the 
+release repository above.
+
+If you are not using a repository manager like http:/www.sonatype.org/nexus[Sonatype Nexus], you should start doing so now. 
+
+As a stop gap solution you could add the repository to a profile in your 
+settings.xml or pom.xml:
+
+----
+<repositories>
+  <repository>
+    <id>ossrh</id>
+    <url>https://oss.sonatype.org/content/repositories/ksoap2-android-releases/</url>
+  </repository>
+</repositories>
+----
+
+Further libraries as part of the project are also published as part of the build 
+and can be declared as dependencies as well, if needed.
+
+=== Gradle
+
+The same coordinates for the JAR and the release repository URL as used for 
+Apache Maven can be used.
+
+=== Apache Ant-based build and Eclipse/ADT 
+
+To make use of this library in a non-Maven project, follow the instructions in 
+the  http://developer.android.com/guide/index.html[Android Developer's Guide] on 
+how to http://developer.android.com/guide/appendix/faq/commontasks.html#addexternallibrary[Add an External Library] to your project. 
+
+You will need to add a ksoap2-android and all required transitive dependencies 
+to the build path. Luckily the Maven build of the project produces a nice bundle
+of all these jars in one big file. 
+
+The different version of these files are available at  https://oss.sonatype.org/content/repositories/ksoap2-android-releases/com/google/code/ksoap2-android/ksoap2-android-assembly/.
+
+The latest release artifact of the bundle is available at 
+
+https://oss.sonatype.org/content/repositories/ksoap2-android-releases/com/google/code/ksoap2-android/ksoap2-android-assembly/3.4.0/ksoap2-android-assembly-3.4.0-jar-with-dependencies.jar 
+
+=== Next Steps 
+
+In terms of how to write your code please look at the 
+link:howto.html[some of the many tutorials from the community] and check out
+our link:tips.html[collection of tips and tricks].

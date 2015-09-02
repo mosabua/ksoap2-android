@@ -1,0 +1,367 @@
+== Changelog
+
+The commit log is available at https://github.com/mosabua/ksoap2-android/commits/
+
+=== 3.5.0 or higher, upcoming
+
+* Updated Java language level to 1.5
+** see https://github.com/mosabua/ksoap2-android/commit/ed556eb35515d59e47174b1dd1b66d163212d2f5
+** contributed by Manfred Moser http://www.simpligility.com
+* Fixed https connection with proxy
+** see https://github.com/mosabua/ksoap2-android/pull/59
+** contributed by João Vitor P. Moraes https://github.com/jvlppm
+* Store all http headers from the response in HttpResponseException?
+** see https://github.com/mosabua/ksoap2-android/pull/61
+** contributed by https://github.com/robocik, Quasar Development from http://easywsdl.com
+* Support for namespace extensions
+** see https://github.com/mosabua/ksoap2-android/pull/62
+** contributed by https://github.com/robocik, Quasar Development from http://easywsdl.com
+* Site migration to github 
+** contributed by Manfred Moser http://www.simpligility.com
+* Maven repository migration to Sonatype
+** contributed by Manfred Moser http://www.simpligility.com 
+** and Sonatype http://www.sonatype.com 
+* Updated and reworded all documentation for Maven/asciidoc powered site 
+** contributed by Manfred Moser http://www.simpligility.com
+* Adapted project for changed release process
+** contributed by Manfred Moser http://www.simpligility.com
+
+=== 3.4.0 Release, 2015-01-07
+
+* Support for different namespaces and pre** fixes for attribute values, in case the value and the attribute are not in the same namespace.
+** see https://github.com/mosabua/ksoap2-android/pull/53
+** contributed by chelala https://github.com/chelala
+* Updated parent pom version for plugin version control
+** contributed by Manfred Moser http://www.simpligility.com
+* Support upper or lowercase for tags in soapfault
+** see https://github.com/mosabua/ksoap2-android/pull/57
+** contributed by Omar Hussein https://github.com/satansly
+* Addition of methods to improve attributes handling and inner text for tags
+** see https://github.com/mosabua/ksoap2-android/pull/58
+** contributed by Omar Hussein https://github.com/satansly
+
+=== 3.3.0 Release, 2014-05-09
+
+* Prevent NPE when getting property value
+** see https://github.com/mosabua/ksoap2-android/pull/50
+** contributed by https://github.com/Islandman93
+* Fix to allow overriding SSLSocketFactory in ServiceConnection?
+** see https://github.com/mosabua/ksoap2-android/pull/52
+** fixes  issue 189 
+** contributed by https://github.com/yousifucv
+* Added feature to control a null value representation in SOAP message
+** see https://github.com/mosabua/ksoap2-android/pull/51
+** contributed by https://github.com/robocik, Quasar Development from http://easywsdl.com
+
+=== 3.2.0 Release, 2014-02-23
+
+* Feature to allow skipping of properties with null value and not render them in the output xml at all
+** see https://github.com/mosabua/ksoap2-android/pull/42
+** contributed by https://github.com/robocik, Quasar Development from http://easywsdl.com
+* Enable SoapSerializationEnvelope? to serialize attributes from any class that inherits from AttributeContainer?, not just SoapObject?
+** see https://github.com/mosabua/ksoap2-android/pull/43
+** contributed by https://github.com/robocik, Quasar Development from http://easywsdl.com
+* Simplification for extending SoapSerializationEnvelope?
+** see https://github.com/mosabua/ksoap2-android/pull/44
+** contributed by https://github.com/robocik, Quasar Development from http://easywsdl.com
+* Explicitly disconnecting serviceconnection to avoid issues with android keeping connection and trying to reconnect
+** fixes  issue 173 
+** see https://github.com/mosabua/ksoap2-android/pull/47
+** contributed by https://github.com/Islandman93
+* Added interface HasAttributes? to allow different classes to have attributes (used for Vector now)
+** see https://github.com/mosabua/ksoap2-android/pull/48
+** contributed by https://github.com/robocik, Quasar Development from http://easywsdl.com
+* Support for multi dimensional arrays for RPC encoded services
+** see https://github.com/mosabua/ksoap2-android/pull/49/files
+** contributed by https://github.com/robocik, Quasar Development from http://easywsdl.com
+
+=== 3.1.1 Release, 2013-11-29
+
+* Making SoapPrimitive? more open and flexibile for reuse
+** see commits around https://github.com/mosabua/ksoap2-android/commit/320c2560444cedfbca5be894750f0239eebde44d
+** contributed by Sergey Kolebanov <skoleban@mera.ru> and Manfred Moser
+
+=== 3.1.0 Release, 2013-10-24
+
+* SoapFault? parsing fix for responses with HTTP 500 response codes
+** see https://github.com/mosabua/ksoap2-android/pull/38
+** contributed by Nico du Plessis http://nicoduplessis.com/
+* Provide file output stream instead of byte array if a file is created in HttpTransportSE
+** see https://github.com/mosabua/ksoap2-android/pull/37
+** contributed by https://github.com/joschi70
+* Easier way of getting Http Response Code on Call() when response code != 200
+** see https://github.com/mosabua/ksoap2-android/pull/40
+** contributed by JBay Solutions https://github.com/syshex
+* Fixed logic around ignoring connections closure
+** see https://github.com/mosabua/ksoap2-android/commit/7c51bfb3da66d2748cc628ab8cd4a94aac23925f
+** contributed by Manfred Moser http://www.simpligility.com
+* Fixed logic around ignoring connections closure
+** see https://github.com/mosabua/ksoap2-android/commit/7c51bfb3da66d2748cc628ab8cd4a94aac23925f
+** contributed by Manfred Moser http://www.simpligility.com
+* Removed connection close header, since it has been causing issues for users
+** see https://github.com/mosabua/ksoap2-android/commit/c9b810a40f7c3f4843181f1dc024d62c702249ae
+** contributed by Manfred Moser http://www.simpligility.com
+* Updated parent pom, set to require Maven 3.1.1 and added travis ci build
+** contributed by Manfred Moser http://www.simpligility.com
+
+=== 3.0.0 Release, 2013-03-05
+
+* Added support to stream response into a file rather than parsing it
+** see issue 137 
+** contributed by Manfred Moser http://www.simpligility.com
+* Removed duplicate variables hiding super class variable to expose access to timeout
+** see https://github.com/mosabua/ksoap2-android/pull/34
+** contributed by Anatoliy Shuba, https://github.com/AShuba
+* Modification to provide HTTP status information
+** see https://github.com/mosabua/ksoap2-android/pull/32
+** contributed by https://github.com/baldheadedguy steighton@pointinside.com
+* Disabled getting namespace from mapping and rather get correct type from response
+** fixes  issue 75 
+** see https://github.com/mosabua/ksoap2-android/pull/33
+** contributed by Antonio Vila Juarez https://github.com/antoniov72
+* Clean up of transports and service connection usage
+** see https://github.com/mosabua/ksoap2-android/pull/35
+** contributed by Anatoliy Shuba, https://github.com/AShuba
+
+=== 3.0.0-RC.4 Release, 2012-11-12
+
+* Added BufferedInputStream? to wrap the InputStream? in transports
+** should fix  issue 82 
+** see https://github.com/mosabua/ksoap2-android/pull/31
+* Add support for Proxy Configuration using HttpsTransportSE
+** fixes  issue 140 
+** contributed by Manfred Moser http://www.simpligility.com
+* Release process
+** contributed by Manfred Moser http://www.simpligility.com
+
+=== 3.0.0-RC.3 Release, 2012-11-06
+
+* Connection keep-alive or close Fix
+** fixes  issue 132 
+** see https://github.com/mosabua/ksoap2-android/pull/30
+** contributed by Jose Castellanos Molina https://github.com/matlock08
+
+=== 3.0.0-RC.2 Release, 2012-10-22
+
+* Gzip stream workaround for Android 2.3
+** see https://github.com/mosabua/ksoap2-android/pull/26
+** contributed by Vadim Kotov
+* SOAP envelope encoding synced with HTTP request Content-Type attribute
+** see https://github.com/mosabua/ksoap2-android/pull/28/
+** contributed by Anatoliy Shuba, https://github.com/AShuba
+* Fix gzipped error streams
+** see https://github.com/mosabua/ksoap2-android/pull/27
+** fixes  issue 131 
+** contributed by Wesley Wiser, https://github.com/wesleywiser
+* Close connection in transport
+** see https://github.com/mosabua/ksoap2-android/pull/29
+** fixes  issue 133 
+** contributed by Maziz Eza https://github.com/MazizEsa
+* Plugin updates and release process
+** contributed by Manfred Moser http://www.simpligility.com
+
+=== 3.0.0-RC.1 Release, 2012-07-19
+
+* fix for gzip support on servers that use lower case header properties
+** see discussion in https://github.com/mosabua/ksoap2-android/pull/17
+* improved honoring of implicitTypes flag
+** fixes  issue 66 
+** contributed by Anatoliy Shuba, https://github.com/AShuba
+* improved access to service connection from transport classes
+** see https://github.com/mosabua/ksoap2-android/pull/22
+** contributed by https://github.com/domenukk
+* changed method name!
+* removed all deprecated methods causing version to rev to 2.7.0, decided to do a RC.1 first though
+** contributed by Manfred Moser http://www.simpligility.com
+* optimized buffer length of requests
+** contributed by Jose Castellanos Molina https://github.com/matlock08
+** see https://github.com/mosabua/ksoap2-android/pull/24
+* added module with support for NTLM support
+** contributed by Manfred Moser http://www.simpligility.com based off contribution on the mailing list
+
+=== 2.6.5 Release, 2012-05-31
+
+* Gzip encoding support
+** fixes  issue 103 
+** see https://github.com/mosabua/ksoap2-android/pull/17
+** contributed by Anatoliy Shuba, https://github.com/AShuba
+* newInstance() on SoapObject? modifies original instance fixed
+** fixes  issue 99 
+** see https://github.com/mosabua/ksoap2-android/pull/18
+** contributed by Jose Castellanos Molina https://github.com/matlock08
+* removed redundant opening of connection in HttpTransportSE
+** fixes  issue 122 
+** see https://github.com/mosabua/ksoap2-android/pull/20
+** contributed by Jose Castellanos Molina https://github.com/matlock08
+
+=== 2.6.4 Release, 2012-05-01
+
+* Skip unknown properties instead of throwing a RuntimeException?
+use avoidExceptionForUnknownProperty property to activate
+** see https://github.com/mosabua/ksoap2-android/pull/13
+** contributed by Nikolay Ivanets https://github.com/StenaviN
+** somehow got lost in git merges, reapplied by Manfred Moser, , http://www.simpligility.com
+* Fix to avoid inner class warning
+** fixes  issue 71 
+** see https://github.com/mosabua/ksoap2-android/pull/16
+** contributed by Sergej Koščejev https://github.com/sergej-koscejev
+* Made SoapObject#getPropertyInfo?() work for nested SoapObjects?
+** fixes  issue 117 
+** see https://github.com/mosabua/ksoap2-android/pull/15
+** contributed by Sergej Koščejev https://github.com/sergej-koscejev
+* Proper behaviour for getPropertySafelyAsString in case of null arguments
+** fixes second part of  issue 94 
+** contributed by Manfred Moser, http://www.simpligility.com
+
+=== 2.6.3 Release, 2012-04-10
+
+* Ensure that attributes on SoapPrimitives? are serialized out correctly and not list
+** fixes  issue 112 
+** see https://github.com/mosabua/ksoap2-android/commit/f0e23aed58d2b8d0aabc4ae2436a2dc8c4e036bc
+** contributed by Manfred Moser, http://www.simpligility.com
+* Allow to set the SSLFactory for a https connection, essentially allow using self signed certificates
+** see https://github.com/mosabua/ksoap2-android/pull/14
+** contributed by Frangiskos Sigalas https://github.com/silme
+* Forcing code style on test code
+** contributed by Manfred Moser, http://www.simpligility.com
+
+=== 2.6.2 Release, 2012-03-19
+
+* convenience methods in SoapObject? to get primitive data without the anyType
+** fixes  issue 50 
+** contributed by Konrad Barth https://github.com/ictoain
+* Fix for nested soaps producing correct xml in serialization
+** see https://github.com/mosabua/ksoap2-android/pull/12
+** contributed by Andrew Oppenlander http://themented.com
+* Loss of data type in serialization fixed so that request produced is the same as for 
+
+=== 2.6.0 release
+
+** see https://github.com/mosabua/ksoap2-android/commit/583e7ea839ea58cd577357e93b7232162d127599
+** see https://github.com/mosabua/ksoap2-android/commit/80d70289dc59686a09504ec1be4dc5a6bc9871f6
+** see https://github.com/mosabua/ksoap2-android/commit/895cac1a1072704238760fe401a2b72616ea8938
+** contributed by Manfred Moser, http://www.simpligility.com
+*  introduced checkstyle usage to force some common rules to avoid merge problems and problems with github display and also cleaned up a bunch of code to follow rules
+** see https://github.com/mosabua/ksoap2-android/commit/d4e4bb597269dd9eaf5c85dc4bb4ea08bdaeee5d and following commits
+** contributed by Manfred Moser, http://www.simpligility.com
+* forcing maven version and setting a few more plugin versions as well as updating some
+** see https://github.com/mosabua/ksoap2-android/commit/e56e72e1b3162e35aa02c3b14ad1bf4d952e64b6
+** contributed by Manfred Moser, http://www.simpligility.com
+
+=== 2.6.1 Release, 2012-01-16
+ 
+*  issue 94  fix, no NPE with non string properties
+** contributed by Dawid Drozd https://github.com/gelldur
+* added support to manage the order of SoapObject? properties (PropertyInfos? and SoapObjects?)
+** see https://github.com/mosabua/ksoap2-android/pull/10
+** contributed by Andrew Oppenlander http://themented.com
+
+=== 2.6.0 Release, 2011-11-17
+
+* issue 84  fix, correct Content-Type in SOAP 1.2
+** contributed by elias.nystrom and Manfred Moser
+* issue 87  fix, setting charset to utf-8
+** contributed by tauit.dnmd and Manfred Moser
+* removed deprecated Android specific classes, since they did not actually have any actual behaviour anyway, use HttpTransportSE instead
+** see https://github.com/mosabua/ksoap2-android/commit/352841817a8898d4c794e2b8d3d6bdfb81da96be
+** contributed by Manfred Moser, http://www.simpligility.com
+
+=== 2.5.8 Release, 2011-09-26
+ 
+* issue 75  fix, removing array type if implicitTypes is on
+** see https://github.com/mosabua/ksoap2-android/pull/8
+** contributed by John Lindeman
+* issue 77  fix, allowing empty body out
+** contributed by Finn Larsen and Manfred Moser
+* implemented correct SoapFault? for SOAP 1.2
+** contributed by Petter Uvesten, http://www.everichon.com
+
+=== 2.5.7 Release, 2011-07-06
+ 
+* issue 10  fix
+** contributed by Manfred Moser, http://www.simpligility.com
+* issue 60  and  issue 52  fixed
+** contributed by Manfred Moser, http://www.simpligility.com
+* correct removal of SOAPAction for 1.2, ** fixes  issue 67 
+** contributed by Petter Uvesten, http://www.everichon.com
+* correct header for 1.2, ** fixes  issue 68 
+** contributed by Petter Uvesten, http://www.everichon.com
+
+=== 2.5.6 Release, 2011-06-22
+
+* convenience methods for getting string representation of attributes and properties off SoapObjects?
+** contributed by Manfred Moser
+* convenience methods for adding attributes and properties to SoapObject? only if not null
+** contributed by Manfred Moser
+
+=== 2.5.5 Release, 2011-06-06
+
+* license and contributor details updated
+* SoapObject#addSoapObject?
+** contributed by Andrew Oppenlander
+* refactored safeGetX to getXSafely in SoapObject?
+** contributed by Manfred Moser
+
+=== 2.5.4 Release, 2011-02-04
+
+* fixed bug in URI properties acquisition
+* added feature to manage cookies across request response communication
+* javadoc updates
+* exposed connection in transport for access
+* fixed property count returned in getResponse https://github.com/mosabua/ksoap2-android/commit/1184019043cc63e7439f577cf740cc3cdb88e923
+
+=== 2.5.3 Release, 2011-02-04
+
+* see 2.5.4 release, the release process failed for this release number due to technical difficulties
+
+=== 2.5.2 Release, 2010-11-01
+
+* added https transport 
+** fixing  issue 6  http://code.google.com/p/ksoap2-android/issues/detail?id=6
+* deprecated android https transport classes since they are null change implementations of the SE ones and conflict with Android SDK class names too ( a future release will remove these classes)
+* applied vector node patch fixing  issue 29  http://code.google.com/p/ksoap2-android/issues/detail?id=29
+* updated copyright file with more details from contributors
+
+=== 2.5.1 Release, 2010-10-12
+
+After merging a bunch patches and figuring out how to do a release I have created a 2.5.1 release and deployed it to the Maven repo on google code. Included fixes
+
+* attribute reading working issues http://code.google.com/p/ksoap2-android/issues/detail?id=17 and http://code.google.com/p/ksoap2-android/issues/detail?id=4
+* patch for empty soap fault detail
+* a bunch of convenience methods for working with soapobjects
+
+=== 2.3 Release, 2009-08-16
+
+Version 2.3 of the ksoap2-android project was released on Sunday, 2009-08-16. This release contains fixes for the following issues:
+
+* Issue 2: Duplicated AndroidHttpTransport.class and AndroidServiceConnection.java files in the release JAR.
+* Issue 3: AndroidServiceConnection is using wrong httpclient library version
+
+Other Announcements
+
+2010-10-12 Wiki overhaul
+I did a major overhaul of the wiki and the content on it as well as adding more content.
+
+=== 2010-10-08 Project Owner Change
+
+The project has been dormant for too long and as of today has been taken over by Manfred Moser http://www.simpligility.com. Thanks to Karl Davies for past project creation and maintenance
+
+In the near term the following steps are planned:
+
+* applying some of my own patches
+* applying some patches I received from various other community members
+* updating the wiki to reflect the new state
+* various other tasks that might come up
+* create a new release
+
+We will create issues for all these tasks shortly and track progress with the issue tracker.
+
+A new mailing list has been created so please feel free to join the list and post any ideas or questions there.
+
+Manfred
+
+==== 2009-08-16, Development Status
+
+My apologies for the long hiatus in updates to this project. I was actually quite surprised to discover today that others were making use of it. I just pushed out a new release (2.3) to resolve the issues folks were having making use of it.
+
+If you'd like to help contribute to this project, please let me know. I'll try to put up a page with build instructions sometime in the near future.

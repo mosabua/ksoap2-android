@@ -1,0 +1,60 @@
+<project name="ksoap2-android">
+  <bannerLeft>
+    <name>${project.name}</name>
+  </bannerLeft>
+  <bannerRight>
+    <src></src>
+  </bannerRight>
+  <skin>
+    <groupId>org.apache.maven.skins</groupId>
+    <artifactId>maven-fluido-skin</artifactId>
+    <version>1.3.1</version>
+  </skin>
+  <custom>
+    <fluidoSkin>
+      <topBarEnabled>true</topBarEnabled>
+      <sideBarEnabled>true</sideBarEnabled>
+      <googleSearch>
+        <sitesearch/>
+      </googleSearch>
+      <gitHub>
+        <projectId>mosabua/ksoap2-android</projectId>
+        <ribbonOrientation>right</ribbonOrientation>
+        <ribbonColor>orange</ribbonColor>
+      </gitHub>
+      <breadcrumbDivider>»</breadcrumbDivider>
+    </fluidoSkin>
+  </custom>
+
+  <body>
+    <menu name="General">
+      <item name="Introduction" href="index.html"/>
+      <item name="Getting Started" href="getting-started.html"/>
+      <item name="How To" href="howto.html"/>
+      <item name="Tips and Tricks" href="tips.html"/>
+      <item name="Users" href="users.html"/>
+      <item name="Changelog" href="changelog.html"/>
+      <item name="License Information" href="license-information.html"/>
+    </menu>
+    <menu name="Community">
+      <item name="Mailing List" href="http://groups.google.com/group/ksoap2-android"/>
+      <item name="Report An Issue" href="report-issue.html"/>
+      <item name="Contributing" href="contributing.html"/>
+      <item name="Contributors" href="contributors.html"/>
+      <item name="Developing" href="developing.html"/>
+      <item name="Releasing" href="releasing.html"/>
+    </menu>
+    <menu name="Related Projects">
+      <item name="easywsdl" href="http://easywsdl.com/"/>
+      <item name="wsdl2ksoap2-android" href="https://code.google.com/p/wsdl2ksoap2-android/"/>
+      <item name="wsdl2ksoap" href="http://code.google.com/p/wsdl2ksoap/"/>
+      <item name="wsdl2code" href="http://www.wsdl2code.com/"/>
+    </menu>
+    <menu name="Sponsors">
+      <item name="simpligility" href="http://www.simpligility.com/"/>
+      <item name="Sonatype" href="http://www.sonatype.com/"/>
+    </menu>
+
+    <menu ref="reports" />
+  </body>
+</project>

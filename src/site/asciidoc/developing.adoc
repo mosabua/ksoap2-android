@@ -1,0 +1,51 @@
+== Developing
+
+If you want to help on the actual codebase, here is what you need
+
+=== Pre-requisites
+
+* Apache Maven installed - (3.1.1 or higher as enforced during the build) 
+* Alternatively use the mvnw wrapper scripts
+* Optionally for better testing and debugging support any Java IDE
+* Optionally git or svn to get the code from github, unless you download the source as zip
+
+=== Getting the code
+
+You can just get the code from github as usual from the site https://github.com/simpligility/ksoap2-android/
+
+----
+git clone git@github.com:simpligility/ksoap2-android.git
+----
+ 
+
+=== Building
+
+The usual Maven invocations apply. A full build is done with
+
+----
+mvn clean install
+----
+
+or using the Maven wrapper
+
+----
+mvnw clean install
+----
+
+The documentation website can be built with
+
+----
+mvn clean site -N
+----
+
+with the resulting HTML found in +target/site/+.
+
+=== Coding Style
+
+The Maven build enforces a code style with the Maven Checkstyle Plugin to 
+make the code more readable and consistent as well as to avoid problems with 
+merges we had in the past when it comes to tabs vs. spaces and others.
+
+The checkstyle rules are all defined 
+https://github.com/simpligility/ksoap2-android/blob/master/build-tools/src/main/resources/simpligility/checkstyle.xml
+

@@ -1,13 +1,6 @@
+sudo: false
 language: java
 jdk: oraclejdk7
-before_install:
-  # Maven 3.1.1
-  - wget http://www.us.apache.org/dist/maven/maven-3/3.1.1/binaries/apache-maven-3.1.1-bin.tar.gz
-  - tar xvf apache-maven-3.1.1-bin.tar.gz > /dev/null
-  - export M2_HOME=`pwd`/apache-maven-3.1.1
-  - export PATH=${M2_HOME}/bin/:${PATH}
-  - mvn --version
 
-script: mvn clean install
+script: ./mvnw clean install
 
-after_script:

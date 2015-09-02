@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
@@ -8,8 +9,9 @@
     </parent>
 
     <artifactId>ksoap2-base</artifactId>
-    <name>ksoap2-base</name>
     <packaging>jar</packaging>
+
+    <name>ksoap2-base</name>
     <description><![CDATA[
         A lightweight and efficient SOAP engine suitable for J2ME or constrained java devices.
         ]]>
@@ -50,5 +52,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

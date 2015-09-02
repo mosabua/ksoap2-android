@@ -1,0 +1,16 @@
+= Report An Issue
+
+Reporting issues is important. Ideally this is what you do to file an issue and 
+get it fixed. The less of these steps  you follow the smaller the chances are 
+that your issue gets fixed..
+
+* Verify with the latest release
+* Provide detailed description of the problem
+* Create a sample project that show-cases the issue 
+* Or provide some other means of reproducing the issue
+* Answer any questions from the project team
+
+Now that you know what you should do, https://github.com/simpligility/ksoap2-android/issues[go ahead an file an issue].
+
+The next steps would be to fix the issue by following our instructions about link:contributing.html[contributing.]
+

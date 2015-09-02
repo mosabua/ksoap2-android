@@ -6,7 +6,7 @@ This is the master code repository for the ksoap2-android project. For further i
 
 For documentation, links, issue tracker, wiki and so on:
 
-http://code.google.com/p/ksoap2-android/[http://code.google.com/p/ksoap2-android/]
+http://simpligility.github.io/ksoap2-android/[http://simpligility.github.io/ksoap2-android/]
 
 === Mailing list
 
@@ -16,7 +16,7 @@ http://groups.google.com/group/ksoap2-android[http://groups.google.com/group/kso
 
 === CI Build 
 
-image:https://travis-ci.org/mosabua/ksoap2-android.png["Build Status", link="https://travis-ci.org/mosabua/ksoap2-android"]
+image:https://travis-ci.org/simpligility/ksoap2-android.png["Build Status", link="https://travis-ci.org/simpligility/ksoap2-android"]
 
 === Contributions
 
@@ -25,6 +25,6 @@ We welcome your feature enhancements and bug fixes in pull requests!
 === License
 
 This project uses the MIT license. See LICENSE.txt and 
-http://code.google.com/p/ksoap2-android/wiki/Licensing[http://code.google.com/p/ksoap2-android/wiki/Licensing]
+http://simpligility.github.io/ksoap2-android/license-information.html[http://simpligility.github.io/ksoap2-android/license-information.html]
 for more information.
 

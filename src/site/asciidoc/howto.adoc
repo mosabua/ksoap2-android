@@ -1,0 +1,55 @@
+== How to Use ksoap2-android
+
+The documentation for ksoap2-android is a bit sparse on the site here. We 
+welcome contributions. Fortunately there is a lot of other documentation 
+available.
+
+== Mailing list == 
+
+Join the mailing list http://groups.google.com/group/ksoap2-android as it is the
+main forum for discussion and help. Please send any questions there.
+
+== Stackoverflow == 
+
+You can also create a question on Stackoverflow and use the ksoap2 and android 
+tag or the android-ksoap2 tag and we might find your question there.. 
+
+* http://stackoverflow.com/questions/tagged/ksoap2
+* http://stackoverflow.com/questions/tagged/android-ksoap2
+
+== Source and Javadoc == 
+
+A very good source of documentation are the javadoc as well as the source both 
+of which you can find in the project Maven repository. The source in the github
+repository also contains numerous test that show how to do various things like 
+creating requests and parsing results and so on.
+
+If you use Maven javadoc and sources will all be hooked up in your IDE 
+automatically and you can browse the source and documentation right during 
+development. This should also work with Gradle.
+
+To do the same with Ant or plain Android Development Toolkit (Eclipse plugin) 
+based environment you will have to manually download the source and javadoc jar
+files.
+
+=== Useful External Resources and Tutorials
+
+* http://www.helloandroid.com/tutorials/using-ksoap2-android-and-parsing-output-data - Parsing tutorial on helloandroid
+* http://www.simpligility.com/2010/05/attribute-support-for-ksoap2-on-android/- First announcement of patch for working attribute support published by current project maintainer on his company website
+* KSoap Android Web Service Tutorial With Sample Code - http://seesharpgears.blogspot.com/2010/10/ksoap-android-web-service-tutorial-with.html
+* Web Service That Returns An Array of Objects With KSOAP - http://seesharpgears.blogspot.com/2010/10/web-service-that-returns-array-of.html
+* Returning Array of Primitive Types with KSOAP http://seesharpgears.blogspot.com/2010/11/returning-array-of-primitive-types-with.html
+* Implementing KSOAP Marshal Interface http://seesharpgears.blogspot.com/2010/11/implementing-ksoap-marshal-interface.html] 
+* Introduction to using KSoap2 Android http://naveenbalani.com/index.php/2011/01/invoke-webservices-from-android/
+* http://roderickbarnes.com/blog/droid-chronicles-web-services-part-1
+* http://roderickbarnes.com/blog/the-droid-chronicles-web-services-part-2-sophisticated-android-clients
+* http://roderickbarnes.com/blog/the-droid-chronicles-web-services-passing-parameters
+* http://roderickbarnes.com/blog/the-droid-chronicles-web-services-preventing-problems-with-passing-parameters
+* http://roderickbarnes.com/blog/droid-chronicles-web-services-handling-complex-parameters
+* http://roderickbarnes.com/blog/the-droid-chronicles-an-android-webrowset-implementation-bifrowset
+* Useful tips for dealing with SSL/HTTPShttp://donmacvittie.ulitzer.com/node/2596103] 
+* http://ksoap2.sourceforge.net/ - KSoap2 upstream project site, no longer maintained
+
+=== Other Tips & Tricks
+
+... can be found on link:tips.html[our dedicated page].

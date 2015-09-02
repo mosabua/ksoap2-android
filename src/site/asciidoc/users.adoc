@@ -1,0 +1,67 @@
+== Users of ksoap2-android
+
+Ksoap2-android is *widely used* and the website gets a lot of traffic. Many 
+users however can not or do not want to disclose the fact that they are using 
+ksaop2-android and we respect that wish. However if you can disclose that your 
+project is using ksoap2-android, we would love to add a reference to your 
+project here. 
+
+Without further ado here are a couple of tools and applications:
+
+=== EasyWSDL
+
+* Leading WSDL client code generator
+* http://easywsdl.com/[EasyWSDL website]
+* https://www.facebook.com/EasyWsdl[Facebook]
+* tons of client applications generated with it
+* great contributors to ksoap2-android 
+
+=== DeuterIDE
+
+* https://play.google.com/store/apps/details?id=com.didactic.DeuterIDE[App on Google Play]
+* http://appworld.blackberry.com/webstore/content/96563/?lang=en[BlackBerry App World]
+* https://www.facebook.com/deuteride[Facebook]
+* https://twitter.com/#!/DeuterIDE[Twitter]
+
+Quote: Firstly I want to thank you for maintaining ksoap2android; it is the best
+ Android-compatible SOAP library I've found in terms of simplicity and ease of 
+ use. 
+
+=== Jira4android
+
+* https://play.google.com/store/apps/details?id=jira.For.Android[App on Google Play]
+* https://www.facebook.com/Jira4android[Facebook page]
+* https://plus.google.com/117965925775835879473[G+ page]
+* https://github.com/tmszdmsk/jira4android[Source]
+
+=== LN2 Sugar CRM
+
+* http://www.ln2.jp/[LN2 Sugar CRM website]
+* https://play.google.com/store/apps/details?id=jp.ln2.application.sugarcrm[App on Google Play]
+* https://www.facebook.com/lnsquare[Facebook Page]
+* http://twitter.com/ln2jp[twitter]
+
+=== Trinity Mobile http://www.kalixtele24.se 
+
+* http://www.kalixtele24.se/kalix-tele24/1410545-trinity-mobile[App Website]
+* https://play.google.com/store/apps/details?id=se.kalixtele24.trinity[Google Play]
+* http://www.everichon.com[Developer Everichon]
+
+=== WCF Connection Tester and WCF Connection Tester Pro
+
+* https://play.google.com/store/apps/details?id=pl.citadelsystems.wcfconnectiontesterpro[App on Google Play]
+
+=== xyzmo SIGNificant e-sign App
+
+* https://play.google.com/store/apps/details?id=com.xyzmo.signature[App on Google Play]
+* http://www.xyzmo.com/de/products/Pages/Unterschreiben-iPad-Android.aspx[Developer xyzmo SIGNificant]
+
+=== android-http framework
+
+* https://github.com/the-diamond-dogs-group-oss/android-http
+* from the diamond dogs group - http://www.diamonddogs.cc/
+
+=== wsdl2code tool
+
+* http://www.wsdl2code.com
+* allows automatic creation of ksoap2-android code 

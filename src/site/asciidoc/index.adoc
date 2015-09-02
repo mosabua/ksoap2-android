@@ -1,0 +1,42 @@
+== ksoap2-android - lightweight, efficient SOAP on Android
+
+=== Introduction
+
+The ksoap2-android project provides a lightweight and efficient SOAP client 
+library for the Android platform.
+
+It is a fork of the http://ksoap2.sourceforge.net/[kSOAP2 library] that is 
+tested mostly on the Android platform, but should also work on other platforms 
+using Java libraries.
+
+Up to version 3.4.0, it is still using Java 1.3 so should work fine on JavaME, 
+Blackberry and so on. Beyond that Java 1.5 is set as the language level.
+
+ksoap2-android has been consistently enhanced and expanded with more features. 
+It is actively maintained and we welcome bug fixes and contributions. Releases 
+are done semi-regularly with community contributions in the form of enhancements
+and more.
+
+=== Support
+
+For more information check out the pages and linked content of this site and 
+join http://groups.google.com/group/ksoap2-android[our mailing list].
+
+And for the impatient the jars are available in a Maven repository or for
+download from there as a bundle. More at link:getting-started[Getting Started].
+
+=== License
+
+ksoap2-android is licensed under MIT and can therefore be included in your 
+commercial application. If you intend to do so please read the details on the 
+link:license-information.html[Licensing page].
+
+=== Users
+
+You are interested to see a list of projects using ksoap2-android -> link:users.html[Check it out]
+
+=== Sponsors
+
+Project maintenance sponsored by Manfred Moser of http://www.simpligility.com[simpligility].
+
+Maven repository hosting is sponsored by http://www.sonatype.com[Sonatype].
