@@ -21,6 +21,13 @@
         <dependency>
             <groupId>com.google.code.ksoap2-android</groupId>
             <artifactId>ksoap2-j2se</artifactId>
+            <exclusions>
+            	<!-- XML Pull Parser is already packed in Android's framework and will cause conflicts -->
+            	<exclusion>
+            		<groupId>org.xmlpull</groupId>
+            		<artifactId>xmlpull</artifactId>
+            	</exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 
