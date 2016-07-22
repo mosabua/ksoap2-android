@@ -53,6 +53,7 @@
     <module>ksoap2-samples</module>
     <module>ksoap2-samples-axis</module>
     <module>ksoap2-servlet</module>
+    <module>ksoap2-jsoup</module>
   </modules>
 
   <scm>
@@ -239,17 +240,17 @@
       </dependency>
 
       <dependency>
-        <groupId>net.sourceforge.kxml</groupId>
-        <artifactId>kxml</artifactId>
-        <version>2.2.4</version>
+        <groupId>com.google.code.ksoap2-android</groupId>
+        <artifactId>ksoap2-jsoup</artifactId>
+        <version>${project.version}</version>
         <type>jar</type>
         <scope>compile</scope>
       </dependency>
 
       <dependency>
-        <groupId>net.sourceforge.kobjects</groupId>
-        <artifactId>kobjects-j2me</artifactId>
-        <version>0.0-SNAPSHOT-20040926-2</version>
+        <groupId>net.sourceforge.kxml</groupId>
+        <artifactId>kxml</artifactId>
+        <version>2.2.4</version>
         <type>jar</type>
         <scope>compile</scope>
       </dependency>

@@ -26,6 +26,8 @@ package org.ksoap2.transport;
 
 import java.io.*;
 
+import org.ksoap2.serialization.Base64;
+
 /**
  * An Http transport layer class which provides a mechanism to login to
  * webservices using Basic Authentication on midp platforms.
@@ -64,7 +66,7 @@ public class HttpTransportBasicAuth extends HttpTransport {
             byte[] raw = buf.toString().getBytes();
             buf.setLength(0);
             buf.append("Basic ");
-            org.kobjects.base64.Base64.encode(raw, 0, raw.length, buf);
+            buf.append(Base64.getEncoder().encodeToString(raw));
             midpConnection.setRequestProperty("Authorization", buf.toString());
         }
     }
