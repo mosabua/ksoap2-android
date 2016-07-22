@@ -247,14 +247,6 @@
       </dependency>
 
       <dependency>
-        <groupId>net.sourceforge.kobjects</groupId>
-        <artifactId>kobjects-j2me</artifactId>
-        <version>0.0-SNAPSHOT-20040926-2</version>
-        <type>jar</type>
-        <scope>compile</scope>
-      </dependency>
-
-      <dependency>
         <groupId>net.sourceforge.me4se</groupId>
         <artifactId>me4se</artifactId>
         <version>2.1.4-SNAPSHOT-20040926</version>

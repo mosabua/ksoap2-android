@@ -20,10 +20,12 @@
 
 package org.ksoap2.serialization;
 
-import java.util.Date;
+import java.util.*;
 import java.io.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 import org.xmlpull.v1.*;
-import org.kobjects.isodate.*;
 
 
 /** 
@@ -31,14 +33,26 @@ import org.kobjects.isodate.*;
  */
 public class MarshalDate implements Marshal {
     public static Class DATE_CLASS = new Date().getClass();
+    private final SimpleDateFormat dateFormat;
+
+    public MarshalDate() {
+        this.dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'",
+            Locale.US);
+        this.dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+    }
 
     public Object readInstance(XmlPullParser parser, String namespace, String name, PropertyInfo expected)
             throws IOException, XmlPullParserException {
-        return IsoDate.stringToDate(parser.nextText(), IsoDate.DATE_TIME);
+        try {
+            return dateFormat.parse(parser.nextText());
+            
+        } catch (ParseException e) {
+            throw new IOException(e);
+        }
     }
 
     public void writeInstance(XmlSerializer writer, Object obj) throws IOException {
-        writer.text(IsoDate.dateToString((Date) obj, IsoDate.DATE_TIME));
+        writer.text(dateFormat.format((Date) obj));
     }
 
     public void register(SoapSerializationEnvelope cm) {
