@@ -53,6 +53,7 @@
     <module>ksoap2-samples</module>
     <module>ksoap2-samples-axis</module>
     <module>ksoap2-servlet</module>
+    <module>ksoap2-jsoup</module>
   </modules>
 
   <scm>
@@ -236,6 +237,14 @@
         <version>${project.version}</version>
         <type>test-jar</type>
         <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>com.google.code.ksoap2-android</groupId>
+        <artifactId>ksoap2-jsoup</artifactId>
+        <version>${project.version}</version>
+        <type>jar</type>
+        <scope>compile</scope>
       </dependency>
 
       <dependency>
