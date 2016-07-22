@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.google.code.ksoap2-android</groupId>
+        <artifactId>ksoap2-parent</artifactId>
+        <version>3.6.2-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>ksoap2-jsoup</artifactId>
+    <packaging>jar</packaging>
+
+    <name>ksoap2-jsoup</name>
+    <description><![CDATA[
+        JSoup response parser.
+        ]]>
+    </description>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.google.code.ksoap2-android</groupId>
+            <artifactId>ksoap2-j2se</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.9.2</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+    
+</project>
