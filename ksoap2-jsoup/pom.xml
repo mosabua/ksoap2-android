@@ -8,24 +8,24 @@
         <version>3.6.2-SNAPSHOT</version>
     </parent>
 
-    <artifactId>ksoap2-base</artifactId>
+    <artifactId>ksoap2-jsoup</artifactId>
     <packaging>jar</packaging>
 
-    <name>ksoap2-base</name>
+    <name>ksoap2-jsoup</name>
     <description><![CDATA[
-        A lightweight and efficient SOAP engine suitable for J2ME or constrained java devices.
+        JSoup response parser.
         ]]>
     </description>
 
     <dependencies>
         <dependency>
-            <groupId>net.sourceforge.kxml</groupId>
-            <artifactId>kxml</artifactId>
+            <groupId>com.google.code.ksoap2-android</groupId>
+            <artifactId>ksoap2-j2se</artifactId>
         </dependency>
-
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.9.2</version>
         </dependency>
     </dependencies>
 
@@ -35,17 +35,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>test-jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
     </build>
+    
 </project>

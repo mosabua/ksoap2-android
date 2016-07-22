@@ -5,14 +5,21 @@ import java.util.*;
 
 import junit.framework.*;
 
-import org.kobjects.isodate.*;
 import org.ksoap2.*;
 import org.ksoap2.transport.mock.*;
 import org.xmlpull.v1.*;
 
 public class MarshalDateTest extends TestCase {
-    private static final Date TEST_DATE = new Date();
-    private static final String ENCODED_DATE_STRING = IsoDate.dateToString(TEST_DATE, IsoDate.DATE_TIME);
+    private static final Date TEST_DATE;
+    private static final String ENCODED_DATE_STRING = "2016-07-22T11:50Z";
+    
+    static {
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeZone(TimeZone.getTimeZone("UTC"));
+        cal.setTimeInMillis(0);
+        cal.set(2016, Calendar.JULY, 22, 11, 50, 0);
+        TEST_DATE = cal.getTime();
+    }
 
     private MarshalDate marshalDate;
 

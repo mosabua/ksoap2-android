@@ -2,7 +2,6 @@ package org.ksoap2.serialization;
 
 import java.io.*;
 
-import org.kobjects.base64.*;
 import org.ksoap2.*;
 import org.ksoap2.transport.mock.*;
 import org.xmlpull.v1.*;
@@ -12,7 +11,7 @@ import junit.framework.*;
 public class MarshalBase64Test extends TestCase {
 
     private static final String TEST_STRING = "A very quick test string 13412341234";
-    private static final String ENCODED_TEST_STRING = Base64.encode(TEST_STRING.getBytes());
+    private static final String ENCODED_TEST_STRING = Base64.getEncoder().encodeToString(TEST_STRING.getBytes());
 
     private MarshalBase64 marshalBase64;
 

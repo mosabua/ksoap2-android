@@ -22,7 +22,6 @@ package org.ksoap2.serialization;
 
 import java.io.*;
 import org.ksoap2.*;
-import org.kobjects.base64.*;
 import org.xmlpull.v1.*;
 
 /** 
@@ -33,11 +32,11 @@ public class MarshalBase64 implements Marshal {
 
     public Object readInstance(XmlPullParser parser, String namespace, String name, PropertyInfo expected)
             throws IOException, XmlPullParserException {
-        return Base64.decode(parser.nextText());
+        return Base64.getDecoder().decode(parser.nextText());
     }
 
     public void writeInstance(XmlSerializer writer, Object obj) throws IOException {
-        writer.text(Base64.encode((byte[]) obj));
+        writer.text(Base64.getEncoder().encodeToString((byte[]) obj));
     }
 
     public void register(SoapSerializationEnvelope cm) {
