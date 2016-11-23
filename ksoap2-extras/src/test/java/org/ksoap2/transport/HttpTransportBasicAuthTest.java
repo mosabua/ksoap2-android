@@ -22,7 +22,7 @@ package org.ksoap2.transport;
 
 import java.io.*;
 
-import org.kobjects.base64.*;
+import org.ksoap2.serialization.Base64;
 
 public class HttpTransportBasicAuthTest extends TransportTestCase {
 
@@ -52,7 +52,7 @@ public class HttpTransportBasicAuthTest extends TransportTestCase {
     }
 
     private String basicAuthenticationStringFor(String username, String password) {
-        return "Basic " + Base64.encode((username + ":" + password).getBytes());
+        return "Basic " + Base64.getEncoder().encodeToString((username + ":" + password).getBytes());
     }
 
     class MyTransport extends HttpTransportBasicAuth {
