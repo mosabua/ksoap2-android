@@ -24,7 +24,7 @@ public class HttpResponseException extends IOException {
         this.statusCode = statusCode;
     }
 
-    public HttpResponseException(String detailMessage, int statusCode,List responseHeaders) {
+    public HttpResponseException(String detailMessage, int statusCode, List responseHeaders) {
         super(detailMessage);
         this.statusCode = statusCode;
         this.responseHeaders=responseHeaders;
