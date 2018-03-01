@@ -87,7 +87,8 @@ public class NtlmTransport extends HttpTransportSE {
     }
 
     @Override
-    public List call(OkHttpClient client, String soapAction, SoapEnvelope envelope, List headers, File outputFile) throws HttpResponseException, IOException, XmlPullParserException {
+    public List call(OkHttpClient client, String soapAction, SoapEnvelope envelope, List headers, File outputFile)
+            throws HttpResponseException, IOException, XmlPullParserException {
         client = client.newBuilder()
                 .authenticator(new NtlmAuthenticator(user, password, ntDomain, ntWorkstation))
                 .build();
