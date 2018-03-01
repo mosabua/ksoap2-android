@@ -125,7 +125,8 @@ public class HttpTransportSE extends Transport {
      * @param soapAction the namespace with which to perform the call in.
      * @param envelope   the envelope the contains the information for the call.
      * @param headers    <code>List</code> of <code>HeaderProperty</code> headers to send with the SOAP request.
-     * @param outputFile a file to stream the response into rather than parsing it, streaming happens when file is not null
+     * @param outputFile a file to stream the response into rather than parsing it,
+     *                   streaming happens when file is not null
      * @return Headers returned by the web service as a <code>List</code> of
      * <code>HeaderProperty</code> instances.
      * @throws HttpResponseException an IOException when Http response code is different from 200
@@ -203,7 +204,9 @@ public class HttpTransportSE extends Transport {
 
         try {
             for (int i = 0; i < response.headers().size(); i++) {
-                HeaderProperty hp = new HeaderProperty(response.headers().name(i), response.header(response.headers().name(i)));
+                HeaderProperty hp = new HeaderProperty(
+                        response.headers().name(i),
+                        response.header(response.headers().name(i)));
                 retHeaders.add(hp);
 
                 // If we know the size of the response, we should use the size to initiate vars
@@ -237,7 +240,8 @@ public class HttpTransportSE extends Transport {
             //first check the response status....
             if (!response.isSuccessful()) {
                 //202 is a correct status returned by WCF OneWay operation
-                throw new HttpResponseException("HTTP request failed, HTTP status: " + response.code(), response.code(), retHeaders);
+                throw new HttpResponseException("HTTP request failed, HTTP status: " +
+                        response.code(), response.code(), retHeaders);
             }
 
             if (contentLength > 0) {
