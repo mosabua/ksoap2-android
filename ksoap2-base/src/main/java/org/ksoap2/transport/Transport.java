@@ -86,6 +86,7 @@ abstract public class Transport {
     public Transport(String url, int timeout) {
         this.url = url;
         this.timeout = timeout;
+        this.readTimeout = timeout;
     }
 
     public Transport(String url, int timeout, int bufferLength) {
