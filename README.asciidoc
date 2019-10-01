@@ -28,3 +28,4 @@ This project uses the MIT license. See LICENSE.txt and
 http://simpligility.github.io/ksoap2-android/license-information.html[http://simpligility.github.io/ksoap2-android/license-information.html]
 for more information.
 
+I give authorization 😁😉
