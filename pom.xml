@@ -55,6 +55,7 @@
     <module>ksoap2-servlet</module>
     <module>ksoap2-jsoup</module>
     <module>ksoap2-okhttp</module>
+    <module>android</module>
   </modules>
 
   <scm>
