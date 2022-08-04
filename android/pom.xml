@@ -13,28 +13,27 @@
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
+
+    <!-- these repositories are just here so people without a repo manager
+    can build out of the box with Maven -->
+    <repositories>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/ksoap2-android-releases/</url>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/ksoap2-android-releases/</url>
+        </pluginRepository>
+    </pluginRepositories>
+
     <dependencies>
 
-        <!-- net.sourceforge.kobjects:kobjects-j2me:0.0-SNAPSHOT-20040926-2
-
-          <dependency>
-            <groupId>net.sourceforge.kobjects</groupId>
-            <artifactId>kobjects-j2me</artifactId>
-        </dependency>
-
         <dependency>
             <groupId>net.sourceforge.kobjects</groupId>
             <artifactId>kobjects-j2me</artifactId>
-            <version>0.0-SNAPSHOT-20040926-2</version>
-
-        </dependency>
-
-        -->
-
-        <dependency>
-            <groupId>net.sourceforge.kobjects</groupId>
-            <artifactId>kobjects-j2me</artifactId>
-            <version>0.0-SNAPSHOT-20040926-2</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/net.sf.kxml/kxml2 -->
@@ -65,6 +64,26 @@
             <version>4.10.0</version>
         </dependency>
 
-
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>

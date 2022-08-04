@@ -1,32 +1,41 @@
-package net.svishch.ksoap2;
+package net.svishch.ksoap2.formsoap;
 
 
+import net.svishch.ksoap2.ParseSoapUtil;
 import net.svishch.ksoap2.annotations.SerializedName;
+import net.svishch.ksoap2.client.OkHttp3Transport;
+import net.svishch.ksoap2.debug.SoapObjectDebug;
+import net.svishch.ksoap2.util.NewInstanceObject;
+import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
+import org.ksoap2.serialization.SoapSerializationEnvelope;
 
 import java.lang.reflect.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class FormSoap {
+
+    private Logger logger;
+    private NewInstanceObject newInstanceObject;
+
+    public FormSoap() {
+        this.logger = Logger.getLogger(FormSoap.class.getName());
+        this.logger.setLevel(Level.WARNING);
+        this.newInstanceObject = new NewInstanceObject();
+    }
+
     public <T> T formSoap(SoapObject soap, Class<T> classOfT) {
-        Object object = null;
-        try {
 
-            Constructor<T> constructor = classOfT.getDeclaredConstructor();
-            constructor.setAccessible(true);
-            object = constructor.newInstance();
-
-        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
-        }
+        T object = this.newInstanceObject.create(classOfT);
 
         if (soap == null) {
-            return (T) object;
+            return object;
         }
-
 
         //System.out.println(classOfT.getTypeName());
         //printFields(classOfT.getDeclaredFields());
@@ -42,7 +51,17 @@ public class FormSoap {
             }
         }
 
-        return (T) object;
+        return object;
+    }
+
+    public <T> T formSoap(String soap, Class<T> classOfT) {
+
+        SoapObject soapObject = new FormStringSoap().getSoapObject(soap);
+        System.out.println(soap);
+        new SoapObjectDebug().printSoapObject(soapObject);
+
+        return formSoap(soapObject,classOfT);
+
     }
 
     private <T> void setFieldValue(Object object, String nameSoap, Object value, Class<T> classOfT) throws IllegalAccessException {
@@ -53,7 +72,7 @@ public class FormSoap {
         for (Field field : fields) {
             field.setAccessible(true);
 
-            if (isSetValue(field, nameSoap)) {
+            if (this.newInstanceObject.isSetValue(field, nameSoap)) {
                 addFieldValueType(object, field, value);
                 // System.out.println("OK  "+field.getName());
                 return;
@@ -61,19 +80,10 @@ public class FormSoap {
 
         }
 
-        System.out.println("Error: " + nameSoap);
+        sendLog("Error: " + nameSoap);
     }
 
-    private boolean isSetValue(Field field, String nameSoap) {
-        List<String> annotationNames = this.getAnnotationValue(field);
-        for (String fieldName : annotationNames) {
-            if (nameSoap.equals(fieldName)
-                    || nameSoap.equalsIgnoreCase(field.getName())) {
-                return true;
-            }
-        }
-        return false;
-    }
+
 
     private void addFieldValueType(Object object, Field field, Object value) throws IllegalAccessException {
         Class<?> fieldType = field.getType();
@@ -120,24 +130,7 @@ public class FormSoap {
     }
 
 
-    private List<String> getAnnotationValue(Field field) {
-        SerializedName annotation = field.getAnnotation(SerializedName.class);
-        if (annotation == null) {
-            String name = "";
-            return Collections.singletonList(name);
-        }
 
-        String serializedName = annotation.value();
-        String[] alternates = annotation.alternate();
-        if (alternates.length == 0) {
-            return Collections.singletonList(serializedName);
-        }
-
-        List<String> fieldNames = new ArrayList<>(alternates.length + 1);
-        fieldNames.add(serializedName);
-        Collections.addAll(fieldNames, alternates);
-        return fieldNames;
-    }
 
     /*
        public <T> T  formSoap(String soap, Class<T> classOfT){
@@ -189,5 +182,9 @@ public class FormSoap {
             Object value1 = propertyInfo.getValue();
             System.out.println(propertyInfo.name + " = " + value1);
         }
+    }
+
+    private void sendLog(String mess){
+        this.logger.fine(mess);
     }
 }

@@ -111,7 +111,7 @@ public class OkHttp3Transport {
         }
 
         sendLogger("ContentType: " + contentType);
-        byte[] requestData = this.createRequestData(envelope);
+        byte[] requestData = envelope.getRequestData();
         sendLoggerFinest("Request Payload: " + new String(requestData, "UTF-8"));
 
 
@@ -159,12 +159,12 @@ public class OkHttp3Transport {
                 throw new HttpResponseException("HTTP request failed, HTTP status: " + response.code(), response.code(), responseHeaders);
             }
 
-            this.parseResponse(envelope, responseBody.byteStream());
+            envelope.parse(responseBody.byteStream());
             var12 = responseHeaders;
         } catch (HttpResponseException var18) {
             if (null != responseBody) {
                 try {
-                    this.parseResponse(envelope, responseBody.byteStream());
+                    envelope.parse(responseBody.byteStream());
                 } catch (XmlPullParserException var17) {
                 }
             }
@@ -180,24 +180,6 @@ public class OkHttp3Transport {
         return var12;
     }
 
-    private byte[] createRequestData(SoapEnvelope envelope) throws IOException {
-        ByteArrayOutputStream bos = new ByteArrayOutputStream(8192);
-        XmlSerializer xw = new KXmlSerializer();
-        xw.setOutput(bos, "UTF-8");
-        envelope.write(xw);
-        xw.flush();
-        bos.write(13);
-        bos.write(10);
-        bos.flush();
-        return bos.toByteArray();
-    }
-
-    private void parseResponse(SoapEnvelope envelope, InputStream is) throws XmlPullParserException, IOException {
-        XmlPullParser xp = new KXmlParser();
-        xp.setFeature("http://xmlpull.org/v1/doc/features.html#process-namespaces", true);
-        xp.setInput(is, (String)null);
-        envelope.parse(xp);
-    }
 
     public static class Builder {
         private final HttpUrl url;
@@ -275,7 +257,6 @@ public class OkHttp3Transport {
         if (this.debug) {
             this.logger.fine(mess);
         }
-
     }
 
     private void sendLoggerFinest(String mess) {

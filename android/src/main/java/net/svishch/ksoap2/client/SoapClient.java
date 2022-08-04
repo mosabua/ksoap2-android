@@ -4,6 +4,7 @@ package net.svishch.ksoap2.client;
 import net.svishch.ksoap2.CallbackSOAP;
 import net.svishch.ksoap2.RecuestSOAP;
 import net.svishch.ksoap2.client.okhttp.HttpClient;
+import net.svishch.ksoap2.util.NewInstanceObject;
 import okhttp3.Credentials;
 import okhttp3.Headers;
 import org.ksoap2.SoapEnvelope;
@@ -60,6 +61,20 @@ public class SoapClient {
         SoapObject result = (SoapObject) envelope.getResponse();
 
         return result;
+    }
+
+    public <T> T get(Object recuest , Class<T> response ) throws IOException, XmlPullParserException {
+
+        /*
+        RecuestSOAP recuestSOAP = null;
+        envelope.setOutputSoapObject(recuestSOAP.getSoapObject());
+        clientTransport.call(recuestSOAP.getSoapAction(), envelope);
+        SoapObject result = (SoapObject) envelope.getResponse();
+          return new FormSoap().formSoap(result,response);
+*/
+        T object = new NewInstanceObject().create(response);
+
+        return (T) object;
     }
 
     private String getPass()  {

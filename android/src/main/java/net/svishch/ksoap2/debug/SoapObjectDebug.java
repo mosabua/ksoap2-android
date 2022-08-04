@@ -1,4 +1,4 @@
-package net.svishch.ksoap2;
+package net.svishch.ksoap2.debug;
 
 import org.ksoap2.serialization.AttributeInfo;
 import org.ksoap2.serialization.PropertyInfo;
@@ -103,8 +103,6 @@ public class SoapObjectDebug {
         }
 
     }
-
-
 
     private void println(String str){
         System.out.println(str);

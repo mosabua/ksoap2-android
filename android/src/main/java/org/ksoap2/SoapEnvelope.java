@@ -21,6 +21,10 @@
 package org.ksoap2;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
+
+import org.kxml2.io.KXmlParser;
+import org.kxml2.io.KXmlSerializer;
 import org.kxml2.kdom.*;
 import org.xmlpull.v1.*;
 
@@ -39,6 +43,8 @@ public class SoapEnvelope {
     public static final int VER11 = 110;
     /** SOAP Version 1.2 constant */
     public static final int VER12 = 120;
+
+    public static final String SOAP12 = "http://www.w3.org/2003/05/soap-envelope";
     public static final String ENV2003 = "http://www.w3.org/2003/05/soap-envelope";
     public static final String ENC2003 = "http://www.w3.org/2003/05/soap-encoding";
     /** Namespace constant: http://schemas.xmlsoap.org/soap/envelope/ */
@@ -193,6 +199,9 @@ public class SoapEnvelope {
      * given XML writer.
      */
     public void write(XmlSerializer writer) throws IOException {
+        if (version == SoapEnvelope.VER12) {
+            writer.setPrefix("soap12", SOAP12);
+        }
         writer.setPrefix("i", xsi);
         writer.setPrefix("d", xsd);
         writer.setPrefix("c", enc);
@@ -237,4 +246,32 @@ public class SoapEnvelope {
         bodyOut = soapObject;
     }
 
+    public byte[] getRequestData() throws IOException {
+        ByteArrayOutputStream bos = new ByteArrayOutputStream(8192);
+        XmlSerializer xw = new KXmlSerializer();
+        xw.setOutput(bos, "UTF-8");
+        this.write(xw);
+        xw.flush();
+        bos.write(13);
+        bos.write(10);
+        bos.flush();
+        return bos.toByteArray();
+    }
+
+    public void parse(InputStream is) throws XmlPullParserException, IOException {
+        XmlPullParser xp = new KXmlParser();
+        xp.setFeature("http://xmlpull.org/v1/doc/features.html#process-namespaces", true);
+        xp.setInput(is, (String)null);
+        this.parse(xp);
+    }
+
+    public String toString(){
+        try {
+            String str = new String(this.getRequestData(), StandardCharsets.UTF_8);
+            return str;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
 }

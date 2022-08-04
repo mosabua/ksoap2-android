@@ -1,9 +1,9 @@
-import entity.ListOfContinentsByName;
-import net.svishch.ksoap2.SoapParse;
-import net.svishch.ksoap2.client.OkHttp3Transport;
+package oorsprong;
+
+import oorsprong.entity.RecuestListOfContinentsByName;
+import oorsprong.entity.Response;
 import net.svishch.ksoap2.client.SoapClient;
 import net.svishch.ksoap2.client.UrlSettings;
-import org.ksoap2.serialization.SoapObject;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
@@ -30,19 +30,19 @@ public class TestApi {
 
     private static void getCountryInfo(UrlSettings urlSettings) {
 
-        SoapObject soapObject = null;
+        Response response = null;
 
 
         SoapClient soapClient = new SoapClient(urlSettings);
-        // Response // Response
+        // Response // Recuest
         try {
-
-            soapObject = soapClient.get(new ListOfContinentsByName().getSoap());
+            response = soapClient.get(new RecuestListOfContinentsByName(), Response.class);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (XmlPullParserException e) {
             e.printStackTrace();
         }
 
+      // Recuest request = new Soap().formSoap(soapObject, Recuest.class);
     }
 }
