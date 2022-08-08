@@ -911,4 +911,12 @@ public class SoapObject extends AttributeContainer implements KvmSerializable, H
     {
         properties.remove(info);
     }
+
+    public void setNamespace(String namespace) {
+        this.namespace = namespace;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }
