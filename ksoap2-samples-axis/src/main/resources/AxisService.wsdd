@@ -1,8 +1,0 @@
-<deployment xmlns="http://xml.apache.org/axis/wsdd/"
-    xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
-<service name="AxisService" provider="java:RPC">
- <parameter name="className" value="net.wessendorf.ws.AxisService"/>
- <parameter name="allowedMethods" value="getObject"/>
- <beanMapping qname="mwNS:CustomObject" xmlns:mwNS="http://ws.wessendorf.net" languageSpecificType="java:net.wessendorf.ws.CustomObject"/>
-</service>
-</deployment>
