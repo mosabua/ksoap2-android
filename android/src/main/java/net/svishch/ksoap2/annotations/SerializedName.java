@@ -8,6 +8,6 @@ import java.lang.annotation.*;
 public @interface SerializedName {
 
     String value();
-    String[] alternate() default {};
+ //   String[] alternate() default {};
 }
 

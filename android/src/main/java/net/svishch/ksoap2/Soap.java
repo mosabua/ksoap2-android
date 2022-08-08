@@ -7,7 +7,6 @@ import org.ksoap2.serialization.SoapObject;
 public class Soap {
     public String toSoap(Object src) {
         ToSoap toSoap = new ToSoap();
-
         return toSoap.getString(src);
     }
 

@@ -13,3 +13,4 @@ out
 *.iml
 .checkstyle
 .DS_Store
+src/test/java/no_git
