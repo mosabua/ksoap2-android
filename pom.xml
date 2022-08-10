@@ -42,19 +42,6 @@
   </prerequisites>
 
   <modules>
-    <module>build-tools</module>
-    <module>ksoap2-base</module>
-    <module>ksoap2-android</module>
-    <module>ksoap2-android-assembly</module>
-    <module>ksoap2-extras</module>
-    <module>ksoap2-extra-ntlm</module>
-    <module>ksoap2-j2se</module>
-    <module>ksoap2-midp</module>
-    <module>ksoap2-samples</module>
-    <module>ksoap2-samples-axis</module>
-    <module>ksoap2-servlet</module>
-    <module>ksoap2-jsoup</module>
-    <module>ksoap2-okhttp</module>
     <module>android</module>
   </modules>
 
@@ -176,13 +163,6 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-checkstyle-plugin</artifactId>
-          <dependencies>
-            <dependency>
-              <groupId>com.google.code.ksoap2-android</groupId>
-              <artifactId>build-tools</artifactId>
-              <version>${project.version}</version>
-            </dependency>
-          </dependencies>
           <configuration>
             <configLocation>simpligility/checkstyle.xml</configLocation>
             <includeTestSourceDirectory>true</includeTestSourceDirectory>
